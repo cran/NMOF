@@ -1,0 +1,231 @@
+v0.20-0  (2011-10-20)
+
+  o **first CRAN release**
+  o the 'printDetail' argument for 'LSopt' now recognises 
+    TRUE and FALSE (as before), but also an integer 'i' 
+    greater than 1. In the latter case, information on the best 
+    solution is printed at every 'i'th step.
+  o minor cleanups in documentation
+
+v0.19-4  (2011-10-15)
+
+  o small changes in vignette 'Repairing solutions'  
+  o small internal changes in 'GAopt' and 'DEopt' (auxiliary functions 
+    like 'switch' and 'shift' have been inlined)
+  o code examples in subdirectory 'NMOFex' updated
+
+v0.19-3  (2011-10-07)
+
+  o fixed: a bug had been introduced into 'GAopt' in version 0.19-2 
+    (revision 88), which let the population grow to algo$nP+1 
+  o minor changes in documentation/examples
+
+v0.19-2  (2011-09-30)
+
+  o minor cleanups in documentation
+
+v0.19-1  (2011-09-29)
+
+  o minor cleanups in documentation
+  o minor internal changes in 'restartOpt' (passing of the '...' arguments 
+    for method 'snow')
+
+v0.19-0  (2011-09-26)
+
+  o 'bracketing', 'gridSearch' and 'restartOpt' now support distributed
+    evaluation of 'fun' via 'clusterApply' from the 'snow' package. As a
+    side effect, the interface of 'gridSearch' and 'restartOpt' has
+    changed: instead of an option 'multicore', they now have an argument
+    'method', which can be 'loop', 'multicore' or 'snow'. See the 
+    documentation of these functions.
+  o for consistency, the 'method' argument of 'bracketing' expects 'vectorised' 
+    rather than 'vectorise' (but both work, and also the '-ize' spellings) 
+  o substantial revision of documentation/examples
+  o more intelligible error/warning messages in 'bracketing' added
+  o small changes in vignettes 'Robust Regression with Particle Swarm
+    Optimisation and Differential Evolution' and 'Repairing solutions'
+  o file 'multicore.R' was moved to subdirectory inst/unitTests;
+    thus, it is installed with the package. Some tests for package 'snow'
+    were added.
+  o more tests added (subdirectory unitTests); in particular, tests are
+    more comprehensively commented now
+
+v0.18-1  (2011-09-21)
+
+  o fixed: 'restartOpt' with 'multicore = TRUE' did not correctly
+    pass '...' arguments to 'fun'
+  o fixed: typo in message issued by 'gridSearch'
+  o new file 'multicore.R' added in subdirectory tests; it contains a number
+    of timing tests to see if the 'multicore' option works. (The tests are
+    not run when the package is built.)
+  o minor updates in documentation
+
+v0.18-0  (2011-09-20)
+
+  o 'restartOpt' now has option 'multicore'
+  o the 'method' option of function 'xwGauss' can now take on values
+    'hermite' and 'laguerre'
+  o documentation updated
+  o new examples added in 'Examples and Extensions for the NMOF package'
+    (see subdirectory NMOFex)
+  o test cases added for 'restartOpt' and 'xwGauss'
+    (see subdirectory unitTests)
+
+v0.17-0  (2011-09-18)
+
+  o functions for Gaussian integration added: 'xwGauss' computes nodes and
+    weights; 'changeInterval' transforms the nodes/weights to arbitrary
+    intervals. Currently, only method 'legendre' is supported.
+  o documentation updated
+  o more tests added for opt-functions (for returned objects 'Fmat'
+    and 'xlist')
+
+v0.16-2  (2011-09-17)
+
+  o all opt-functions now have arguments 'storeF' and 'storeSolutions'
+    (passed through 'algo'). If the latter is TRUE, intermediary results
+    will be stored in a list 'xlist' that is returned by the function
+    (what exactly 'xlist' contains, depends on the specific function)
+  o minor revision in vignette 'Robust Regression with
+    Particle Swarm Optimisation and Differential Evolution'
+  o NEWS file can now be found under inst/NEWS.Rd
+  o internal changes: a number of test utilities have been added
+    (not exported); see, for instance, ?checkList
+
+v0.16-1  (2011-09-13)
+
+  o fixed: 'bracketing' had not been added to the NAMESPACE file (now it is)
+  o tests for 'bracketing' added (see directory unitTests)
+
+v0.16-0  (2011-09-12)
+
+  o function 'bracketing' added
+  o minor changes in function 'MA' (added checks)
+
+v0.15-6  (2011-09-11)
+
+  o vignette for 'qTable' added/corrected
+
+v0.15-5  (2011-09-04)
+
+  o 'qTable' revised (user-specified labels are now possible)
+  o (very) short vignette for 'qTable' added
+  o minor changes in code/documentation/examples
+
+v0.15-4
+
+  o experimental: 'DEopt' takes further arguments 'storeF' and 'storeSolutions'
+    (through list 'algo'). If 'storeF' is FALSE, objective function values are
+    not stored ('Fmat' is set to NA; see ?DEopt). If 'storeSolutions' is TRUE,
+    all population matrices are stored for every generation. This should be
+    helpful for diagnostic checking (and demonstration purposes), but may use
+    up a lot of memory for larger problems; hence default is FALSE.
+    (These settings will either be removed from 'DEopt' or be added to all
+    opt-functions in one of the next package versions.)
+
+v0.15-3
+
+  o new vignette ('Vectorised objective functions') added
+  o more safeguards added to 'gridSearch'
+
+v0.15-2
+
+  o function 'gridSearch' now takes a list 'mc.control' as an argument;
+    it allows to pass settings to 'mclapply'
+  o more tests were added (see unitTests.R)
+  o minor changes in code/documentation/examples
+
+v0.15-1
+
+  o more tests were added (see unitTests.R)
+  o minor changes in code/documentation/examples
+
+v0.15-0
+
+  o function 'gridSearch' can now evaluate a function that expects
+    a list or a vector as its first argument
+  o test cases for 'gridSearch' added  (in unitTests/unitTests.R)
+  o 'DEopt' can take a vector 'F' to set specific step sizes for each
+    decision variable (this actually worked before but is now documented
+    and tested)
+  o 'PSopt' can take a function 'changeV' and a logical 'loopChangeV'
+    (passed via the list 'algo'); 'changeV' allows to impose restrictions
+    on the velocity (see the code in directory NMOFex for an example)
+  o more checks were added in opt-functions
+  o small changes in the vignettes (in particular, seeds are set now)
+  o minor changes in documentation/examples
+
+v0.14-2
+
+  o experimental: 'gridSearch' now an has argument 'multicore'; if TRUE,
+    the function calls 'mclapply' (from the multicore package) to
+    evaluate argument 'fun'. Currently added only for cross-platform
+    testing (in particular, to see how R CMD check reacts under Windows).
+  o directory NMOFex was updated
+  o small correction in output of 'TAopt'
+
+v0.14-1
+
+  o test cases for portfolio optimisation added (in unitTests/unitTests.R)
+
+v0.14-0
+
+  o function 'gridSearch' was added
+
+v0.13-6
+
+  o an initial population in 'DEopt', 'GAopt' and 'PSopt' is now passed
+    through 'algo$initP' (before, a population could be passed via 'algo$mP')
+  o directory NMOFex was updated
+  o documentation was updated
+
+v0.13-5
+
+  o directory NMOFex was updated
+  o internal changes in several functions
+  o GAopt.Rd was updated
+
+v0.13-4
+
+  o directory NMOFex was updated
+  o minor internal changes in several functions
+
+v0.13-3
+
+  o directory NMOFex was added; it contains the code for
+    'Examples and Extensions for the NMOF package'
+  o documentation updated; minor changes in examples and vignettes
+
+v0.13-2
+
+  o documentation, checks, unit tests added for function 'GAopt'
+
+v0.13-1
+
+  o the population in 'GAopt' is now of mode logical (mistaking a logical
+    vector for a numeric one is less harmful than the other way around)
+
+v0.13-0
+
+  o function 'GAopt' added (minimisation by a Genetic Algorithm)
+  o several unit tests added
+  o documentation revised (thanks to Manfred Gilli for comments)
+
+v0.12-9
+
+  o fewer simulation runs in vignettes to reduce build time
+
+v0.12-1
+
+  o documentation has been revised
+
+v0.11-1
+
+  o a number of test functions have been added (see ?testFunctions)
+  o new examples added for 'DEopt' and 'TAopt'
+  o vignettes have been revised
+
+v0.10-1
+
+  o opt-functions now have 'printBar' and 'printDetail' option 
+    (set via 'algo')
