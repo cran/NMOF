@@ -82,7 +82,9 @@ The list \code{algo} collects the following settings for the algorithm:
     specified) be evaluated through a loop? Defaults to \code{TRUE}.}
   \item{\code{loopRepair}}{logical. Should the repair function (if
     specified) be evaluated through a loop? Defaults to \code{TRUE}.}
-  \item{\code{printDetail}}{If \code{TRUE} (the default), information is printed.}
+  \item{\code{printDetail}}{If \code{TRUE} (the default), information is
+    printed. If an integer \code{i} greater then one, information is
+  printed at very \code{i}th generation.}
   \item{\code{printBar}}{If \code{TRUE} (the default), a \code{\link{txtProgressBar}} is printed.}
   \item{\code{storeF}}{if \code{TRUE} (the default), the objective
     function values for every solution in every generation are stored
@@ -118,7 +120,8 @@ Maringer, D. and Oyewumi, O. (2007). Index Tracking with Constrained
 Portfolios. \emph{Intelligent Systems in Accounting, Finance and Management},
 \bold{15}(1), pp. 57--71.
 
-Schumann, E. (2011) Examples and Extensions for the \pkg{NMOF} Package. \url{http://ssrn.com/abstract=1886522}
+  Schumann, E. (2011) Examples and Extensions for the \pkg{NMOF}
+  Package. \url{http://enricoschumann.net/files/NMOFex.pdf}
 
 Storn, R., and Price, K. (1997) Differential Evolution -- a Simple and
 Efficient Heuristic for Global Optimization over Continuous Spaces.

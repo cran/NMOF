@@ -1,11 +1,11 @@
 TAopt <- function(OF, algo = list(), ...) {
 
-    algoD <- list(nD = 2000L, ### random steps for computing thresholds
-                  nT = 10L,   ### number of thresholds
-                  nS = 1000L, ### steps per threshold
-                  q = 0.5,    ### starting quantile for thresholds
-                  x0 = NULL,  ### initial solution
-                  vT = NULL,  ### threshold sequence
+    algoD <- list(nD = 2000L, ## random steps for computing thresholds
+                  nT = 10L,   ## number of thresholds
+                  nS = 1000L, ## steps per threshold
+                  q = 0.5,    ## starting quantile for thresholds
+                  x0 = NULL,  ## initial solution
+                  vT = NULL,  ## threshold sequence
                   neighbour = NULL,
                   printDetail = TRUE,
                   printBar = TRUE,
@@ -32,7 +32,7 @@ TAopt <- function(OF, algo = list(), ...) {
 
     printDetail <- algoD$printDetail
     printBar <- algoD$printBar
-    if (printBar && printDetail)
+    if (printBar && printDetail > 1)
         printBar <- FALSE
     if (printDetail)
         cat("\nThreshold Accepting.\n")
@@ -48,38 +48,42 @@ TAopt <- function(OF, algo = list(), ...) {
 
     ## compute thresholds
     if (is.null(algoD$vT)) {
-        if (printDetail) {
-            cat("\nComputing thresholds ... ")
-            gc(FALSE)
-            startTime <- proc.time()
-        }
-        if (printBar)
-            whatGen <- txtProgressBar (min = 1, max = nD, style = 3)
-        xc  <- x0
-        xcF <- OF1(xc)
-        diffF <- numeric(nD)
-        diffF[] <- NA
-        for (i in seq_len(nD)){
-            if (printBar) setTxtProgressBar(whatGen, value = i)
-            xn  <- N1(xc)
-            xnF <- OF1(xn)
-            diffF[i] <- abs(xcF - xnF)
-            xc  <- xn
-            xcF <- xnF
-        }
-        vT <- algoD$q * ( ((nT - 1L):0L) / nT )
-        vT <- quantile(diffF, vT, na.rm = FALSE)
-        vT[nT] <- 0  ### set last threshold to zero
-        if (printBar)
-            close(whatGen)
-        if (printDetail) {
-            cat("OK.")
-            endTime <- proc.time()
-            cat("\nEstimated remaining running time:",
-                as.numeric(endTime[3L] - startTime[3L]) /
-                nD * niter * (stepUp + 1L),
-                "secs.\n\n")
-            flush.console()
+        if (algoD$q < 1e-13) {
+            vT <- numeric(nT)
+        } else {
+            if (printDetail) {
+                cat("\nComputing thresholds ... ")
+                gc(FALSE)
+                startTime <- proc.time()
+            }
+            if (printBar)
+                whatGen <- txtProgressBar (min = 1, max = nD, style = 3)
+            xc  <- x0
+            xcF <- OF1(xc)
+            diffF <- numeric(nD)
+            diffF[] <- NA
+            for (i in seq_len(nD)){
+                if (printBar) setTxtProgressBar(whatGen, value = i)
+                xn  <- N1(xc)
+                xnF <- OF1(xn)
+                diffF[i] <- abs(xcF - xnF)
+                xc  <- xn
+                xcF <- xnF
+            }
+            vT <- algoD$q * ( ((nT - 1L):0L) / nT )
+            vT <- quantile(diffF, vT, na.rm = FALSE)
+            vT[nT] <- 0 ### set last threshold to zero
+            if (printBar)
+                close(whatGen)
+            if (printDetail) {
+                cat("OK.")
+                endTime <- proc.time()
+                cat("\nEstimated remaining running time:",
+                    as.numeric(endTime[3L] - startTime[3L]) /
+                    nD * niter * (stepUp + 1L),
+                    "secs.\n\n")
+                flush.console()
+            }
         }
     } else {
         vT <- algoD$vT
@@ -137,20 +141,28 @@ TAopt <- function(OF, algo = list(), ...) {
             if(printBar)
                 setTxtProgressBar(whatGen, value = counter)
 
+            ## store OF values
             if (algoD$storeF) {
-                Fmat[counter, 1L] <- xnF  ## proposed sol.
-                Fmat[counter, 2L] <- xcF  ## accepted sol. (cummin=xbestF)
+                Fmat[counter, 1L] <- xnF ## proposed sol.
+                Fmat[counter, 2L] <- xcF ## accepted sol. (cummin=xbestF)
             }
+
+            ## store solutions
             if (algoD$storeSolutions) {
                 xlist[[c(1L, counter)]] <- xn
                 xlist[[c(1L, counter)]] <- xc
             }
-        }
-        if (printDetail){
-            cat("Best solution (threshold ",
-                t, "/", nT, "): ",
-                prettyNum(xbestF),"\n", sep = "")
-            flush.console()
+
+            ## print info
+            if (printDetail > 1) {
+                if (counter %% printDetail == 0L) {
+                    cat("Best solution (iteration ", counter,
+                        "/", niter, "): ",
+                        prettyNum(xbestF),"\n", sep = "")
+                    flush.console()
+                }
+            }
+
         }
     }
     if (printDetail)

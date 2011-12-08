@@ -34,18 +34,22 @@ optimisation. For zero thresholds TA becomes a stochastic local search.
 
 The thresholds can be passed through the list \code{algo} (see
 below). Otherwise, they are automatically computed through the procedure
-described in Gilli et al. (2006).
+described in Gilli et al. (2006). When the thresholds are created
+automatically, the final threshold is always zero.
 
 
 The list \code{algo} contains the following items.
 \describe{
   \item{\code{nS}}{The number of steps per threshold. The default is
     1000; but this setting depends very much on the problem.}
-  \item{\code{nT}}{The number of thresholds. Default is 10.}
+  \item{\code{nT}}{The number of thresholds. Default is 10; ignored if
+    \code{algo$vT} is specified.}
   \item{\code{nD}}{The number of random steps to compute the threshold
     sequence. Defaults to 2000. Only used if \code{algo$vT} is \code{NULL}.}
   \item{\code{q}}{The highest quantile for the threshold
-    sequence. Defaults to 0.5. Only used if \code{algo$vT} is \code{NULL}.}
+    sequence. Defaults to 0.5. Only used if \code{algo$vT} is
+    \code{NULL}. If \code{q} is zero, \code{TAopt} will run with
+    zero-thresholds (ie, like a Local Search).}
   \item{\code{x0}}{The initial solution. If this is a function, it will
     be called once without arguments to compute an initial solution, ie,
     \code{x0 <- algo$x0()}. This can be useful when the routine is
@@ -65,7 +69,9 @@ The list \code{algo} contains the following items.
     \code{neighbour(x, \dots)}. Its first argument must be a solution
     \code{x}; it must return a changed
     solution.}
-\item{\code{printDetail}}{If \code{TRUE} (the default), information is printed.}
+\item{\code{printDetail}}{If \code{TRUE} (the default), information is
+  printed. If an integer \code{i} greater then one, information is
+  printed at very \code{i}th iteration.}
 \item{\code{printBar}}{If \code{TRUE} (default is \code{FALSE}), a
   \code{\link{txtProgressBar}} (from package \pkg{utils}) is
   printed. The progress bar is not shown if \code{printDetail} is \code{TRUE}.}
@@ -124,7 +130,8 @@ Gilli, M., Maringer, D. and Schumann, E. (2011) \emph{Numerical Methods and Opti
 Moscato, P.  and Fontanari, J.F. (1990). Stochastic Versus Deterministic Update in Simulated Annealing.
 Physics Letters A. \strong{146}, 4, pp. 204--208.
 
-Schumann, E. (2011) Examples and Extensions for the \pkg{NMOF} Package. \url{http://ssrn.com/abstract=1886522}
+  Schumann, E. (2011) Examples and Extensions for the \pkg{NMOF}
+  Package. \url{http://enricoschumann.net/files/NMOFex.pdf}
 
 Winker, P. (2001). \emph{Optimization Heuristics in Econometrics: Applications of Threshold Accepting}. Wiley.
 

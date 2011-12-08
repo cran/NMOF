@@ -1,27 +1,110 @@
 \name{NEWS}
 \title{News for Package 'NMOF'}
+\section{Changes in NMOF version 0.22-0 (2011-12-08)}{
+  \itemize{
+    \item documentation updated
+    \item slight changes in vignette 'DEnss.Rnw' (to reduce time 
+      to build package)
+  }
+}
+\section{Changes in NMOF version 0.21-5 (2011-12-01)}{
+  \itemize{
+    \item fixed: in 'GAopt', optional arguments for 'mclapply' 
+      (multicore) were not passed. An example for passing an 
+      argument was added to file 'unitTests/multicore.R'.
+    \item documentation for 'GAopt' updated
+    \item code examples in subdirectory 'NMOFex' updated
+  }
+}
+\section{Changes in NMOF version 0.21-4 (2011-11-29)}{
+  \itemize{
+    \item 'GAopt' now has an argument 'algo$methodOF' that supports  
+      'loop' (default) but also 'snow' or 'multicore'. See 
+      'Examples and Extensions for the NMOF package'(with code 
+      in subdirectory 'NMOFex') for an example.
+    \item vignette 'TAportfolio' updated (now with example for 
+      rank-deficient matrix)
+  }
+}
+\section{Changes in NMOF version 0.21-3 (2011-11-25)}{
+  \itemize{
+    \item fixed: 'gridSearch' with 'printDetail=TRUE' did not give
+      a meaningful message
+    \item experimental: 'GAopt' now has an argument 'algo$methodOF' 
+      that can be 'loop' (default) but also 'snow' or 'multicore'
+      (currently, only 'snow' is operational). If 'algo$methodOF' 
+      is not 'loop', the evaluation of the objective function will 
+      be distributed. See 'Examples and Extensions for the NMOF 
+      package'(with code in subdirectory 'NMOFex') for an example.
+  }
+}
+\section{Changes in NMOF version 0.21-2 (2011-11-22)}{
+  \itemize{
+    \item fixed: with 'printDetail' greater than zero, 'TAopt' did
+      not print the best solution, but the current solution
+      (but internal book keeping worked correctly, and the best
+      solution was returned)
+    \item 'bracketing', 'gridSearch', 'restartOpt': when 'cl' argument 
+      is not NULL, then argument 'method' is set to 'snow' (but as 
+      before it is checked whether package 'snow' is available)
+    \item the latest pdf-version of 'Examples and Extensions
+      for the NMOF package' is now available from
+      http://enricoschumann.net/files/NMOFex.pdf
+    \item code examples in subdirectory 'NMOFex' updated
+  }
+}
+\section{Changes in NMOF version 0.21-1 (2011-11-15)}{
+  \itemize{
+    \item the 'printDetail' option for opt-functions is now more consistent:
+      a positive integer 'i' greater than one means that information
+      is printed at every 'i'th iteration
+    \item minor changes in vignettes
+    \item unit tests for 'callCF' added (in file 'unitTests/unitTests5.R')
+  }
+}
+\section{Changes in NMOF version 0.21-0 (2011-11-08)}{
+  \itemize{
+    \item added function 'callCF' as a wrapper for pricing
+      European calls with the characteristic function;
+      characteristic functions for BSM, Merton, Bates, Heston
+      and Variance-Gamma were also added
+    \item when 'algo$q' in 'TAopt' is zero, all thresholds are set
+      to zero
+    \item code examples in subdirectory 'NMOFex' updated
+    \item CITATION file now points to the book's homepage http://nmof.net
+  }
+}
+\section{Changes in NMOF version 0.20-1 (2011-10-28)}{
+  \itemize{
+    \item the 'keepNames' argument of function 'gridSearch' is now
+      supported
+    \item more examples added for 'gridSearch' (and corresponding tests
+      in 'unitTests/unitTests2.R')
+    \item fixed: some typos in vignette 'Vectorised objective functions'
+  }
+}
 \section{Changes in NMOF version 0.20-0 (2011-10-20)}{
   \itemize{
-    \item **first CRAN release**
-    \item the 'printDetail' argument for 'LSopt' now recognises 
-      TRUE and FALSE (as before), but also an integer 'i' 
-      greater than 1. In the latter case, information on the best 
+    \item *first CRAN release*
+    \item the 'printDetail' argument for 'LSopt' now recognises
+      TRUE and FALSE (as before), but also an integer 'i'
+      greater than 1. In the latter case, information on the best
       solution is printed at every 'i'th step.
     \item minor cleanups in documentation
   }
 }
 \section{Changes in NMOF version 0.19-4 (2011-10-15)}{
   \itemize{
-    \item small changes in vignette 'Repairing solutions'  
-    \item small internal changes in 'GAopt' and 'DEopt' (auxiliary functions 
+    \item small changes in vignette 'Repairing solutions'
+    \item small internal changes in 'GAopt' and 'DEopt' (auxiliary functions
       like 'switch' and 'shift' have been inlined)
     \item code examples in subdirectory 'NMOFex' updated
   }
 }
 \section{Changes in NMOF version 0.19-3 (2011-10-07)}{
   \itemize{
-    \item fixed: a bug had been introduced into 'GAopt' in version 0.19-2 
-      (revision 88), which let the population grow to algo$nP+1 
+    \item fixed: a bug had been introduced into 'GAopt' in version 0.19-2
+      (revision 88), which let the population grow to algo$nP+1
     \item minor changes in documentation/examples
   }
 }
@@ -33,7 +116,7 @@
 \section{Changes in NMOF version 0.19-1 (2011-09-29)}{
   \itemize{
     \item minor cleanups in documentation
-    \item minor internal changes in 'restartOpt' (passing of the '...' arguments 
+    \item minor internal changes in 'restartOpt' (passing of the '...' arguments
       for method 'snow')
   }
 }
@@ -43,10 +126,10 @@
       evaluation of 'fun' via 'clusterApply' from the 'snow' package. As a
       side effect, the interface of 'gridSearch' and 'restartOpt' has
       changed: instead of an option 'multicore', they now have an argument
-      'method', which can be 'loop', 'multicore' or 'snow'. See the 
+      'method', which can be 'loop', 'multicore' or 'snow'. See the
       documentation of these functions.
-    \item for consistency, the 'method' argument of 'bracketing' expects 'vectorised' 
-      rather than 'vectorise' (but both work, and also the '-ize' spellings) 
+    \item for consistency, the 'method' argument of 'bracketing' expects 'vectorised'
+      rather than 'vectorise' (but both work, and also the '-ize' spellings)
     \item substantial revision of documentation/examples
     \item more intelligible error/warning messages in 'bracketing' added
     \item small changes in vignettes 'Robust Regression with Particle Swarm
@@ -261,7 +344,7 @@
 }
 \section{Changes in NMOF version 0.10-1}{
   \itemize{
-    \item opt-functions now have 'printBar' and 'printDetail' option 
+    \item opt-functions now have 'printBar' and 'printDetail' option
       (set via 'algo')
   }
 }
