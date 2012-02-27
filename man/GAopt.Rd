@@ -7,7 +7,7 @@
 A simple Genetic Algorithm for minimising a function.
 }
 \usage{
-GAopt(OF, algo = list(), ...)
+GAopt (OF, algo = list(), ...)
 }
 \arguments{
   \item{OF}{The objective function, to be minimised. See Details.
@@ -123,7 +123,7 @@ Gilli, M., Maringer, D. and Schumann, E. (2011) \emph{Numerical Methods and Opti
 \url{http://www.elsevierdirect.com/product.jsp?isbn=9780123756626}
 
   Schumann, E. (2011) Examples and Extensions for the \pkg{NMOF}
-  Package. \url{http://enricoschumann.net/files/NMOFex.pdf}
+  Package. \url{http://enricoschumann.net/NMOF.htm}
 }
 \author{
 Enrico Schumann

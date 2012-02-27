@@ -1,5 +1,50 @@
 \name{NEWS}
 \title{News for Package 'NMOF'}
+\section{Changes in NMOF version 0.23-1 (2012-02-27)}{
+  \itemize{
+    \item Added 'Depends: R (>= 2.10)' to DESCRIPTION (necessary
+      because of file compression).
+  }
+}
+\section{Changes in NMOF version 0.23-0 (2012-02-14)}{
+  \itemize{
+    \item Dataset 'optionData' was added.
+    \item More tests were added for function 'callCF'; and its 
+      documentation was updated.
+  }
+}
+\section{Changes in NMOF version 0.22-3 (2012-01-15)}{
+  \itemize{
+    \item with 'algo$printDetail = TRUE', functions DEopt, GAopt and 
+      PSopt give more information
+    \item vignette 'DEnss.Rnw' was shortened to reduce build-time of 
+      the package (removed parts are now in 'Examples and 
+      Extensions for the NMOF package')
+    \item code examples in subdirectory 'NMOFex' updated
+  }
+}
+\section{Changes in NMOF version 0.22-2 (2012-01-05)}{
+  \itemize{
+    \item minor changes in vignettes/documentation
+    \item code examples in subdirectory 'NMOFex' updated
+  }
+}
+\section{Changes in NMOF version 0.22-1 (2011-12-15)}{
+  \itemize{
+    \item tests for distributed computing have been organised into a
+      report, 'Distributed computations with the NMOF package', 
+      available as a pdf-file from 
+      http://enricoschumann.net/files/NMOFdist_Windows.pdf
+      and
+      http://enricoschumann.net/files/NMOFdist_Linux.pdf
+      (package 'multicore' is only available on Linux)
+    \item the code for 'Distributed computations with the NMOF package' 
+      is available in file 'NMOFdist.R', stored in subdirectory 
+      'NMOFex' (the file 'multicore.R' has been removed from 
+      subdirectory 'unitTests')
+    \item unit tests updated
+  }
+}
 \section{Changes in NMOF version 0.22-0 (2011-12-08)}{
   \itemize{
     \item documentation updated
@@ -20,7 +65,7 @@
   \itemize{
     \item 'GAopt' now has an argument 'algo$methodOF' that supports  
       'loop' (default) but also 'snow' or 'multicore'. See 
-      'Examples and Extensions for the NMOF package'(with code 
+      'Examples and Extensions for the NMOF package' (with code 
       in subdirectory 'NMOFex') for an example.
     \item vignette 'TAportfolio' updated (now with example for 
       rank-deficient matrix)

@@ -1,12 +1,18 @@
 DEopt <- function(OF, algo = list(), ...) {
-
     ## defaults for list 'algo'
-    algoD <- list(nP = 50L, nG = 300L,
+    algoD <- list(nP = 50L,
+                  nG = 300L,
                   F = 0.5, CR = 0.9,
-                  min = NULL, max = NULL,
-                  pen = NULL, repair = NULL,
-                  loopOF = TRUE, loopPen = TRUE, loopRepair = TRUE,
-                  printDetail = TRUE, printBar = TRUE,
+                  min = NULL,
+                  max = NULL,
+                  pen = NULL,
+                  repair = NULL,
+                  loopOF = TRUE,
+                  loopPen = TRUE,
+                  loopRepair = TRUE,
+                  methodOF = "loop",
+                  printDetail = TRUE,
+                  printBar = TRUE,
                   initP = NULL,
                   storeF = TRUE, storeSolutions = FALSE)
 
@@ -165,12 +171,17 @@ DEopt <- function(OF, algo = list(), ...) {
 
     if (printBar)
         close(whatGen)
-    if (printDetail)
-        cat("\nStandard deviation of OF in final population is ",
-            prettyNum(sd(vF)), ".\n\n", sep = "")
 
     ## return best solution
     sGbest <- min(vF); sgbest <- which.min(vF)[1L]
+
+    if (printDetail)
+        cat("Best solution has objective function value ",
+            prettyNum(sGbest), " ;",
+            "\nstandard deviation of OF in final population is ",
+            prettyNum(sd(vF)), " .\n\n", sep = "")
+
+
     list(xbest = mP[ ,sgbest], OFvalue = sGbest,
          popF = vF, Fmat = Fmat, xlist = xlist)
 }
