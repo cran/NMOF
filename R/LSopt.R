@@ -19,7 +19,7 @@ LSopt <- function(OF, algo = list(), ...) {
     N1 <- function(x) algoD$neighbour(x, ...)
 
     if (is.function(algoD$x0))
-        xc <- algoD$x0() else xc <- algoD$x0
+        xc <- algoD$x0() else xc <- eval(algoD$x0)
 
     printDetail  <- algoD$printDetail
     printBar  <- algoD$printBar
@@ -76,7 +76,7 @@ LSopt <- function(OF, algo = list(), ...) {
         }
         if (algoD$storeSolutions) {
             xlist[[c(1L, s)]] <- xn
-            xlist[[c(1L, s)]] <- xc
+            xlist[[c(2L, s)]] <- xc
         }
 
     }

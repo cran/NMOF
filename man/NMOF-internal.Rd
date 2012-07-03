@@ -14,6 +14,8 @@ checkList(passedList, defaultList, label = "'algo'")
 mRU(m,n)
 mRN(m,n)
 mcList(mc.control)
+repair1c(x, up, lo)
+Chapters
 }
 \details{
   \code{makeInteger} coerces the scalar \code{x} to integer. If the
@@ -33,6 +35,12 @@ mcList(mc.control)
 
   \code{mcList} takes a list of named elements and \sQuote{merges} them with
   the default settings of \code{mclapply} from package \pkg{multicore}.
+
+  \code{repair1c} is described in the vignette on \sQuote{Repairing
+    Solutions}.
+
+  \code{Chapters} is a vector of length 15, giving the chapter names as
+  printed in the book. (Can be accessed with \code{\link{showChapterNames}}.)
 }
 
 \author{

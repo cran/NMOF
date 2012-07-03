@@ -1,5 +1,87 @@
 \name{NEWS}
 \title{News for Package 'NMOF'}
+\section{Changes in NMOF version 0.25-4 (2012-07-03)}{
+  \itemize{
+    \item Added checks on the parameters for 'callCF'; added  
+      a new arguments 'uniroot.control', which allows to pass 
+      the settings for 'uniroot' (to compute implied vol), 
+      and 'uniroot.info'. 
+      (Computation of implied vol would fail when spot equalled
+      strike and r equalled q; thanks to Douglas McLean for
+      reporting this case.)
+  }
+}
+\section{Changes in NMOF version 0.25-3 (2012-06-22)}{
+  \itemize{
+    \item Small changes in the vignettes (mostly layout).
+    \item Code examples in subdirectory 'NMOFex' updated.
+  }
+}
+\section{Changes in NMOF version 0.25-2 (2012-06-17)}{
+  \itemize{
+    \item Small changes in the vignettes (mostly layout).
+    \item In 'TAopt', 'LSopt': if 'x0' is not a function, it is initialised
+      with 'eval(x0)'; thus, it can be an expression.
+    \item Several minor internal changes.
+  }
+}
+\section{Changes in NMOF version 0.25-1 (2012-05-22)}{
+  \itemize{
+    \item Edited some of the examples in the documentation; minor 
+      modifications in docs.
+    \item Code examples in subdirectory 'NMOFex' updated.
+  }
+}
+\section{Changes in NMOF version 0.25-0 (2012-04-20)}{
+  \itemize{
+    \item All the R-code examples from the book are now available 
+      in the package through function 'showExample'; eg, 
+      'showExample("equations.R")'
+      (The scripts are stored in subdirectory 'book'.) 
+    \item A first draft of the 'NMOF Manual' is available from
+      http://enricoschumann.net/NMOF.htm . The manual's code 
+      examples are collected in file 'NMOFman.R' (in subdirectory 
+      'NMOFex'). The manual supersedes 'Examples and Extensions for 
+      the NMOF package'.
+    \item The tests on specific TA applications (minimum variance, 
+      tangency portfolio) have been removed; the code was added to 
+      the manual.
+  }
+}
+\section{Changes in NMOF version 0.24-1 (2012-04-16)}{
+  \itemize{
+    \item Small changes in vignettes.
+    \item Re-organised existing/added new unit tests.
+  }
+}
+\section{Changes in NMOF version 0.24-0 (2012-04-11)}{
+  \itemize{
+    \item Added function 'resampleC': allows to sample with replacement from
+      arbitrary numeric vectors (ie, samples) and making the samples (rank) 
+      correlated.
+    \item 'DEopt' and 'PSopt' now have an argument 'algo$minmaxConstr'. If 
+      TRUE, 'algo$min' and 'algo$max' are become constraints. These 
+      constraints are implemented through an internal repair function that 
+      is called before any user-defined repair function.
+  }
+}
+\section{Changes in NMOF version 0.23-3 (2012-03-25)}{
+  \itemize{
+    \item fixed: 'restartOpt' could not take an argument named 'X' 
+      via the '...' argument.  
+    \item Unit tests added in unitTests1.R.
+  }
+}
+\section{Changes in NMOF version 0.23-2 (2012-03-19)}{
+  \itemize{
+    \item fixed: with 'algo$storeSolutions==TRUE', functions 'LSopt' 
+      and 'TAopt' only returned the current (=accepted) solution
+      in a given iteration, but not the candidate solution. 
+      (These data can be found in 'xlist'. See ?TAopt and 
+      ?LSopt, under 'Value'.) 
+    \item Unit tests added in unitTests1.R.
+  }
+}
 \section{Changes in NMOF version 0.23-1 (2012-02-27)}{
   \itemize{
     \item Added 'Depends: R (>= 2.10)' to DESCRIPTION (necessary

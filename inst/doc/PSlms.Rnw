@@ -6,6 +6,19 @@
 \usepackage{natbib}
 \usepackage{amsmath,amstext}
 \usepackage[left = 2.5cm, top = 2cm, bottom = 3cm, right = 3.5cm]{geometry}
+\usepackage{color}
+\definecolor{grau2}{rgb}{.2,.2,.2}
+\definecolor{grau7}{rgb}{.7,.7,.7}
+% define *Sweave* layout
+\DefineVerbatimEnvironment{Sinput}{Verbatim}{}
+\DefineVerbatimEnvironment{Soutput}{Verbatim}{frame=single,xleftmargin=0em,%
+  formatcom=\color{grau2},rulecolor=\color{grau7}}
+\DefineVerbatimEnvironment{Scode}{Verbatim}{xleftmargin=2em}
+\fvset{listparameters={\setlength{\topsep}{0pt}}}
+\renewenvironment{Schunk}{\vspace{\topsep}}{\vspace{\topsep}}
+<<echo=false>>=
+options(continue = " ", digits = 5)
+@
 \begin{document}
 {\raggedright{\LARGE Robust Regression with %
 Particle Swarm Optimisation \\[0.2ex]%
@@ -98,25 +111,25 @@ We run DE and PSO. We compare the result with \texttt{lqs}.
 popsize <- 100L; generations <- 500L
 ps <- list(min = rep(-10,p),
            max = rep( 10,p),
-            c1 = 0.5,
-            c2 = 1.1,
-          iner = 0.9,
-         initV = 1,
-            nP = popsize,
-            nG = generations,
-          maxV = 5,
-        loopOF = FALSE,
-      printBar = FALSE,
-   printDetail = FALSE)
+           c1 = 0.5,
+           c2 = 1.1,
+           iner = 0.9,
+           initV = 1,
+           nP = popsize,
+           nG = generations,
+           maxV = 5,
+           loopOF = FALSE,
+           printBar = FALSE,
+           printDetail = FALSE)
 de <- list(min = rep(-10,p),
            max = rep( 10,p),
-            nP = popsize,
-            nG = generations,
-             F = 0.7,
-            CR = 0.9,
-        loopOF = FALSE,
-      printBar = FALSE,
-   printDetail = FALSE)
+           nP = popsize,
+           nG = generations,
+           F = 0.7,
+           CR = 0.9,
+           loopOF = FALSE,
+           printBar = FALSE,
+           printDetail = FALSE)
 
 system.time(solPS <- PSopt(OF = OF, algo = ps, data = data))
 system.time(solDE <- DEopt(OF = OF, algo = de, data = data))
@@ -142,7 +155,7 @@ can compare it with looping over the solutions. We first set
 solutions. (We also reduce the number of objective function
 evaluations.)
 <<>>=
-popsize <- 20L; generations <- 150L
+popsize <- 20L; generations <- 100L
 de$nP <- popsize; de$nG <- generations
 ps$nP <- popsize; ps$nG <- generations
 
