@@ -20,6 +20,9 @@ DEopt <- function(OF, algo = list(), ...) {
 
     checkList(algo, algoD)
     algoD[names(algo)] <- algo
+    if (!exists(".Random.seed", envir = .GlobalEnv,
+                inherits = FALSE))
+        state <- NA else state <- .Random.seed
 
     ## check min/max
     vmax <- as.vector(algoD$max)
@@ -75,8 +78,6 @@ DEopt <- function(OF, algo = list(), ...) {
     vPv <- vF; vFv <- vF
     if (algoD$storeF)
         Fmat <- array(NA, c(nG, nP)) else Fmat <- NA
-    if (algoD$storeSolutions)
-        xlist <- list(P = vector("list", length = nG)) else xlist <- NA
 
     if (is.null(algoD$initP)) {
         mP <- vmin + diag(vmax - vmin) %*% mRU(d, nP)
@@ -86,16 +87,20 @@ DEopt <- function(OF, algo = list(), ...) {
         if (any(dim(mP) != c(d,nP)))
             stop("supplied population has wrong dimension")
     }
+    if (algoD$storeSolutions)
+        xlist <- list(P = vector("list", length = nG), initP = mP) else xlist <- NA
     ## evaluate initial population
     ## 1) repair
     if (mm)
         mP <- repair1c(mP, vmax, vmin)
-    if ( !is.null(algoD$repair) ){
+    if (!is.null(algoD$repair)) {
         if (algoD$loopRepair){
             for (s in snP)
                 mP[ ,s] <- Re1(mP[ ,s])
         } else {
             mP <- Re1(mP)
+            if (!all(dim(mP) == c(d, nP)))
+                stop("repair function returned population matrix of wrong size")
         }
     }
     ## 2) evaluate
@@ -104,6 +109,8 @@ DEopt <- function(OF, algo = list(), ...) {
             vF[s] <- OF1(mP[ ,s])
     } else {
         vF <- OF1(mP)
+        if (length(vF) != nP)
+            stop("objective function returned vector of wrong length")
     }
     ## 3) penalise
     if (!is.null(algoD$pen)) {
@@ -111,6 +118,8 @@ DEopt <- function(OF, algo = list(), ...) {
             for (s in snP) vPv[s] <- Pe1(mP[ ,s])
         } else {
             vPv <- Pe1(mP)
+            if (length(vPv) != nP)
+                stop("penalty function returned vector of wrong length")
         }
         vF <- vF + vPv
     }
@@ -192,20 +201,21 @@ DEopt <- function(OF, algo = list(), ...) {
 
 
     list(xbest = mP[ ,sgbest], OFvalue = sGbest,
-         popF = vF, Fmat = Fmat, xlist = xlist)
+         popF = vF, Fmat = Fmat, xlist = xlist,
+         initial.state = state)
 }
 
-if (0L) {
-    DEoptim <- function(OF, ..., lower = -Inf, upper = Inf,
-                        control = list()) {
-        stop("not operational yet")
-    }
-    PSoptim <- function(OF, ..., lower = -Inf, upper = Inf,
-                        control = list()) {
-        stop("not operational yet")
-    }
-    TAoptim <- function(OF, neighbour, ..., lower = -Inf, upper = Inf,
-                        control = list()) {
-        stop("not operational yet")
-    }
-}
+## if (0L) {
+##     DEoptim <- function(OF, ..., lower = -Inf, upper = Inf,
+##                         control = list()) {
+##         stop("not operational yet")
+##     }
+##     PSoptim <- function(OF, ..., lower = -Inf, upper = Inf,
+##                         control = list()) {
+##         stop("not operational yet")
+##     }
+##     TAoptim <- function(OF, neighbour, ..., lower = -Inf, upper = Inf,
+##                         control = list()) {
+##         stop("not operational yet")
+##     }
+## }

@@ -19,11 +19,13 @@ GAopt <- function (OF, algo = list(), ...) {
                   crossover = c("onePoint", "uniform")
                   )
 
-    ## called for its side effect: gives warning/error
     checkList(algo, algoD)
-
-    ## add default settings
     algoD[names(algo)] <- algo
+
+    if (!exists(".Random.seed", envir = .GlobalEnv,
+                inherits = FALSE))
+        state <- NA else state <- .Random.seed
+
 
     ## --------------------------------------------------
     ## NEW: snow/multicore
@@ -115,8 +117,6 @@ GAopt <- function (OF, algo = list(), ...) {
 
     if (algoD$storeF)
         Fmat <- array(NA, c(nG, nP)) else Fmat <- NA
-    if (algoD$storeSolutions)
-        xlist <- list(P = vector("list", length = nG)) else xlist <- NA
 
     ## create population
     if (is.null(algoD$initP)) {
@@ -133,6 +133,8 @@ GAopt <- function (OF, algo = list(), ...) {
             warning("'initP' is not of mode logical; 'storage.mode(initP)' will be tried")
         }
     }
+    if (algoD$storeSolutions)
+        xlist <- list(P = vector("list", length = nG), initP = mP) else xlist <- NA
 
     ## repair initial population
     if (!is.null(algoD$repair)) {
@@ -269,5 +271,5 @@ GAopt <- function (OF, algo = list(), ...) {
             prettyNum(sd(vF)), " .\n\n", sep = "")
 
     list(xbest = mP[, sgbest], OFvalue = sGbest, popF = vF,
-         Fmat = Fmat, xlist = xlist)
+         Fmat = Fmat, xlist = xlist, initial.state = state)
 }

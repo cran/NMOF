@@ -17,6 +17,10 @@ PSopt <- function(OF, algo = list(), ...) {
 
     checkList(algo, algoD)
     algoD[names(algo)] <- algo
+    if (!exists(".Random.seed", envir = .GlobalEnv,
+                inherits = FALSE))
+        state <- NA else state <- .Random.seed
+
 
     vmax <- as.vector(algoD$max)
     vmin <- as.vector(algoD$min)
@@ -51,9 +55,6 @@ PSopt <- function(OF, algo = list(), ...) {
 
     if (algoD$storeF)
         Fmat <- array(NA, c(nG, nP)) else Fmat <- NA
-    if (algoD$storeSolutions)
-        xlist <- list(P     = vector("list", length = nG),
-                      Pbest = vector("list", length = nG)) else xlist <- NA
 
 
     ## set up initial population and velocity
@@ -68,6 +69,9 @@ PSopt <- function(OF, algo = list(), ...) {
             stop("supplied population has wrong dimension")
 
     }
+    if (algoD$storeSolutions)
+        xlist <- list(P     = vector("list", length = nG),
+                      Pbest = vector("list", length = nG), initP = mP) else xlist <- NA
     mV <- algoD$initV * mRN(d,nP)
 
     ## evaluate initial population
@@ -186,5 +190,6 @@ PSopt <- function(OF, algo = list(), ...) {
 
     ## return best solution
     list(xbest = mPbest[,sgbest], OFvalue = sGbest,
-         popF = vFbest, Fmat = Fmat, xlist = xlist)
+         popF = vFbest, Fmat = Fmat, xlist = xlist,
+         initial.state = state)
 }

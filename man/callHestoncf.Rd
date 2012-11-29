@@ -35,7 +35,13 @@ Note that the function takes variances as inputs (not volatilities).
 }
 \value{
   Returns the value of the call (numeric) under the Heston model or, if
-\code{implVol == TRUE}, a list of the value and the implied volatility.
+  \code{implVol} is \code{TRUE}, a list of the value and the implied
+  volatility.
+}
+\note{
+  If \code{implVol} is \code{TRUE}, the function will return a list with
+  elements named \code{value} and \code{impliedVol}. Prior to version
+  0.26-3, the first element was named \code{callPrice}.
 }
 \references{
 Gilli, M., Maringer, D. and Schumann, E. (2011) \emph{Numerical Methods
@@ -52,12 +58,12 @@ Enrico Schumann
 }
 
 \seealso{
-\code{\link{EuropeanCall}}
+\code{\link{callCF}}\code{\link{EuropeanCall}}
 }
 \examples{
 S <- 100; X <- 100; tau <- 1; r <- 0.02; q <- 0.01
-v0  <- 0.2^2  ### variance, not volatility
-vT  <- 0.2^2  ### variance, not volatility
+v0  <- 0.2^2  ## variance, not volatility
+vT  <- 0.2^2  ## variance, not volatility
 rho <- -0.7; k <- 0.2; sigma <- 0.5
 
 ## get Heston price and BSM implied volatility

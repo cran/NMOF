@@ -44,24 +44,24 @@ test.PSopt <- function() {
     algo$storeF <- TRUE
     algo$storeSolutions <- TRUE
     sol <- PSopt(OF = OF, algo = algo)
-    checkEquals(names(sol$xlist), c("P","Pbest"))
+    checkEquals(names(sol$xlist), c("P","Pbest", "initP"))
     checkEquals(dim(sol$xlist[[c(1L, algo$nG)]]),
                 c(length(algo$min),algo$nP))
     checkEquals(dim(sol$xlist[[c(2L, algo$nG)]]),
                 c(length(algo$min),algo$nP))
-    ## xlist has only two elements
-    checkException(sol$xlist[[c(3L, algo$nG)]], silent = TRUE)
+    ## xlist has only three elements
+    checkException(sol$xlist[[c(4L, algo$nG)]], silent = TRUE)
     ## xlist[[i]] stores only algo$nG elements
     checkException(sol$xlist[[c(2L, algo$nG + 1L)]], silent = TRUE)
-
 
     ## a trivial problem: 'recover' a vector X
     X <- 1:10 - 5
     OF <- function(x, X)
         sum(abs(x - X))
-    algo <- list(nP = 50, nG = 1000, c2 =1, c1=1,
-                 min = rep(-3, length(X)),
-                 max = rep( 3,  length(X)),
+    algo <- list(nP = 200, nG = 1000, c2=1, c1=1,
+                 iner = 0.9,
+                 min = rep(-4, length(X)),
+                 max = rep( 4,  length(X)),
                  minmaxConstr = FALSE,
                  printBar = FALSE, printDetail = FALSE,
                  storeF = FALSE, storeSolutions = FALSE)
@@ -69,7 +69,5 @@ test.PSopt <- function() {
     checkEquals(round(sol$xbest,3), X)
     algo$minmaxConstr <- TRUE
     sol <- PSopt(OF, algo, X)
-    round(sol$xbest,3)
-    checkEquals(round(sol$xbest,3), c(-3, -3, -2, -1, 0, 1, 2, 3, 3, 3))
-
+    checkEquals(round(sol$xbest,3), c(-4, -3, -2, -1, 0, 1, 2, 3, 4, 4))
 }
