@@ -1,3 +1,57 @@
+v0.28-0  (2013-06-08)
+
+  o 'multicore' was removed from the 'Suggested' packages. (Package
+    'parallel' had already been used -- if possible -- since version
+    0.25-6; see the NEWS entry.)
+
+  o the package now 'Depends' on R version >= 2.14 (because of
+    'parallel')
+
+  o new functions 'gbm' and 'gbb' added (geometric Brownian
+    motion/bridge)
+
+v0.27-5  (2013-04-26)
+
+  o since vignettes are built offline, the number of restarts was
+    increased again; cf. NEWS entry for v0.26-0  (2012-09-19)
+
+  o fixed a small error in help page for 'vanillaBond'
+
+  o internal changes in option pricing functions; more tests added for
+    dividend handling
+
+v0.27-4  (2013-04-22)
+ 
+  o function 'putCallParity' added
+
+  o for 'vanillaOptionEuropean', a parameter 'vol' can be passed via
+    '...' (which is translated into 'v' by squaring and ignored if 'v'
+    is already specified)
+
+  o a few internal changes and doc changes
+
+v0.27-3  (2013-01-04)
+ 
+  o Experimental: 'vanillaOptionEuropean' has arguments 'model' 
+    (default is NULL which corresponds to Black-Scholes-Merton) 
+    and '...'. This allows to pass other models; for 
+    example, 'heston'. With 'greeks' set to TRUE, the function
+    also returns (some) derivatives. More will be added over 
+    time, so the results should be extracted by name, not by 
+    position (eg, x[["delta"]], but not x[[2L]]). 
+    (Adding derivatives for non-BSM models was suggested by
+    Nitesh Kumar.)
+
+v0.27-2  (2013-01-03)
+ 
+  o Small corrections in docs for 'ytm' and 
+    'vanillaOptionEuropean'.
+
+v0.27-1  (2013-01-02)
+ 
+  o Added functions 'ytm' and 'vanillaBond': compute 
+    yield-to-maturity and price of plain-vanilla bond.
+
 v0.27-0  (2012-11-29)
  
   o Function 'qTable' has new arguments 'funs', 'tabular.format'
