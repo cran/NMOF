@@ -1,76 +1,23 @@
-% \VignetteIndexEntry{Portfolio Optimisation with Threshold Accepting}
-% \VignetteKeyword{optimize,heuristics}
-\documentclass[a4paper]{article}
-\usepackage[left = 2.5cm, top = 2cm, bottom = 3cm, right = 3.5cm]{geometry}
-\usepackage[noae]{Sweave}
-\usepackage{mathptmx}
-\usepackage{natbib}
-\usepackage{amsmath,amstext}
-\usepackage{color}
-\definecolor{grau2}{rgb}{.2,.2,.2}
-\definecolor{grau7}{rgb}{.7,.7,.7}
-% define *Sweave* layout
-\DefineVerbatimEnvironment{Sinput}{Verbatim}{}
-\DefineVerbatimEnvironment{Soutput}{Verbatim}{frame=single,xleftmargin=0em,%
-  formatcom=\color{grau2},rulecolor=\color{grau7}}
-\DefineVerbatimEnvironment{Scode}{Verbatim}{xleftmargin=2em}
-\fvset{listparameters={\setlength{\topsep}{0pt}}}
-\renewenvironment{Schunk}{\vspace{\topsep}}{\vspace{\topsep}}
-<<echo=false>>=
+### R code from vignette source 'TAportfolio.Rnw'
+
+###################################################
+### code chunk number 1: TAportfolio.Rnw:19-20
+###################################################
 options(continue = " ", digits = 5)
-@
-\begin{document}
-{\raggedright{\LARGE Portfolio Optimisation with Threshold Accepting}}\medskip
 
-\noindent Enrico Schumann\\
-\noindent \texttt{es@enricoschumann.net}\\
-\bigskip
 
-\noindent This vignette provides the code for some of the examples
-from \citet{Gilli2011b}. For more details, please see Chapter~13 of
-the book; the code in this vignette uses the scripts
-\texttt{exampleSquaredRets.R}, \texttt{exampleSquaredRets2.R} and
-\texttt{exampleRatio.R}.
-
-We start by attaching the package. We will later on need the function
-\texttt{resample} (see \texttt{?sample}).
-
-<<>>=
+###################################################
+### code chunk number 2: TAportfolio.Rnw:38-42
+###################################################
 require("NMOF")
 resample <- function(x, ...)
     x[sample.int(length(x), ...)]
 set.seed(112233)
-@
 
-\section{Minimising squares}
-\subsection{A first implementation}
-This problem serves as a benchmark: we wish to find a long-only
-portfolio~$w$ (weights) that minimises squared returns across all
-return scenarios.  These scenarios are stored in a matrix~$R$ of size
-number of scenarions~\texttt{ns} times number of assets~\texttt{na}.
-More formally, we want to solve the following problem:
 
-\begin{align}\label{Eeq:portfolio:problem1}
-         \min_{w}\ \Phi \\[1.75ex]
-         \nonumber w'\iota &= 1\,,\\
-         \nonumber 0  \leq  w_j &\leq  w_j^{\sup}\quad \text{ for }  j = 1, 2, \ldots, n_A\, .
-\end{align}
-We set $w_j^{\sup}$ to 5\% for all assets. $\Phi$ is the squared
-return of the portfolio, $w'R'Rw$, which is similar to the portfolio
-return's variance. We have
-\begin{align*}
-    \frac{1}{n_S}R'R = \operatorname{Cov}(R) + mm'
-\end{align*}
-in which $\operatorname{Cov}$ is the variance--covariance matrix
-operator, which maps the columns of~$R$ into their
-variance--covariance matrix; $m$ is a column vector that holds the
-column means of $R$, ie, $m' = \frac{1}{n_S}\,\iota'R$.  For short
-time horizons, the mean of a column is small compared with the average
-squared return of the column.  Hence, we ignore the matrix $mm'$, and
-variance and squared returns become equivalent.
-
-For testing purposes we use the matrix \texttt{fundData} for $R$.
-<<>>=
+###################################################
+### code chunk number 3: TAportfolio.Rnw:73-84
+###################################################
 na <- dim(fundData)[2L]
 ns <- dim(fundData)[1L]
 winf <- 0.0; wsup <- 0.05
@@ -82,10 +29,11 @@ data <- list(R = t(fundData),
              winf = winf,
              wsup = wsup,
              resample = resample)
-@
 
-The neighbourhood function automatically enforces the bugdet constraint.
-<<>>=
+
+###################################################
+### code chunk number 4: TAportfolio.Rnw:88-99
+###################################################
 neighbour <- function(w, data){
     eps <- runif(1L) * data$eps
     toSell <- w > data$winf
@@ -97,10 +45,11 @@ neighbour <- function(w, data){
     w[j] <- w[j] + eps
     w
 }
-@
 
-The objective function.
-<<>>=
+
+###################################################
+### code chunk number 5: TAportfolio.Rnw:103-111
+###################################################
 OF1 <- function(w, data) {
     Rw <- crossprod(data$R, w)
     crossprod(Rw)
@@ -109,14 +58,11 @@ OF2 <- function(w, data) {
     aux <- crossprod(data$RR, w)
     crossprod(w, aux)
 }
-@
 
-\texttt{OF2} uses $R'R$; thus, it does not depend on the number of
-scenarios. But this is only possible for this very specific problem.
 
-We specify a random initial solution \texttt{w0} and define all
-settings in a list \texttt{algo}.
-<<>>=
+###################################################
+### code chunk number 6: TAportfolio.Rnw:119-129
+###################################################
 w0 <- runif(na); w0 <- w0/sum(w0)
 
 algo <- list(x0 = w0,
@@ -127,30 +73,33 @@ algo <- list(x0 = w0,
              q = 0.20,
              printBar = FALSE,
              printDetail = FALSE)
-@
-We can now run \texttt{TAopt}, first with \texttt{OF1} \ldots
-<<>>=
+
+
+###################################################
+### code chunk number 7: TAportfolio.Rnw:132-134
+###################################################
 system.time(res <- TAopt(OF1,algo,data))
 100 * sqrt(crossprod(fundData %*% res$xbest)/ns)
-@
-\ldots and then with \texttt{OF2}.
-<<>>=
+
+
+###################################################
+### code chunk number 8: TAportfolio.Rnw:137-139
+###################################################
 system.time(res <- TAopt(OF2,algo,data))
 100*sqrt(crossprod(fundData %*% res$xbest)/ns)
-@
-Note that we have rescaled the results (see the book for details).
-Both results are similar, but \texttt{OF2} typically requires less
-time. We check the contraints.
-<<>>=
+
+
+###################################################
+### code chunk number 9: TAportfolio.Rnw:144-147
+###################################################
 min(res$xbest) ## should not be smaller than data$winf
 max(res$xbest) ## should not be greater than data$wsup
 sum(res$xbest) ## should be one
-@
 
-The problem can actually be solved quadratic programming; we use the
-quadprog package \citep{quadprog2007}.
 
-<<>>=
+###################################################
+### code chunk number 10: TAportfolio.Rnw:153-177
+###################################################
 if (require("quadprog", quietly = TRUE)) {
     covMatrix <- crossprod(fundData)
     A <- rep(1, na); a <- 1
@@ -175,12 +124,11 @@ if (require("quadprog", quietly = TRUE)) {
     cat("max weight:", max(wqp), "\n")
     cat("sum of weights:", sum(wqp), "\n")
 }
-@
 
-\subsection{Updating}
-Here we implement the updating of the objective function as described
-in \citet{Gilli2011b}.
-<<>>=
+
+###################################################
+### code chunk number 11: TAportfolio.Rnw:183-198
+###################################################
 neighbourU <- function(sol, data){
     wn <- sol$w
     toSell <- wn > data$winf
@@ -196,17 +144,19 @@ neighbourU <- function(sol, data){
 }
 OF <- function(sol, data)
     crossprod(sol$Rw)
-@
 
-Prepare the \texttt{data} list (we reuse several items used before).
-<<>>=
+
+###################################################
+### code chunk number 12: TAportfolio.Rnw:202-205
+###################################################
 data <- list(R = fundData, na = na, ns = ns,
              eps = 0.5/100, winf = winf, wsup = wsup,
              resample = resample)
-@
-We start, again, with a random solution, and also use the same number of
-iterations as before.
-<<>>=
+
+
+###################################################
+### code chunk number 13: TAportfolio.Rnw:209-221
+###################################################
 w0 <- runif(data$na); w0 <- w0/sum(w0)
 x0 <- list(w = w0, Rw = fundData %*% w0)
 algo <- list(x0 = x0,
@@ -219,28 +169,32 @@ algo <- list(x0 = x0,
              printDetail = FALSE)
 system.time(res2 <- TAopt(OF, algo, data))
 100*sqrt(crossprod(fundData %*% res2$xbest$w)/ns)
-@
-This should be faster, and we arrive at the same solution as before.
 
-\subsection{Redundant assets}
-We duplicate the last column of \texttt{fundData}.
-<<>>=
+
+###################################################
+### code chunk number 14: TAportfolio.Rnw:227-228
+###################################################
 fundData <- cbind(fundData, fundData[, 200L])
-@
-Thus, while the dimension increases, the column rank stays unchanged.
-<<>>=
+
+
+###################################################
+### code chunk number 15: TAportfolio.Rnw:231-234
+###################################################
 dim(fundData)
 qr(fundData)$rank
 qr(cov(fundData))$rank
-@
-Checking the weight of the last asset (which was zero), we know that
-the solution to our model must be unchanged, too.
-<<>>=
+
+
+###################################################
+### code chunk number 16: TAportfolio.Rnw:238-240
+###################################################
 if (require("quadprog", quietly = TRUE))
     wqp[200L]
-@
-We redo our example.
-<<>>=
+
+
+###################################################
+### code chunk number 17: TAportfolio.Rnw:243-250
+###################################################
 na <- dim(fundData)[2L]
 ns <- dim(fundData)[1L]
 winf <- 0.0; wsup <- 0.05
@@ -248,9 +202,11 @@ data <- list(R = fundData, na = na, ns = ns,
              eps = 0.5/100, winf = winf, wsup = wsup,
              resample = resample)
 
-@
-But a number of QP solvers have problems with such cases.
-<<>>=
+
+
+###################################################
+### code chunk number 18: TAportfolio.Rnw:253-266
+###################################################
 if (require("quadprog", quietly = TRUE)) {
     covMatrix <- crossprod(fundData)
     A <- rep(1, na); a <- 1
@@ -264,9 +220,11 @@ if (require("quadprog", quietly = TRUE)) {
                                  meq = 1L)
               ))
 }
-@
-But TA can handle this case.
-<<>>=
+
+
+###################################################
+### code chunk number 19: TAportfolio.Rnw:269-281
+###################################################
 w0 <- runif(data$na); w0 <- w0/sum(w0)
 x0 <- list(w = w0, Rw = fundData %*% w0)
 algo <- list(x0 = x0,
@@ -279,15 +237,11 @@ algo <- list(x0 = x0,
              printDetail = FALSE)
 system.time(res3 <- TAopt(OF, algo, data))
 100*sqrt(crossprod(fundData %*% res3$xbest$w)/ns)
-@
-Final check: weights for asset 200 and its twin, asset 201.
-<<>>=
-res3$xbest$w[200:201]
-@
-See \citet[Section 13.2.5]{Gilli2011b} for a discussion of
-rank-deficiency and its (computational and empirical) consequences for
-such problems.
 
-\bibliographystyle{plainnat}
-\bibliography{NMOF}
-\end{document}
+
+###################################################
+### code chunk number 20: TAportfolio.Rnw:284-285
+###################################################
+res3$xbest$w[200:201]
+
+
