@@ -6,10 +6,9 @@
 \description{
 
   Functions, data and other \R code from the book \sQuote{Numerical
-  Methods and Optimization in Finance}.  Many functions are still
-  experimental; interfaces may change in the future; there is little
-  error handling.  Comments/corrections/remarks/suggestions are very
-  welcome (please contact the maintainer directly).
+  Methods and Optimization in Finance}.
+  Comments/corrections/remarks/suggestions are very welcome (please
+  contact the maintainer directly).
 
 }
 \details{
@@ -18,29 +17,55 @@
   heuristics: Differential Evolution (\code{\link{DEopt}}), Genetic
   Algorithms (\code{\link{GAopt}}), (Stochastic) Local Search
   (\code{\link{LSopt}}), Particle Swarm (\code{\link{PSopt}}) and
-  Threshold Accepting (\code{\link{TAopt}}). The term heuristic is
-  understood here as a general purpose optimisation method.
-
-  There are also various functions for option pricing; for instance,
-  \code{\link{vanillaOptionEuropean}} or
-  \code{\link{vanillaOptionAmerican}}.
+  Threshold Accepting (\code{\link{TAopt}}). The term heuristic is meant
+  in the sense of general purpose optimisation method.  
   
   Dependencies: The package is completely written in \R. A number of
   packages are \emph{suggested}, but they are not necessary to use the
-  \pkg{NMOF} package. Package \pkg{MASS} is required to run the complete
-  example for \code{\link{PSopt}} and also in one of the vignettes
-  (\code{PSlms}); package \pkg{parallel} is optional for functions
-  \code{\link{bracketing}}, \code{\link{GAopt}},
-  \code{\link{gridSearch}} and \code{\link{restartOpt}}, and they may
-  become an option for other functions; \pkg{quadprog} is needed for a
-  vignette (\code{TAportfolio}) and some tests; \pkg{RUnit} is needed to
-  run the tests in subdirectory \sQuote{\code{unitTests}}.
+  \pkg{NMOF} package.  More specifically, package \pkg{MASS} is needed
+  to run the complete example for \code{\link{PSopt}} and also in one of
+  the vignettes (\code{PSlms}).  Package \pkg{parallel} is optional for
+  functions \code{\link{bracketing}}, \code{\link{GAopt}},
+  \code{\link{gridSearch}} and \code{\link{restartOpt}}, and may become
+  an option for other functions.  Package \pkg{quadprog} is needed for a
+  vignette (\code{TAportfolio}) and some tests.  Finally, \pkg{RUnit} is
+  needed to run the tests in subdirectory \sQuote{\code{unitTests}}.
 
-  Version numbering: minor version numbers (like in \code{x.1-x}) are
-  incremented when a feature is added or an existing feature is
-  substantially revised. The patch level (\code{x.x-1}) is incremented
-  with any published change.
+  Version numbering: package versions are numbered in the form
+  \code{major-minor-patch}.  Minor version numbers are incremented when
+  a feature is added or an existing feature is substantially revised.
+  The patch level is incremented with any published change.
 
+  \subsection{Data}{
+
+    See \code{\link{bundData}}, \code{\link{fundData}} and
+    \code{\link{optionData}}.
+
+  }
+
+  \subsection{Optimisation}{
+    
+    There are functions for Differential Evolution (\code{\link{DEopt}}),
+    Genetic Algorithms (\code{\link{GAopt}}), (Stochastic) Local Search
+    (\code{\link{LSopt}}), Particle Swarm (\code{\link{PSopt}}) and
+    Threshold Accepting (\code{\link{TAopt}}). 
+
+  }
+  
+  \subsection{Option Pricing}{
+
+    See \code{\link{vanillaOptionEuropean}},
+    \code{\link{vanillaOptionAmerican}}, \code{\link{putCallParity}}.
+    For pricing methods that use the characteristic function, see
+    \code{\link{callCF}}.
+    
+  }
+  
+  \subsection{Simulation}{
+    
+    See \code{\link{resampleC}} and \code{\link{mc}}.
+    
+  }
 }
 \author{Enrico Schumann
 
@@ -70,7 +95,7 @@ showExample("equations.R")
 showExample("exampleLS.R", chapter = 13)
 
 ## show NEWS file
-news(Version >= "0.27-0", package = "NMOF")
+news(Version >= "0.30-0", package = "NMOF")
 
 ## vignettes
 vignette(package = "NMOF")
@@ -88,9 +113,10 @@ file.show(system.file("NMOFex/NMOFman.R", package = "NMOF"))
 
 ## unit tests
 file.show(system.file("unitTests/report.txt",   package = "NMOF"))
-test.rep <- readLines(system.file("unitTests/report.txt",   package = "NMOF"))
-nt <- gsub(".*\\\\((\\\\d+) checks?\\\\).*", "\\\\1",
-           grep("\\\\(\\\\d+ checks?\\\\)", test.rep))
-message("Number of unit tests: ", sum(as.numeric(nt)))
 }
+test.rep <- readLines(system.file("unitTests/report.txt",   package = "NMOF"))
+nt <- gsub(".*\\\\(([0-9]+) checks?\\\\).*", "\\\\1",
+           test.rep[grep("\\\\(\\\\d+ checks?\\\\)", test.rep)])
+message("Number of unit tests: ", sum(as.numeric(nt)))
+
 }

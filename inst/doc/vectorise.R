@@ -7,19 +7,19 @@ options(continue = " ", digits = 5)
 
 
 ###################################################
-### code chunk number 2: vectorise.Rnw:84-85
+### code chunk number 2: vectorise.Rnw:85-86
 ###################################################
 require("NMOF")
 
 
 ###################################################
-### code chunk number 3: vectorise.Rnw:95-96
+### code chunk number 3: vectorise.Rnw:96-97
 ###################################################
 tfRosenbrock
 
 
 ###################################################
-### code chunk number 4: vectorise.Rnw:99-103
+### code chunk number 4: vectorise.Rnw:100-104
 ###################################################
 OF <- tfRosenbrock     ## see ?testFunctions
 size <- 5L             ## set dimension
@@ -28,7 +28,7 @@ OF(x)                  ## ... should give zero
 
 
 ###################################################
-### code chunk number 5: vectorise.Rnw:107-114
+### code chunk number 5: vectorise.Rnw:108-115
 ###################################################
 algo <- list(printBar = FALSE,
                    nP = 50L,
@@ -40,7 +40,7 @@ algo <- list(printBar = FALSE,
 
 
 ###################################################
-### code chunk number 6: vectorise.Rnw:117-123
+### code chunk number 6: vectorise.Rnw:118-124
 ###################################################
 ## a vectorised OF: works only with *matrix* x
 OF2 <- function(x) {
@@ -51,7 +51,7 @@ OF2 <- function(x) {
 
 
 ###################################################
-### code chunk number 7: vectorise.Rnw:126-130
+### code chunk number 7: vectorise.Rnw:127-131
 ###################################################
 x <- matrix(rnorm(size * algo$nP), size, algo$nP)
 c(OF(x[ ,1L]), OF(x[ ,2L]), OF(x[ ,3L]))
@@ -60,7 +60,7 @@ all.equal(OF2(x)[1L:3L], c(OF(x[ ,1L]), OF(x[ ,2L]), OF(x[ ,3L])))
 
 
 ###################################################
-### code chunk number 8: vectorise.Rnw:136-142
+### code chunk number 8: vectorise.Rnw:137-143
 ###################################################
 set.seed(1223445)
 (t1 <- system.time(sol <- DEopt(OF = OF, algo = algo)))
@@ -71,7 +71,7 @@ set.seed(1223445)
 
 
 ###################################################
-### code chunk number 9: vectorise.Rnw:145-148
+### code chunk number 9: vectorise.Rnw:146-149
 ###################################################
 sol$OFvalue    ## both should be zero (with luck)
 sol2$OFvalue
@@ -79,7 +79,7 @@ t1[[3L]]/t2[[3L]]  ## speedup
 
 
 ###################################################
-### code chunk number 10: vectorise.Rnw:172-183
+### code chunk number 10: vectorise.Rnw:173-184
 ###################################################
 na <- 100L  ## number of assets
 np <- 100L  ## size of population
@@ -95,7 +95,7 @@ scaleFun <- function(x) x/sum(x); W <- apply(W, 2L, scaleFun)
 
 
 ###################################################
-### code chunk number 11: vectorise.Rnw:186-206
+### code chunk number 11: vectorise.Rnw:187-207
 ###################################################
 ## variant 1
 t1 <- system.time({
@@ -120,14 +120,14 @@ t3 <- system.time({
 
 
 ###################################################
-### code chunk number 12: vectorise.Rnw:209-211
+### code chunk number 12: vectorise.Rnw:210-212
 ###################################################
 all.equal(res1,res2)
 all.equal(res2,res3)
 
 
 ###################################################
-### code chunk number 13: vectorise.Rnw:214-221
+### code chunk number 13: vectorise.Rnw:215-222
 ###################################################
 ## time required
 #  ... variant 1
@@ -139,7 +139,7 @@ t3
 
 
 ###################################################
-### code chunk number 14: vectorise.Rnw:238-252
+### code chunk number 14: vectorise.Rnw:243-257
 ###################################################
 n  <- 100L  # number of observation
 p  <- 5L    # number of regressors
@@ -158,7 +158,7 @@ R1 <- array(NA, dim = c(n, np))
 
 
 ###################################################
-### code chunk number 15: vectorise.Rnw:255-264
+### code chunk number 15: vectorise.Rnw:260-269
 ###################################################
 system.time({
     for (i in trials)
@@ -172,7 +172,7 @@ system.time({
 
 
 ###################################################
-### code chunk number 16: vectorise.Rnw:269-270
+### code chunk number 16: vectorise.Rnw:274-275
 ###################################################
 all.equal(R1, R2)  ## ... should be TRUE
 

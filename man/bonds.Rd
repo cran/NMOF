@@ -1,5 +1,6 @@
 \name{vanillaBond}
 \alias{vanillaBond}
+\alias{duration}
 \alias{ytm}
 \title{
   Pricing Plain-Vanilla Bonds
@@ -12,7 +13,9 @@
 }
 \usage{
 vanillaBond(cf, times, df, yields)
-ytm(cf, times, y0 = 0.05, tol = 1e-05, maxit = 1000L)        
+ytm(cf, times, y0 = 0.05, tol = 1e-05, maxit = 1000L, offset = 0)
+
+duration(cf, times, yield, modified = TRUE, raw = FALSE)
 }
 \arguments{
   \item{cf}{
@@ -29,6 +32,9 @@ ytm(cf, times, y0 = 0.05, tol = 1e-05, maxit = 1000L)
     optional (instead of discount factors); zero yields to compute
     discount factor; if of length one, a flat zero curve is assumed
   }
+  \item{yield}{
+    numeric
+  }
   \item{y0}{
     starting value
   }
@@ -38,6 +44,17 @@ ytm(cf, times, y0 = 0.05, tol = 1e-05, maxit = 1000L)
   \item{maxit}{
     maximum number of iterations
   }
+  \item{offset}{
+    numeric: a \sQuote{base} rate over which to compute the yield to
+    maturity.  See Details and Examples.
+  }
+  \item{modified}{
+    logical: return modified duration (default \code{TRUE})
+  }
+  \item{raw}{
+    logical: default \code{FALSE}. Compute duration as first derivative
+    of cashflows' present value?
+  }
 }
 \details{
   \code{vanillaBond} computes the present value of a vector of
@@ -45,8 +62,18 @@ ytm(cf, times, y0 = 0.05, tol = 1e-05, maxit = 1000L)
   instrument that can be reduced to a deterministic set of cashflows.
 
   \code{ytm} uses Newton's method to compute the yield-to-maturity of a
-  bond (or internal interest rate). When used with a bond, the initial
-  outlay (ie, the bonds dirty price) needs be included in the vector of cashflows.
+  bond (a.k.a. internal interest rate). When used with a bond, the initial
+  outlay (ie, the bonds dirty price) needs be included in the vector of
+  cashflows.  For coupon bond, a good starting value \code{y0} is
+  the coupon divided by the dirty price of the bond.
+
+  An \code{offset} can be specified either as a single number or as a
+  vector of zero rates.  See Examples.
+  
+  %% \deqn{\mathrm{upper\ partial\ moment} = \frac{1}{n} \sum_{x >
+  %%     t}\left(x - t \right)^e}{%
+  %%   upper partial moment = sum_{x > t}(x - t)^e / n}
+    
 }
 \value{
   Numeric.
@@ -60,9 +87,10 @@ ytm(cf, times, y0 = 0.05, tol = 1e-05, maxit = 1000L)
   Enrico Schumann
 }
 \seealso{
-  \code{\link{NS}}, code{\link{NSS}}
+  \code{\link{NS}}, \code{\link{NSS}}
 }
 \examples{
+## ytm
 cf <- c(5, 5, 5, 5, 5, 105)   ## cashflows
 times <- 1:6                  ## maturities
 y <- 0.0127                   ## the "true" yield
@@ -70,16 +98,30 @@ b0 <- vanillaBond(cf, times, yields = y)
 cf <- c(-b0, cf); times <- c(0, times)
 ytm(cf, times)
 
-##
+## ... with offset
+cf <- c(5, 5, 5, 5, 5, 105)   ## cashflows
+times <- 1:6                  ## maturities
+y <- 0.02 + 0.01              ## risk-free 2\% + risk-premium 1\%
+b0 <- vanillaBond(cf, times, yields = y)
+cf <- c(-b0, cf); times <- c(0, times)    
+ytm(cf, times, offset = 0.02) ## ... only the risk-premium
+
+cf <- c(5, 5, 5, 5, 5, 105)   ## cashflows
+times <- 1:6                  ## maturities
+y <- NS(c(6,9,10,5)/100, times) ## risk-premium 1\%
+b0 <- vanillaBond(cf, times, yields = y + 0.01)
+cf <- c(-b0, cf); times <- c(0, times)    
+ytm(cf, times, offset = c(0,y)) ## ... only the risk-premium
+
+## bonds
 cf <- c(5, 5, 5, 5, 5, 105)   ## cashflows
 times <- 1:6                  ## maturities
 df <- 1/(1+y)^times           ## discount factors
 all.equal(vanillaBond(cf, times, df),
           vanillaBond(cf, times, yields = y))
 
-## using Nelson--Siegel
+## ... using Nelson--Siegel
 vanillaBond(cf, times, yields = NS(c(0.03,0,0,1), times))
-
 
 ## several bonds
 ##   cashflows are numeric vectors in a list 'cf',
@@ -99,7 +141,14 @@ for (i in seq_along(times))
     M[i, match(times[[i]], alltimes)] <- cf[[i]]
 rownames(M) <- paste("bond.", 1:3, sep = "")
 colnames(M) <- format(alltimes, nsmall = 1)
-M
 
 vanillaBond(cf = M, times = alltimes, yields = 0.02)
+
+## duration
+cf <- c(5, 5, 5, 5, 5, 105)   ## cashflows
+times <- 1:6                  ## maturities
+y <- 0.0127                   ## the "true" yield
+
+vanillaBond(cf, times, yields = y+0.001)-vanillaBond(cf, times, yields = y)
+duration(cf, times, yield = y, raw = TRUE)* 0.001
 }

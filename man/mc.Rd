@@ -1,8 +1,9 @@
 \name{mc}
+\alias{mc}
 \alias{gbm}
 \alias{gbb}
 \title{
-    Pricing Options via Simulation
+    Option Pricing via Monte-Carlo Simulation
 }
 \description{
 

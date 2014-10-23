@@ -30,8 +30,10 @@ TAopt <- function(OF, algo = list(), ...) {
     if (is.function(algoD$x0)) ## evaluate x0 if function
         x0 <- algoD$x0() else x0 <- eval(algoD$x0)
 
-    OF1 <- function(x) OF(x, ...)
-    N1 <- function(x) algoD$neighbour(x, ...)
+    OF1 <- function(x)
+        OF(x, ...)
+    N1 <- function(x)
+        algoD$neighbour(x, ...)
 
     printDetail <- algoD$printDetail
     printBar <- algoD$printBar
@@ -47,10 +49,9 @@ TAopt <- function(OF, algo = list(), ...) {
     stepUp <- makeInteger(algoD$stepUp, "'algo$stepUp'", 0L)
     niter <- nS * nT * (stepUp+1L)
 
-
     ## compute thresholds
     if (is.null(algoD$vT)) {
-        if (algoD$q < 1e-13) {
+        if (algoD$q < .Machine$double.eps^0.5) {
             vT <- numeric(nT)
         } else {
             if (printDetail) {
@@ -60,20 +61,22 @@ TAopt <- function(OF, algo = list(), ...) {
                 startTime <- proc.time()
             }
             if (printBar)
-                whatGen <- txtProgressBar (min = 1, max = nD, style = 3)
+                whatGen <- txtProgressBar(min = 1, max = nD, style = 3,
+                                          getOption("width")*0.9)
             xc  <- x0
             xcF <- OF1(xc)
             diffF <- numeric(nD)
             diffF[] <- NA
             for (i in seq_len(nD)){
-                if (printBar) setTxtProgressBar(whatGen, value = i)
+                if (printBar)
+                    setTxtProgressBar(whatGen, value = i)
                 xn  <- N1(xc)
                 xnF <- OF1(xn)
                 diffF[i] <- abs(xcF - xnF)
                 xc  <- xn
                 xcF <- xnF
             }
-            vT <- algoD$q * ( ((nT - 1L):0L) / nT )
+            vT <- algoD$q * ((nT - 1L):0)/nT
             vT <- quantile(diffF, vT, na.rm = FALSE)
             vT[nT] <- 0 ### set last threshold to zero
             if (printBar)
@@ -106,7 +109,8 @@ TAopt <- function(OF, algo = list(), ...) {
     ## evaluate initial solution
     xc <- x0
     xcF <- OF1(xc)
-    xbest <- xc; xbestF <- xcF
+    xbest <- xc
+    xbestF <- xcF
 
     if (algoD$storeF) {
         Fmat <- array(NA, dim = c(niter, 2L))
@@ -121,15 +125,19 @@ TAopt <- function(OF, algo = list(), ...) {
         flush.console()
     }
     if (printBar)
-        whatGen <- txtProgressBar(min = 1, max = niter, style = 3)
+        whatGen <- txtProgressBar(min = 1, max = niter, style = 3,
+                                  getOption("width")*0.9)
 
     ## main algorithm
     counter <- 0L
     for (t in seq_len(nT)) {
         for (s in seq_len(nS)) {
+            ## number of iterations
+            counter <- counter + 1L
+
             xn <- N1(xc)
             xnF <- OF1(xn)
-            if (xnF <= (xcF + vT[t])) {
+            if (xnF <= xcF + vT[t]) {
                 xc <- xn
                 xcF <- xnF
                 if (xnF <= xbestF) {
@@ -137,9 +145,6 @@ TAopt <- function(OF, algo = list(), ...) {
                     xbestF <- xnF
                 }
             }
-
-            ## number of iterations
-            counter <- counter + 1L
 
             if (printBar)
                 setTxtProgressBar(whatGen, value = counter)
@@ -179,3 +184,38 @@ TAopt <- function(OF, algo = list(), ...) {
          Fmat = Fmat, xlist = xlist, vT = vT,
          initial.state = state)
 }
+
+TA.info <- function(n = 0L) {
+    e <- parent.frame(3L + n)
+    step <- NA
+    threshold <- NA
+    iteration <- NA
+    iteration.sampling <- NA
+    if (exists("i", envir = e, inherits = FALSE))
+        step <- get("i", envir = e, inherits = FALSE)
+    if (exists("s", envir = e, inherits = FALSE))
+        step <- get("s", envir = e, inherits = FALSE)
+    if (exists("t", envir = e, inherits = FALSE))
+        threshold <- get("t", envir = e, inherits = FALSE)
+    if (exists("counter", envir = e, inherits = FALSE))
+        iteration <- get("counter", envir = e, inherits = FALSE)
+    list(iteration.sampling = iteration.sampling,
+         iteration = iteration,
+         step = step,
+         threshold = threshold)
+}
+
+
+                                        # METHODS (not exported)
+
+print.TAopt <- function(x, ...) {
+    cat("Threshold Accepting.\n")
+    cat(".. objective function value of solution: ", x$OFvalue, "\n")
+}
+
+plot.TAopt <- function(x, y, ...) {
+    plot(x$vT, xlab = "Threshold", ylab = "Values")
+    dev.new()
+}
+
+

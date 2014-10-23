@@ -10,7 +10,7 @@ options(continue = " ", digits = 5)
 ### code chunk number 2: DEnss.Rnw:51-54
 ###################################################
 require("NMOF")
-nRuns <- 3L
+nRuns <- 2L
 set.seed(112233)
 
 
@@ -26,19 +26,20 @@ plot(tm, yM, xlab = "maturities in years", ylab = "yields in %")
 
 
 ###################################################
-### code chunk number 4: DEnss.Rnw:80-87
+### code chunk number 4: DEnss.Rnw:80-88
 ###################################################
 OF <- function(param, data) {
     y <- data$model(param, data$tm)
     maxdiff <- y - data$yM
     maxdiff <- max(abs(maxdiff))
-    if (is.na(maxdiff)) maxdiff <- 1e10
+    if (is.na(maxdiff)) 
+        maxdiff <- 1e10
     maxdiff
 }
 
 
 ###################################################
-### code chunk number 5: DEnss.Rnw:96-102
+### code chunk number 5: DEnss.Rnw:97-103
 ###################################################
 data <- list(yM = yM,
              tm = tm,
@@ -49,7 +50,7 @@ data <- list(yM = yM,
 
 
 ###################################################
-### code chunk number 6: DEnss.Rnw:114-118
+### code chunk number 6: DEnss.Rnw:115-119
 ###################################################
 param1 <- betaTRUE         ## the solution...
 OF(param1, data)           ## ...gives 0
@@ -58,7 +59,7 @@ OF(param2, data)           ## ... gives a postive number
 
 
 ###################################################
-### code chunk number 7: DEnss.Rnw:122-131
+### code chunk number 7: DEnss.Rnw:123-132
 ###################################################
 par(ps = 11, bty = "n", las = 1, tck = 0.01,
     mgp = c(3, 0.2, 0), mar = c(4, 4, 1, 1))
@@ -72,7 +73,7 @@ legend(x = "topright",
 
 
 ###################################################
-### code chunk number 8: DEnss.Rnw:136-151
+### code chunk number 8: DEnss.Rnw:137-152
 ###################################################
 penalty <- function(mP, data) {
     minV <- data$min
@@ -92,7 +93,7 @@ penalty <- function(mP, data) {
 
 
 ###################################################
-### code chunk number 9: DEnss.Rnw:158-165
+### code chunk number 9: DEnss.Rnw:159-166
 ###################################################
 param1 <- c( 6, 3, 8, -1)
 param2 <- c( 6, 3, 8,  1)
@@ -104,20 +105,20 @@ mP
 
 
 ###################################################
-### code chunk number 10: DEnss.Rnw:171-172
+### code chunk number 10: DEnss.Rnw:172-173
 ###################################################
 penalty(mP,data)
 
 
 ###################################################
-### code chunk number 11: DEnss.Rnw:176-178
+### code chunk number 11: DEnss.Rnw:177-179
 ###################################################
 data$ww <- 0.5
 penalty(mP,data)
 
 
 ###################################################
-### code chunk number 12: DEnss.Rnw:182-188
+### code chunk number 12: DEnss.Rnw:183-189
 ###################################################
 param1 <- c( 6, 3, 8, 1)
 param2 <- c( 6, 3, 8, 1)
@@ -128,7 +129,7 @@ penalty(mP, data)
 
 
 ###################################################
-### code chunk number 13: DEnss.Rnw:197-209
+### code chunk number 13: DEnss.Rnw:198-210
 ###################################################
 algo <- list(nP = 100L,   ## population size
              nG = 500L,   ## number of generations
@@ -145,20 +146,20 @@ algo <- list(nP = 100L,   ## population size
 
 
 ###################################################
-### code chunk number 14: DEnss.Rnw:214-215
+### code chunk number 14: DEnss.Rnw:215-216
 ###################################################
 sol <- DEopt(OF = OF, algo = algo, data = data)
 
 
 ###################################################
-### code chunk number 15: DEnss.Rnw:221-223
+### code chunk number 15: DEnss.Rnw:222-224
 ###################################################
 max( abs(data$model(sol$xbest, tm) - data$model(betaTRUE, tm)) )
 sol$OFvalue
 
 
 ###################################################
-### code chunk number 16: DEnss.Rnw:232-238
+### code chunk number 16: DEnss.Rnw:233-239
 ###################################################
 s0 <- algo$min + (algo$max - algo$min) * runif(length(algo$min))
 sol2 <- nlminb(s0, OF, data = data,
@@ -169,7 +170,7 @@ sol2 <- nlminb(s0, OF, data = data,
 
 
 ###################################################
-### code chunk number 17: DEnss.Rnw:243-245
+### code chunk number 17: DEnss.Rnw:244-246
 ###################################################
 max( abs(data$model(sol2$par, tm) - data$model(betaTRUE,tm)) )
 sol2$objective
