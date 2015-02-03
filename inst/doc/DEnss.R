@@ -1,13 +1,13 @@
 ### R code from vignette source 'DEnss.Rnw'
 
 ###################################################
-### code chunk number 1: DEnss.Rnw:24-25
+### code chunk number 1: DEnss.Rnw:27-28
 ###################################################
 options(continue = " ", digits = 5)
 
 
 ###################################################
-### code chunk number 2: DEnss.Rnw:51-54
+### code chunk number 2: DEnss.Rnw:54-57
 ###################################################
 require("NMOF")
 nRuns <- 2L
@@ -15,7 +15,7 @@ set.seed(112233)
 
 
 ###################################################
-### code chunk number 3: DEnss.Rnw:63-69
+### code chunk number 3: DEnss.Rnw:66-72
 ###################################################
 tm <- c(c(1, 3, 6, 9)/12, 1:10)
 betaTRUE <- c(6, 3, 8, 1)
@@ -26,7 +26,7 @@ plot(tm, yM, xlab = "maturities in years", ylab = "yields in %")
 
 
 ###################################################
-### code chunk number 4: DEnss.Rnw:80-88
+### code chunk number 4: DEnss.Rnw:83-91
 ###################################################
 OF <- function(param, data) {
     y <- data$model(param, data$tm)
@@ -39,7 +39,7 @@ OF <- function(param, data) {
 
 
 ###################################################
-### code chunk number 5: DEnss.Rnw:97-103
+### code chunk number 5: DEnss.Rnw:100-106
 ###################################################
 data <- list(yM = yM,
              tm = tm,
@@ -50,7 +50,7 @@ data <- list(yM = yM,
 
 
 ###################################################
-### code chunk number 6: DEnss.Rnw:115-119
+### code chunk number 6: DEnss.Rnw:118-122
 ###################################################
 param1 <- betaTRUE         ## the solution...
 OF(param1, data)           ## ...gives 0
@@ -59,7 +59,7 @@ OF(param2, data)           ## ... gives a postive number
 
 
 ###################################################
-### code chunk number 7: DEnss.Rnw:123-132
+### code chunk number 7: DEnss.Rnw:126-135
 ###################################################
 par(ps = 11, bty = "n", las = 1, tck = 0.01,
     mgp = c(3, 0.2, 0), mar = c(4, 4, 1, 1))
@@ -73,7 +73,7 @@ legend(x = "topright",
 
 
 ###################################################
-### code chunk number 8: DEnss.Rnw:137-152
+### code chunk number 8: DEnss.Rnw:140-155
 ###################################################
 penalty <- function(mP, data) {
     minV <- data$min
@@ -93,7 +93,7 @@ penalty <- function(mP, data) {
 
 
 ###################################################
-### code chunk number 9: DEnss.Rnw:159-166
+### code chunk number 9: DEnss.Rnw:162-169
 ###################################################
 param1 <- c( 6, 3, 8, -1)
 param2 <- c( 6, 3, 8,  1)
@@ -105,20 +105,20 @@ mP
 
 
 ###################################################
-### code chunk number 10: DEnss.Rnw:172-173
+### code chunk number 10: DEnss.Rnw:175-176
 ###################################################
 penalty(mP,data)
 
 
 ###################################################
-### code chunk number 11: DEnss.Rnw:177-179
+### code chunk number 11: DEnss.Rnw:180-182
 ###################################################
 data$ww <- 0.5
 penalty(mP,data)
 
 
 ###################################################
-### code chunk number 12: DEnss.Rnw:183-189
+### code chunk number 12: DEnss.Rnw:186-192
 ###################################################
 param1 <- c( 6, 3, 8, 1)
 param2 <- c( 6, 3, 8, 1)
@@ -129,7 +129,7 @@ penalty(mP, data)
 
 
 ###################################################
-### code chunk number 13: DEnss.Rnw:198-210
+### code chunk number 13: DEnss.Rnw:201-213
 ###################################################
 algo <- list(nP = 100L,   ## population size
              nG = 500L,   ## number of generations
@@ -146,20 +146,20 @@ algo <- list(nP = 100L,   ## population size
 
 
 ###################################################
-### code chunk number 14: DEnss.Rnw:215-216
+### code chunk number 14: DEnss.Rnw:218-219
 ###################################################
 sol <- DEopt(OF = OF, algo = algo, data = data)
 
 
 ###################################################
-### code chunk number 15: DEnss.Rnw:222-224
+### code chunk number 15: DEnss.Rnw:225-227
 ###################################################
 max( abs(data$model(sol$xbest, tm) - data$model(betaTRUE, tm)) )
 sol$OFvalue
 
 
 ###################################################
-### code chunk number 16: DEnss.Rnw:233-239
+### code chunk number 16: DEnss.Rnw:236-242
 ###################################################
 s0 <- algo$min + (algo$max - algo$min) * runif(length(algo$min))
 sol2 <- nlminb(s0, OF, data = data,
@@ -170,14 +170,14 @@ sol2 <- nlminb(s0, OF, data = data,
 
 
 ###################################################
-### code chunk number 17: DEnss.Rnw:244-246
+### code chunk number 17: DEnss.Rnw:247-249
 ###################################################
 max( abs(data$model(sol2$par, tm) - data$model(betaTRUE,tm)) )
 sol2$objective
 
 
 ###################################################
-### code chunk number 18: DEnss.Rnw:258-279
+### code chunk number 18: DEnss.Rnw:261-282
 ###################################################
 par(ps = 11, bty = "n", las = 1, tck = 0.01,
     mgp = c(3, 0.2, 0), mar = c(4, 4, 1, 1))
@@ -203,7 +203,7 @@ legend(x = "topright", legend = c("true yields", "DE", "nlminb"),
 
 
 ###################################################
-### code chunk number 19: DEnss.Rnw:291-298
+### code chunk number 19: DEnss.Rnw:294-301
 ###################################################
 tm <- seq(1, 10, length.out = 100)   ## 1 to 10 years
 betaTRUE <- c(3, -2, -8, 1.5)        ## 'true' parameters
@@ -215,7 +215,7 @@ abline(h = 0)
 
 
 ###################################################
-### code chunk number 20: DEnss.Rnw:305-310
+### code chunk number 20: DEnss.Rnw:308-313
 ###################################################
 penalty2 <- function(param, data) {
     y <- data$model(param, data$tm)
@@ -225,13 +225,13 @@ penalty2 <- function(param, data) {
 
 
 ###################################################
-### code chunk number 21: DEnss.Rnw:313-314
+### code chunk number 21: DEnss.Rnw:316-317
 ###################################################
 penalty2(c(3, -2, -8, 1.5),data)
 
 
 ###################################################
-### code chunk number 22: DEnss.Rnw:319-330
+### code chunk number 22: DEnss.Rnw:322-333
 ###################################################
 OFa <- function(param,data) {
     y <- data$model(param,data$tm)
@@ -247,7 +247,7 @@ OFa <- function(param,data) {
 
 
 ###################################################
-### code chunk number 23: DEnss.Rnw:335-345
+### code chunk number 23: DEnss.Rnw:338-348
 ###################################################
 algo$pen <- NULL; data$yM <- yM; data$tm <- tm
 par(ps = 11, bty = "n", las = 1, tck = 0.01,
@@ -262,7 +262,7 @@ legend(x = "topleft", legend = c("true yields", "DE (constrained)"),
 
 
 ###################################################
-### code chunk number 24: DEnss.Rnw:355-358
+### code chunk number 24: DEnss.Rnw:358-361
 ###################################################
 tm <- c(c(1, 3, 6, 9)/12, 1:10)
 betaTRUE <- c(5,-2,5,-5,1,6)
@@ -270,7 +270,7 @@ yM <- NSS(betaTRUE, tm)
 
 
 ###################################################
-### code chunk number 25: DEnss.Rnw:363-383
+### code chunk number 25: DEnss.Rnw:366-386
 ###################################################
 data <- list(yM = yM,
              tm = tm,
@@ -295,7 +295,7 @@ algo <- list(nP = 100L,
 
 
 ###################################################
-### code chunk number 26: DEnss.Rnw:388-391
+### code chunk number 26: DEnss.Rnw:391-394
 ###################################################
 sol <- DEopt(OF = OF, algo = algo, data = data)
 max( abs(data$model(sol$xbest, tm) - data$model(betaTRUE, tm)) )
@@ -303,7 +303,7 @@ sol$OFvalue
 
 
 ###################################################
-### code chunk number 27: DEnss.Rnw:395-403
+### code chunk number 27: DEnss.Rnw:398-406
 ###################################################
 s0 <- algo$min + (algo$max - algo$min) * runif(length(algo$min))
 sol2 <- nlminb(s0,OF,data = data,
@@ -316,7 +316,7 @@ sol2$objective
 
 
 ###################################################
-### code chunk number 28: DEnss.Rnw:409-428
+### code chunk number 28: DEnss.Rnw:412-431
 ###################################################
 par(ps = 11, bty = "n", las = 1, tck = 0.01,
     mgp = c(3, 0.2, 0), mar = c(4, 4, 1, 1))
@@ -340,14 +340,14 @@ legend(x = "topright", legend = c("true yields", "DE", "nlminb"),
 
 
 ###################################################
-### code chunk number 29: DEnss.Rnw:439-441 (eval = FALSE)
+### code chunk number 29: DEnss.Rnw:442-444 (eval = FALSE)
 ###################################################
 ## whereToLook <- system.file("NMOFex/NMOFman.R", package = "NMOF")
 ## file.show(whereToLook, title = "NMOF examples")
 
 
 ###################################################
-### code chunk number 30: DEnss.Rnw:454-456 (eval = FALSE)
+### code chunk number 30: DEnss.Rnw:457-459 (eval = FALSE)
 ###################################################
 ## whereToLook <- system.file("NMOFex/NMOFman.R", package = "NMOF")
 ## file.show(whereToLook, title = "NMOF examples")

@@ -1,13 +1,13 @@
 ### R code from vignette source 'PSlms.Rnw'
 
 ###################################################
-### code chunk number 1: PSlms.Rnw:19-20
+### code chunk number 1: PSlms.Rnw:21-22
 ###################################################
 options(continue = " ", digits = 5)
 
 
 ###################################################
-### code chunk number 2: PSlms.Rnw:43-46
+### code chunk number 2: PSlms.Rnw:45-48
 ###################################################
 require("NMOF")
 require("MASS")
@@ -15,7 +15,7 @@ set.seed(11223344)
 
 
 ###################################################
-### code chunk number 3: PSlms.Rnw:50-62
+### code chunk number 3: PSlms.Rnw:52-64
 ###################################################
 createData <- function(n, p, constant = TRUE,
                        sigma = 2, oFrac = 0.1) {
@@ -32,7 +32,7 @@ createData <- function(n, p, constant = TRUE,
 
 
 ###################################################
-### code chunk number 4: PSlms.Rnw:76-84
+### code chunk number 4: PSlms.Rnw:78-86
 ###################################################
 n <- 100L   ## number of observations
 p <- 10L    ## number of regressors
@@ -45,7 +45,7 @@ Data <- list(y = as.vector(y), X = X, h = h)
 
 
 ###################################################
-### code chunk number 5: PSlms.Rnw:87-91
+### code chunk number 5: PSlms.Rnw:89-93
 ###################################################
 par(bty = "n", las = 1, tck = 0.01, mar = c(4,4,1,1))
 plot(X[ ,2L], type = "h", ylab = "X values", xlab = "observation")
@@ -54,7 +54,7 @@ lines(aux$outliers, X[aux$outliers ,2L], type = "p", pch = 21,
 
 
 ###################################################
-### code chunk number 6: PSlms.Rnw:97-111
+### code chunk number 6: PSlms.Rnw:99-113
 ###################################################
 OF <- function(param, Data) {
     X <- Data$X; y <- Data$y
@@ -73,7 +73,7 @@ OF <- function(param, Data) {
 
 
 ###################################################
-### code chunk number 7: PSlms.Rnw:120-158
+### code chunk number 7: PSlms.Rnw:122-160
 ###################################################
 popsize <- 100L; generations <- 500L
 ps <- list(min = rep(-10,p),
@@ -116,7 +116,7 @@ cat("lqs:   ", res1, "\n",
 
 
 ###################################################
-### code chunk number 8: PSlms.Rnw:166-173
+### code chunk number 8: PSlms.Rnw:168-175
 ###################################################
 popsize <- 100L; generations <- 20L
 de$nP <- popsize; de$nG <- generations
@@ -128,7 +128,7 @@ t1de <- system.time(solDE <- DEopt(OF = OF, algo = de, Data = Data))
 
 
 ###################################################
-### code chunk number 9: PSlms.Rnw:177-180
+### code chunk number 9: PSlms.Rnw:179-182
 ###################################################
 de$loopOF <- FALSE; ps$loopOF <- FALSE
 t2ps <- system.time(solPS <- PSopt(OF = OF, algo = ps, Data = Data))
@@ -136,7 +136,7 @@ t2de <- system.time(solDE <- DEopt(OF = OF, algo = de, Data = Data))
 
 
 ###################################################
-### code chunk number 10: PSlms.Rnw:183-185
+### code chunk number 10: PSlms.Rnw:185-187
 ###################################################
 t1ps[[3L]]/t2ps[[3L]]  ## PS
 t1de[[3L]]/t2de[[3L]]  ## DE

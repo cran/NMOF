@@ -1,13 +1,13 @@
 ### R code from vignette source 'TAportfolio.Rnw'
 
 ###################################################
-### code chunk number 1: TAportfolio.Rnw:19-20
+### code chunk number 1: TAportfolio.Rnw:22-23
 ###################################################
 options(continue = " ", digits = 5)
 
 
 ###################################################
-### code chunk number 2: TAportfolio.Rnw:38-42
+### code chunk number 2: TAportfolio.Rnw:41-45
 ###################################################
 require("NMOF")
 resample <- function(x, ...)
@@ -16,7 +16,7 @@ set.seed(112233)
 
 
 ###################################################
-### code chunk number 3: TAportfolio.Rnw:73-84
+### code chunk number 3: TAportfolio.Rnw:76-87
 ###################################################
 na <- dim(fundData)[2L]
 ns <- dim(fundData)[1L]
@@ -32,7 +32,7 @@ data <- list(R = t(fundData),
 
 
 ###################################################
-### code chunk number 4: TAportfolio.Rnw:88-99
+### code chunk number 4: TAportfolio.Rnw:91-102
 ###################################################
 neighbour <- function(w, data){
     eps <- runif(1L) * data$eps
@@ -48,7 +48,7 @@ neighbour <- function(w, data){
 
 
 ###################################################
-### code chunk number 5: TAportfolio.Rnw:103-111
+### code chunk number 5: TAportfolio.Rnw:106-114
 ###################################################
 OF1 <- function(w, data) {
     Rw <- crossprod(data$R, w)
@@ -61,7 +61,7 @@ OF2 <- function(w, data) {
 
 
 ###################################################
-### code chunk number 6: TAportfolio.Rnw:119-129
+### code chunk number 6: TAportfolio.Rnw:122-132
 ###################################################
 w0 <- runif(na); w0 <- w0/sum(w0)
 
@@ -76,21 +76,21 @@ algo <- list(x0 = w0,
 
 
 ###################################################
-### code chunk number 7: TAportfolio.Rnw:132-134
+### code chunk number 7: TAportfolio.Rnw:135-137
 ###################################################
 system.time(res <- TAopt(OF1,algo,data))
 100 * sqrt(crossprod(fundData %*% res$xbest)/ns)
 
 
 ###################################################
-### code chunk number 8: TAportfolio.Rnw:137-139
+### code chunk number 8: TAportfolio.Rnw:140-142
 ###################################################
 system.time(res <- TAopt(OF2,algo,data))
 100*sqrt(crossprod(fundData %*% res$xbest)/ns)
 
 
 ###################################################
-### code chunk number 9: TAportfolio.Rnw:144-147
+### code chunk number 9: TAportfolio.Rnw:147-150
 ###################################################
 min(res$xbest) ## should not be smaller than data$winf
 max(res$xbest) ## should not be greater than data$wsup
@@ -98,7 +98,7 @@ sum(res$xbest) ## should be one
 
 
 ###################################################
-### code chunk number 10: TAportfolio.Rnw:153-177
+### code chunk number 10: TAportfolio.Rnw:156-180
 ###################################################
 if (require("quadprog", quietly = TRUE)) {
     covMatrix <- crossprod(fundData)
@@ -127,7 +127,7 @@ if (require("quadprog", quietly = TRUE)) {
 
 
 ###################################################
-### code chunk number 11: TAportfolio.Rnw:183-198
+### code chunk number 11: TAportfolio.Rnw:186-201
 ###################################################
 neighbourU <- function(sol, data){
     wn <- sol$w
@@ -147,7 +147,7 @@ OF <- function(sol, data)
 
 
 ###################################################
-### code chunk number 12: TAportfolio.Rnw:202-205
+### code chunk number 12: TAportfolio.Rnw:205-208
 ###################################################
 data <- list(R = fundData, na = na, ns = ns,
              eps = 0.5/100, winf = winf, wsup = wsup,
@@ -155,7 +155,7 @@ data <- list(R = fundData, na = na, ns = ns,
 
 
 ###################################################
-### code chunk number 13: TAportfolio.Rnw:209-221
+### code chunk number 13: TAportfolio.Rnw:212-224
 ###################################################
 w0 <- runif(data$na); w0 <- w0/sum(w0)
 x0 <- list(w = w0, Rw = fundData %*% w0)
@@ -172,13 +172,13 @@ system.time(res2 <- TAopt(OF, algo, data))
 
 
 ###################################################
-### code chunk number 14: TAportfolio.Rnw:227-228
+### code chunk number 14: TAportfolio.Rnw:230-231
 ###################################################
 fundData <- cbind(fundData, fundData[, 200L])
 
 
 ###################################################
-### code chunk number 15: TAportfolio.Rnw:231-234
+### code chunk number 15: TAportfolio.Rnw:234-237
 ###################################################
 dim(fundData)
 qr(fundData)$rank
@@ -186,14 +186,14 @@ qr(cov(fundData))$rank
 
 
 ###################################################
-### code chunk number 16: TAportfolio.Rnw:238-240
+### code chunk number 16: TAportfolio.Rnw:241-243
 ###################################################
 if (require("quadprog", quietly = TRUE))
     wqp[200L]
 
 
 ###################################################
-### code chunk number 17: TAportfolio.Rnw:243-250
+### code chunk number 17: TAportfolio.Rnw:246-253
 ###################################################
 na <- dim(fundData)[2L]
 ns <- dim(fundData)[1L]
@@ -205,7 +205,7 @@ data <- list(R = fundData, na = na, ns = ns,
 
 
 ###################################################
-### code chunk number 18: TAportfolio.Rnw:253-266
+### code chunk number 18: TAportfolio.Rnw:256-269
 ###################################################
 if (require("quadprog", quietly = TRUE)) {
     covMatrix <- crossprod(fundData)
@@ -223,7 +223,7 @@ if (require("quadprog", quietly = TRUE)) {
 
 
 ###################################################
-### code chunk number 19: TAportfolio.Rnw:269-281
+### code chunk number 19: TAportfolio.Rnw:272-284
 ###################################################
 w0 <- runif(data$na); w0 <- w0/sum(w0)
 x0 <- list(w = w0, Rw = fundData %*% w0)
@@ -240,7 +240,7 @@ system.time(res3 <- TAopt(OF, algo, data))
 
 
 ###################################################
-### code chunk number 20: TAportfolio.Rnw:284-285
+### code chunk number 20: TAportfolio.Rnw:287-288
 ###################################################
 res3$xbest$w[200:201]
 

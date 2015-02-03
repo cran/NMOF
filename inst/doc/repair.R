@@ -1,20 +1,20 @@
 ### R code from vignette source 'repair.Rnw'
 
 ###################################################
-### code chunk number 1: repair.Rnw:22-23
+### code chunk number 1: repair.Rnw:24-25
 ###################################################
 options(continue = " ", digits = 5)
 
 
 ###################################################
-### code chunk number 2: repair.Rnw:40-42
+### code chunk number 2: repair.Rnw:42-44
 ###################################################
 set.seed(112233)
 options(digits = 3)
 
 
 ###################################################
-### code chunk number 3: repair.Rnw:56-60
+### code chunk number 3: repair.Rnw:58-62
 ###################################################
 up <- rep(1, 4L)
 lo <- rep(0, 4L)
@@ -23,7 +23,7 @@ x
 
 
 ###################################################
-### code chunk number 4: repair.Rnw:63-67
+### code chunk number 4: repair.Rnw:65-69
 ###################################################
 repair1a <- function(x,up,lo) 
     pmin(up,pmax(lo,x))
@@ -32,7 +32,7 @@ repair1a(x, up, lo)
 
 
 ###################################################
-### code chunk number 5: repair.Rnw:72-86
+### code chunk number 5: repair.Rnw:74-88
 ###################################################
 repair1b <- function(x, up, lo) {
     ii <- x > up
@@ -51,7 +51,7 @@ repair1c <- function(x, up, lo) {
 
 
 ###################################################
-### code chunk number 6: repair.Rnw:96-105
+### code chunk number 6: repair.Rnw:98-107
 ###################################################
 repair1a(x, up, lo)
 repair1b(x, up, lo)
@@ -65,7 +65,7 @@ system.time(for(i in strials) y3 <- repair1c(x, up, lo))
 
 
 ###################################################
-### code chunk number 7: repair.Rnw:109-112
+### code chunk number 7: repair.Rnw:111-114
 ###################################################
 X <- array(rnorm(25L), dim = c(5L, 5L))
 X
@@ -73,7 +73,7 @@ repair1c(X, up = 0.5, lo = -0.5)
 
 
 ###################################################
-### code chunk number 8: repair.Rnw:118-122
+### code chunk number 8: repair.Rnw:120-124
 ###################################################
 pmax2 <- function(x1, x2) 
     ((x1 + x2) + abs(x1 - x2)) / 2
@@ -82,7 +82,7 @@ pmin2 <- function(x1, x2)
 
 
 ###################################################
-### code chunk number 9: repair.Rnw:125-137
+### code chunk number 9: repair.Rnw:127-139
 ###################################################
 x1 <- rnorm(100L)
 x2 <- rnorm(100L)
@@ -99,7 +99,7 @@ all.equal(z1, z2)
 
 
 ###################################################
-### code chunk number 10: repair.Rnw:147-172
+### code chunk number 10: repair.Rnw:149-174
 ###################################################
 repair2 <- function(x, up, lo) {
     done <- TRUE
@@ -129,7 +129,7 @@ system.time(for (i in strials) y4 <- repair2(x,up,lo))
 
 
 ###################################################
-### code chunk number 11: repair.Rnw:192-196
+### code chunk number 11: repair.Rnw:194-198
 ###################################################
 T <- 20L
 x <- logical(T)
@@ -138,14 +138,14 @@ x
 
 
 ###################################################
-### code chunk number 12: repair.Rnw:200-202
+### code chunk number 12: repair.Rnw:202-204
 ###################################################
 kmax <- 5L
 kmin <- 3L
 
 
 ###################################################
-### code chunk number 13: repair.Rnw:206-221
+### code chunk number 13: repair.Rnw:208-223
 ###################################################
 resample <- function(x, ...) x[sample.int(length(x), ...)]
 repairK <- function(x, kmax, kmin) {
@@ -165,7 +165,7 @@ printK <- function(x)
 
 
 ###################################################
-### code chunk number 14: repair.Rnw:224-229
+### code chunk number 14: repair.Rnw:226-231
 ###################################################
 for (i in 1:10) {
     if (i==1L) printK(x)
@@ -175,7 +175,7 @@ for (i in 1:10) {
 
 
 ###################################################
-### code chunk number 15: repair.Rnw:232-238
+### code chunk number 15: repair.Rnw:234-240
 ###################################################
 x <- logical(T); x[10L] <- TRUE
 for (i in 1:10) {
