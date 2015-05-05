@@ -1,8 +1,8 @@
 Package: NMOF
 Type: Package
 Title: Numerical Methods and Optimization in Finance
-Version: 0.34-1
-Date: 2015-02-03
+Version: 0.34-2
+Date: 2015-05-05
 Maintainer: Enrico Schumann <es@enricoschumann.net>
 Authors@R: person("Enrico", "Schumann",
                   role = c("aut", "cre"),
@@ -23,8 +23,8 @@ URL: http://nmof.net, http://enricoschumann.net/NMOF.htm
 LazyLoad: yes
 LazyData: yes
 Classification/JEL: C61, C63
-Packaged: 2015-02-03 12:43:47 UTC; es
-Author: Enrico Schumann [aut, cre]
 NeedsCompilation: no
+Packaged: 2015-05-06 14:43:27 UTC; es
+Author: Enrico Schumann [aut, cre]
 Repository: CRAN
-Date/Publication: 2015-02-03 17:29:58
+Date/Publication: 2015-05-07 00:11:02
