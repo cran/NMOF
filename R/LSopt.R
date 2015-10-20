@@ -94,3 +94,19 @@ LSopt <- function(OF, algo = list(), ...) {
     list(xbest = xc, OFvalue = xcF, Fmat = Fmat, xlist = xlist,
          initial.state = state)
 }
+
+LS.info <- function(n = 0L) {
+    e <- parent.frame(3L + n)
+    step <- NA
+    iteration <- NA
+    ## if (exists("i", envir = e, inherits = FALSE))
+    ##     step <- get("i", envir = e, inherits = FALSE)
+    if (exists("s", envir = e, inherits = FALSE))
+        iteration <- step <- get("s", envir = e, inherits = FALSE)
+    ## if (exists("t", envir = e, inherits = FALSE))
+    ##     threshold <- get("t", envir = e, inherits = FALSE)
+    ## if (exists("counter", envir = e, inherits = FALSE))
+    ##     iteration <- get("counter", envir = e, inherits = FALSE)
+    list(iteration = iteration,
+         step = step)
+}

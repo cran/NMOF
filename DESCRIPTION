@@ -1,14 +1,14 @@
 Package: NMOF
 Type: Package
 Title: Numerical Methods and Optimization in Finance
-Version: 0.34-2
-Date: 2015-05-05
+Version: 0.36-2
+Date: 2015-10-16
 Maintainer: Enrico Schumann <es@enricoschumann.net>
 Authors@R: person("Enrico", "Schumann",
-                  role = c("aut", "cre"),
+                  role  = c("aut", "cre"),
                   email = "es@enricoschumann.net")
 Depends: R (>= 2.14)
-Imports: parallel
+Imports: grDevices, graphics, parallel, stats, utils
 Suggests: MASS, RUnit, quadprog
 Description: Functions,  examples and  data  from the  book
  'Numerical  Methods  and  Optimization  in Finance'  by  M.
@@ -24,7 +24,7 @@ LazyLoad: yes
 LazyData: yes
 Classification/JEL: C61, C63
 NeedsCompilation: no
-Packaged: 2015-05-06 14:43:27 UTC; es
+Packaged: 2015-10-20 05:57:04 UTC; es
 Author: Enrico Schumann [aut, cre]
 Repository: CRAN
-Date/Publication: 2015-05-07 00:11:02
+Date/Publication: 2015-10-20 10:57:53

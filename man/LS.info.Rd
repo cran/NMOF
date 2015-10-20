@@ -1,15 +1,15 @@
-\name{TA.info}
-\alias{TA.info}
+\name{LS.info}
+\alias{LS.info}
 \title{
-  Threshold-Accepting Information
+  Local-Search Information
 }
 \description{
   The function can be called from the objective and neighbourhood
-  function during a run of \code{\link{TAopt}}; it provides information
-  such as the current iteration, the current solution, etc.
+  function during a run of \code{\link{LSopt}}; it provides information
+  such as the current iteration.
 }
 \usage{
-  TA.info(n = 0L)
+  LS.info(n = 0L)
 }
 \arguments{
   \item{n}{
@@ -21,11 +21,11 @@
   \bold{This function is still experimental.}
 
   The function can be called in the neighbourhood function or the
-  objective function during a run of \code{\link{TAopt}}.  It evaluates
+  objective function during a run of \code{\link{LSopt}}.  It evaluates
   to a list with the state of the optimisation run, such as the current
   iteration.
 
-  \code{TA.info} relies on \code{\link{parent.frame}} to retrieve its
+  \code{LS.info} relies on \code{\link{parent.frame}} to retrieve its
   information.  If the function is called within another function in the
   neighbourhood or objective function, the argument \code{n} needs to be
   increased.
@@ -33,9 +33,8 @@
 }
 \value{
 A list
-\item{step}{current step}
-\item{threshold}{current threshold (the number, not the value)}
 \item{iteration}{current iteration}
+\item{step}{same as \sQuote{iteration}}
 }
 \references{
     Gilli, M., Maringer, D. and Schumann, E. (2011) \emph{Numerical
@@ -46,10 +45,10 @@ A list
     Enrico Schumann
 }
 \seealso{
-  \code{\link{TAopt}}
+  \code{\link{LSopt}}, \code{\link{TA.info}}
 }
 \examples{
-### MINIMAL EXAMPLE for TAopt
+## MINIMAL EXAMPLE for LSopt
 
 ## objective function evaluates to a constant
 fun <- function(x)
@@ -58,19 +57,16 @@ fun <- function(x)
 ## neighbourhood function does not even change the solution,
 ## but it reports information
 nb <- function(x) {
-    tmp <- TA.info()
-    cat("current threshold ",   tmp$threshold,
-        "| current step ",      tmp$step,
-        "| current iteration ", tmp$iteration, "\n")
+    tmp <- LS.info()
+    cat("current iteration ", tmp$iteration, "\n")
     x
 }
 
-## run TA
+## run LS
 algo <- list(nS = 5,
-             nT = 2,
-             nD = 10,
              x0 = rep(0, 5),
              neighbour = nb,
              printBar = FALSE)
-ignore <- TAopt(fun, algo)
+ignore <- LSopt(fun, algo)
+
 }

@@ -1,8 +1,36 @@
+v0.36-2  (2015-10-16)
+
+  o functions from packages other than 'base' are now explicity
+    imported: 'grDevices', 'graphics', 'stats', 'utils'
+
+v0.36-1  (2015-07-22)
+
+  o TAopt: more informative error message when objective function
+    evaluates to NA during computation of thresholds
+
+v0.36-0  (2015-06-23)
+
+  o experimental: new function 'LS.info' for accessing information
+    during optimisation run (eg, current iteration)
+
+v0.35-1  (2015-06-04)
+
+  o small correction in parameter description in 'callMerton'
+    (suggested by Laurs Leth)
+
+v0.35-0  (2015-05-12)
+
+  o new function 'pm' for computing partial moments
+
 v0.34-2  (2015-05-05)
 
   o fixed: 'DEopt' did not properly handle the 'minmaxConstr' option,
     which could result in solutions that violated the box constraints.
     (Thanks to David Ashear for reporting.)
+
+v0.34-1  (2015-02-03)
+
+  o no user-visible changes (see ChangeLog for non-visible changes)
 
 v0.34-0  (2014-10-23)
 
