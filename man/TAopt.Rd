@@ -59,7 +59,7 @@ TAopt(OF, algo = list(), \dots)
     \item{\code{q}}{The highest quantile for the threshold
       sequence. Defaults to 0.5. Only used if \code{algo$vT} is
       \code{NULL}. If \code{q} is zero, \code{TAopt} will run with
-      zero-thresholds (ie, like a Local Search).}
+      \code{algo$nT} zero-thresholds (ie, like a Local Search).}
 
     \item{\code{x0}}{The initial solution. If this is a function, it will
       be called once without arguments to compute an initial solution, ie,
@@ -90,7 +90,7 @@ TAopt(OF, algo = list(), \dots)
     \item{\code{printBar}}{If \code{TRUE} (default is \code{FALSE}), a
       \code{\link{txtProgressBar}} (from package \pkg{utils}) is
       printed. The progress bar is not shown if \code{printDetail} is
-      \code{TRUE}.}
+      an integer greater than 1.}
 
     \item{\code{scale}}{The thresholds are multiplied by
     \code{scale}. Default is 1.}
@@ -108,13 +108,23 @@ TAopt(OF, algo = list(), \dots)
       function values for every solution in every generation are stored
       and returned as matrix \code{Fmat}.}
 
-    \item{\code{storeSolutions}}{default is \code{FALSE}. If
+    \item{\code{storeSolutions}}{Default is \code{FALSE}. If
       \code{TRUE}, the solutions (ie, decision variables) in every
       generation are stored and returned in list
       \code{xlist} (see Value section below). To check, for instance,
       the current solution at the end of the \code{i}th generation, retrieve
       \code{xlist[[c(2L, i)]]}.}
-      
+
+    \item{\code{classify}}{Logical; default is \code{FALSE}. If
+    \code{TRUE}, the result will have a class attribute \code{TAopt}
+    attached.}
+
+  \item{\code{OF.target}}{Numeric; when specified, the algorithm will
+    stop when an objective-function value as low as \code{OF.target} (or
+    lower) is achieved. This is useful when an optimal
+    objective-function value is known: the algorithm will then stop and
+    not waste time searching for a better solution.}
+  
     } % end describe
 
       At the minimum, \code{algo} needs to contain an initial solution
@@ -150,6 +160,9 @@ TAopt(OF, algo = list(), \dots)
     \item{\code{initial.state}}{the value of \code{\link{.Random.seed}}
       when the function was called.}
 
+    If \code{algo$classify} was set to \code{TRUE}, the resulting list
+    will have a class attribute \code{TAopt}.
+    
   }
   \note{If the \code{\dots} argument is used, then all the objects passed
     with \code{\dots} need to go into the objective function and the
@@ -185,7 +198,7 @@ TAopt(OF, algo = list(), \dots)
     Deterministic Update in Simulated Annealing. Physics Letters A.
     \strong{146} (4), 204--208.
 
-    Schumann, E. (2011) The \pkg{NMOF} Manual.
+    Schumann, E. (2011--2016) The \pkg{NMOF} Manual.
     \url{http://enricoschumann.net/NMOF.htm}
 
     Winker, P. (2001). \emph{Optimization Heuristics in Econometrics:

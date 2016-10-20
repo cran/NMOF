@@ -1,8 +1,8 @@
 Package: NMOF
 Type: Package
 Title: Numerical Methods and Optimization in Finance
-Version: 0.36-2
-Date: 2015-10-16
+Version: 0.40-0
+Date: 2016-10-20
 Maintainer: Enrico Schumann <es@enricoschumann.net>
 Authors@R: person("Enrico", "Schumann",
                   role  = c("aut", "cre"),
@@ -10,21 +10,22 @@ Authors@R: person("Enrico", "Schumann",
 Depends: R (>= 2.14)
 Imports: grDevices, graphics, parallel, stats, utils
 Suggests: MASS, RUnit, quadprog
-Description: Functions,  examples and  data  from the  book
- 'Numerical  Methods  and  Optimization  in Finance'  by  M.
- Gilli, D.  Maringer and E.  Schumann.  The package provides
- implementations of several optimisation heuristics, such as
- Differential  Evolution, Genetic  Algorithms  and Threshold
- Accepting.  There  are also functions for  the valuation of
- financial  instruments,  such  as  bonds and  options,  and
- functions that help with stochastic simulations.
+Description: Functions, examples and data from the book
+ "Numerical Methods and Optimization in Finance" by M.
+ 'Gilli', D. 'Maringer' and E. Schumann (2011), ISBN
+ 978-0123756626.  The package provides implementations of
+ several optimisation heuristics, such as Differential
+ Evolution, Genetic Algorithms and Threshold Accepting.
+ There are also functions for the valuation of financial
+ instruments, such as bonds and options, and functions that
+ help with stochastic simulations.
 License: GPL-3
 URL: http://nmof.net, http://enricoschumann.net/NMOF.htm
 LazyLoad: yes
 LazyData: yes
 Classification/JEL: C61, C63
 NeedsCompilation: no
-Packaged: 2015-10-20 05:57:04 UTC; es
+Packaged: 2016-10-20 09:47:40 UTC; es
 Author: Enrico Schumann [aut, cre]
 Repository: CRAN
-Date/Publication: 2015-10-20 10:57:53
+Date/Publication: 2016-10-20 22:12:46

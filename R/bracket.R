@@ -9,7 +9,7 @@ bracketing <- function(fun, interval, ...,
                        mc.control = list(),
                        cl = NULL) {
 
-    n <- makeInteger(n, "'n'", 2)
+    n <- makeInteger(n, "n", 2)
     method <- tolower(method[1L])
     if (method == "vectorize"  || method == "vectorized" || method == "vectorise")
             method <- "vectorised"
@@ -62,5 +62,7 @@ bracketing <- function(fun, interval, ...,
 
     ## find diffs
     iSigns <- which(fn[-n] * fn[-1L] < 0)
-    cbind(xs[iSigns], xs[iSigns+1L])
+    ans <- cbind(xs[iSigns], xs[iSigns+1L])
+    colnames(ans) <- c("lower", "upper")
+    ans
 }

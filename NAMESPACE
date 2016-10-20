@@ -1,7 +1,7 @@
 importFrom("parallel",
            clusterApply, makeCluster, mclapply, stopCluster)
-importFrom("grDevices", "dev.new")
-importFrom("graphics", "plot")
+importFrom("grDevices", "dev.new", "grey")
+importFrom("graphics", "plot", "lines")
 importFrom("stats", "dnorm", "integrate", "median", "pnorm",
            "quantile", "rnorm", "runif", "sd", "uniroot")
 importFrom("utils", "flush.console", "setTxtProgressBar",
@@ -45,6 +45,7 @@ export(bracketing,
        showChapterNames,
        showExample,
        tfAckley,
+       tfEggholder,
        tfGriewank,
        tfRastrigin,
        tfRosenbrock,
@@ -54,5 +55,10 @@ export(bracketing,
        vanillaOptionAmerican,
        vanillaOptionEuropean,
        vanillaOptionImpliedVol,
+       xtContractValue,
+       xtTickValue,
        xwGauss,
        ytm)
+
+S3method(plot, TAopt)
+S3method(print, TAopt)

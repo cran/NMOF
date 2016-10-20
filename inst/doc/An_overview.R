@@ -27,15 +27,23 @@ cat(paste(strwrap(x$results[,"Title"], exdent = 2), collapse = "\n"))
 
 
 ###################################################
-### code chunk number 5: An_overview.Rnw:144-145 (eval = FALSE)
+### code chunk number 5: An_overview.Rnw:141-144 (eval = FALSE)
+###################################################
+## install.packages("NMOF", type = "source",
+##                  repos = c("http://enricoschumann.net/R", 
+##                            getOption("repos")))
+
+
+###################################################
+### code chunk number 6: An_overview.Rnw:160-161 (eval = FALSE)
 ###################################################
 ## file.show(system.file("NMOFex/NMOFman.R", package = "NMOF"))
 
 
 ###################################################
-### code chunk number 6: An_overview.Rnw:152-159
+### code chunk number 7: An_overview.Rnw:168-175
 ###################################################
-test.rep <- readLines(system.file("unitTests/report.txt", 
+test.rep <- readLines(system.file("unitTests/test_results.txt", 
                                   package = "NMOF"))
 nt <- gsub(".*\\(([0-9]+) checks?\\).*", "\\1",
            test.rep[grep("\\(\\d+ checks?\\)", test.rep)])
@@ -45,7 +53,7 @@ cat("Package version  ", gsub("(.*)[.]([0-9]+)$", "\\1-\\2",
 
 
 ###################################################
-### code chunk number 7: An_overview.Rnw:184-187 (eval = FALSE)
+### code chunk number 8: An_overview.Rnw:207-210 (eval = FALSE)
 ###################################################
 ## require("utils")
 ## bug.report("[NMOF] Unexpected behaviour in function XXX", 
