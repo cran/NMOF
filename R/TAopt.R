@@ -30,7 +30,7 @@ TAopt <- function(OF, algo = list(), ...) {
     if (is.null(algoD$x0))
         stop("specify start solution ", sQuote("algo$x0"))
 
-    if (is.function(algoD$x0)) 
+    if (is.function(algoD$x0))
         x0 <- algoD$x0() else x0 <- eval(algoD$x0)
 
     OF1 <- function(x)
@@ -39,13 +39,13 @@ TAopt <- function(OF, algo = list(), ...) {
         algoD$neighbour(x, ...)
 
     target.reached <- FALSE
-    
+
     printDetail <- algoD$printDetail
     printBar <- algoD$printBar
     if (printBar && printDetail > 1)
         printBar <- FALSE
     if (printDetail)
-        cat("\nThreshold Accepting.\n")
+        cat("\nThreshold Accepting\n")
 
 
     nT <- makeInteger(algoD$nT, "algo$nT")
@@ -60,14 +60,16 @@ TAopt <- function(OF, algo = list(), ...) {
             vT <- numeric(nT)
         } else {
             if (printDetail) {
-                cat("\nComputing thresholds ... ")
+                cat("\n  Computing thresholds ... ")
+                if (printBar)
+                    cat("\n")
                 flush.console()
                 gc(FALSE)
                 startTime <- proc.time()
             }
             if (printBar)
                 whatGen <- txtProgressBar(min = 1, max = nD, style = 3,
-                                          getOption("width")*0.9)
+                                          width = getOption("width")*0.75)
             xc  <- x0
             xcF <- OF1(xc)
             diffF <- numeric(nD)
@@ -89,12 +91,12 @@ TAopt <- function(OF, algo = list(), ...) {
             if (printBar)
                 close(whatGen)
             if (printDetail) {
-                cat("OK.")
+                cat("  OK", sep = "")
                 endTime <- proc.time()
-                cat("\nEstimated remaining running time:",
+                cat("\n  Estimated remaining running time:",
                     as.numeric(endTime[3L] - startTime[3L]) /
                     nD * niter * (stepUp + 1L),
-                    "secs.\n\n")
+                    "secs\n")
                 flush.console()
             }
         }
@@ -128,13 +130,13 @@ TAopt <- function(OF, algo = list(), ...) {
         xlist <- list(xn = vector("list", length = niter),
                       xc = vector("list", length = niter)) else xlist <- NA
     if (printDetail) {
-        cat("\nRunning Threshold Accepting...\n")
-        cat("Initial solution: ", prettyNum(xbestF),"\n")
+        cat("\n  Running Threshold Accepting ...\n")
+        cat("  Initial solution:", prettyNum(xbestF),"\n")
         flush.console()
     }
     if (printBar)
         whatGen <- txtProgressBar(min = 1, max = niter, style = 3,
-                                  getOption("width")*0.9)
+                                  width = getOption("width")*0.75)
 
     counter <- 0L
     for (t in seq_len(nT)) {
@@ -170,37 +172,41 @@ TAopt <- function(OF, algo = list(), ...) {
 
             if (printDetail > 1) {
                 if (counter %% printDetail == 0L) {
-                    cat("Best solution (iteration ", counter,
+                    cat("  Best solution (iteration ", counter,
                         "/", niter, "): ",
                         prettyNum(xbestF),"\n", sep = "")
                     flush.console()
                 }
             }
-            
+
             ## check stopif value
-            if (!is.null(algo$OF.target) && xbestF <= algo$OF.target) {
+            if (!is.null(algoD$OF.target) && xbestF <= algoD$OF.target) {
                 if (printDetail) {
-                    cat("Target value (", prettyNum(algo$OF.target), ") ",
+                    cat("Target value (", prettyNum(algoD$OF.target), ") ",
                         "for objective function reached: ",
                         prettyNum(xbestF), "\n", sep = "")
                     flush.console()
                     target.reached  <- TRUE
                 }
-                break    
+                break
             }
         }
+
+        ## the second break is required since
+        ## break only exits the innermost loop
         if (target.reached)
             break
     }
-    if (printDetail)
-        cat("Finished.\nBest solution overall: ",
-            prettyNum(xbestF), "\n", sep = "")
     if (printBar)
         close(whatGen)
 
+    if (printDetail)
+        cat("  Finished.\n  Best solution overall: ",
+            prettyNum(xbestF), "\n", sep = "")
+
     ans <- list(xbest = xbest, OFvalue = xbestF,
                 Fmat = Fmat, xlist = xlist, vT = vT,
-                initial.state = state)
+                initial.state = state, x0 = x0)
     if (algoD$classify)
         class(ans) <- "TAopt"
     ans
@@ -211,7 +217,7 @@ TA.info <- function(n = 0L) {
     step <- NA
     threshold <- NA
     iteration <- NA
-    iteration.sampling <- NA
+    OF.sampling <- NA
     xbest <- NA
     if (exists("i", envir = e, inherits = FALSE))
         step <- get("i", envir = e, inherits = FALSE)
@@ -223,7 +229,7 @@ TA.info <- function(n = 0L) {
         iteration <- get("counter", envir = e, inherits = FALSE)
     if (exists("xbest", envir = e, inherits = FALSE))
         xbest <- get("xbest", envir = e, inherits = FALSE)
-    list(iteration.sampling = iteration.sampling,
+    list(OF.sampling = is.na(iteration),
          iteration = iteration,
          step = step,
          threshold = threshold,
@@ -234,8 +240,13 @@ TA.info <- function(n = 0L) {
                                         # METHODS
 
 print.TAopt <- function(x, ...) {
-    cat("Threshold Accepting\n")
-    cat("_ final objective-function value: ", x$OFvalue, "\n")
+    nt <- length(x$vT)
+    ns <- dim(x$Fmat)[[1L]]
+    cat("Threshold Accepting\n-------------------\n")
+    cat(" - ", nt, " thresholds with ", ns, " steps: ",
+        format(nt*ns, big.mark = ","), " iterations \n", sep = "")
+    ## cat(" - initial objective-function value: ", prettyNum(x$x0),      "\n", sep = "")
+    cat(" -   final objective-function value: ", prettyNum(x$OFvalue), "\n", sep = "")
     invisible(x)
 }
 
@@ -265,11 +276,14 @@ plot.TAopt <- function(x, y, plot.type = "interactive", ...) {
             defaults$x <- cummin(x$Fmat[,2L])
             defaults$col <- "blue"
             do.call("lines", defaults, ...)
+            legend("topright",
+                   legend = c("new solution (xn)",
+                              "accepted solution (xc)", "best solution"),
+                   col = c(grey(0.6), grey(0.2), "blue"),
+                   lwd = 5, box.lwd = 0)
         }
     } else {
         .NotYetUsed("plot.type")
     }
     invisible()
 }
-
-

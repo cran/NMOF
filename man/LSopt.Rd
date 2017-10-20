@@ -70,6 +70,13 @@ LSopt(OF, algo = list(), ...)
       \code{xlist} (see Value section below). To check, for instance,
       the current solution at the end of the \code{i}th generation, retrieve
       \code{xlist[[c(2L, i)]]}.}
+
+    \item{\code{OF.target}}{Numeric; when specified, the algorithm will
+    stop when an objective-function value as low as \code{OF.target} (or
+    lower) is achieved. This is useful when an optimal
+    objective-function value is known: the algorithm will then stop and
+    not waste time searching for a better solution.}
+
   }
 
   At the minimum, \code{algo} needs to contain an initial solution
@@ -111,8 +118,8 @@ LSopt(OF, algo = list(), ...)
     Methods and Optimization in Finance}. Elsevier.
   \url{http://www.elsevierdirect.com/product.jsp?isbn=9780123756626}
 
-  Schumann, E. (2013) The \pkg{NMOF} Manual.
-  \url{http://enricoschumann.net/NMOF.htm}
+  Schumann, E. (2016) Financial Optimisation with R (\pkg{NMOF} Manual).
+  \url{http://enricoschumann.net/NMOF.htm#NMOFmanual}
 
 }
 \author{

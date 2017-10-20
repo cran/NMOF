@@ -8,26 +8,26 @@ options(continue = " ", digits = 5, max.print = 10, width = 85)
 
 
 ###################################################
-### code chunk number 2: An_overview.Rnw:109-110
+### code chunk number 2: An_overview.Rnw:111-112
 ###################################################
 showExample()
 
 
 ###################################################
-### code chunk number 3: An_overview.Rnw:118-119 (eval = FALSE)
+### code chunk number 3: An_overview.Rnw:120-121 (eval = FALSE)
 ###################################################
 ## vignette(package = "NMOF")  ## display vignette titles
 
 
 ###################################################
-### code chunk number 4: An_overview.Rnw:121-123
+### code chunk number 4: An_overview.Rnw:123-125
 ###################################################
 x <- vignette(package = "NMOF")
 cat(paste(strwrap(x$results[,"Title"], exdent = 2), collapse = "\n"))
 
 
 ###################################################
-### code chunk number 5: An_overview.Rnw:141-144 (eval = FALSE)
+### code chunk number 5: An_overview.Rnw:143-146 (eval = FALSE)
 ###################################################
 ## install.packages("NMOF", type = "source",
 ##                  repos = c("http://enricoschumann.net/R", 
@@ -35,13 +35,13 @@ cat(paste(strwrap(x$results[,"Title"], exdent = 2), collapse = "\n"))
 
 
 ###################################################
-### code chunk number 6: An_overview.Rnw:160-161 (eval = FALSE)
+### code chunk number 6: An_overview.Rnw:161-162 (eval = FALSE)
 ###################################################
 ## file.show(system.file("NMOFex/NMOFman.R", package = "NMOF"))
 
 
 ###################################################
-### code chunk number 7: An_overview.Rnw:168-175
+### code chunk number 7: An_overview.Rnw:169-176
 ###################################################
 test.rep <- readLines(system.file("unitTests/test_results.txt", 
                                   package = "NMOF"))
@@ -53,7 +53,7 @@ cat("Package version  ", gsub("(.*)[.]([0-9]+)$", "\\1-\\2",
 
 
 ###################################################
-### code chunk number 8: An_overview.Rnw:207-210 (eval = FALSE)
+### code chunk number 8: An_overview.Rnw:208-211 (eval = FALSE)
 ###################################################
 ## require("utils")
 ## bug.report("[NMOF] Unexpected behaviour in function XXX", 

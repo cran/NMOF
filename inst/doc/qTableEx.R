@@ -43,7 +43,7 @@ cat(qTable(X, yoffset = -0.025, unitlength = "5cm",
 ###################################################
 ### code chunk number 6: res3
 ###################################################
-## 3 digits
+## 3 decimal places
 cat(qTable(X, yoffset = -0.025, unitlength = "5cm",
            circlesize = 0.0125, dec = 3))
 

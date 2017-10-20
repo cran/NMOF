@@ -117,7 +117,8 @@ TAopt(OF, algo = list(), \dots)
 
     \item{\code{classify}}{Logical; default is \code{FALSE}. If
     \code{TRUE}, the result will have a class attribute \code{TAopt}
-    attached.}
+    attached. This feature is \strong{experimental}: the supported
+    methods (plot, summary) may change without warning.}
 
   \item{\code{OF.target}}{Numeric; when specified, the algorithm will
     stop when an objective-function value as low as \code{OF.target} (or
@@ -198,8 +199,12 @@ TAopt(OF, algo = list(), \dots)
     Deterministic Update in Simulated Annealing. Physics Letters A.
     \strong{146} (4), 204--208.
 
-    Schumann, E. (2011--2016) The \pkg{NMOF} Manual.
-    \url{http://enricoschumann.net/NMOF.htm}
+    Schumann, E. (2012) Remarks on 'A comparison of some
+    heuristic optimization methods'.
+    \url{http://enricoschumann.net/R/remarks.htm}
+
+    Schumann, E. (2017) Financial Optimisation with R (\pkg{NMOF} Manual).
+    \url{http://enricoschumann.net/NMOF.htm#NMOFmanual}
 
     Winker, P. (2001). \emph{Optimization Heuristics in Econometrics:
     Applications of Threshold Accepting}. Wiley.
