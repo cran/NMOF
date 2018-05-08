@@ -4,7 +4,7 @@
 ### code chunk number 1: An_overview.Rnw:23-25
 ###################################################
 require("NMOF")
-options(continue = " ", digits = 5, max.print = 10, width = 85)
+options(continue = "  ", digits = 5, max.print = 10, width = 85)
 
 
 ###################################################

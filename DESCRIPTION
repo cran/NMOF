@@ -1,12 +1,13 @@
 Package: NMOF
 Type: Package
 Title: Numerical Methods and Optimization in Finance
-Version: 1.2-2
-Date: 2017-10-19
+Version: 1.4-1
+Date: 2018-05-08
 Maintainer: Enrico Schumann <es@enricoschumann.net>
 Authors@R: person("Enrico", "Schumann",
                   role  = c("aut", "cre"),
-                  email = "es@enricoschumann.net")
+                  email = "es@enricoschumann.net",
+		  comment = c(ORCID = "0000-0001-7601-6576"))
 Depends: R (>= 2.14)
 Imports: grDevices, graphics, parallel, stats, utils
 Suggests: MASS, RUnit, quadprog
@@ -24,9 +25,8 @@ URL: http://nmof.net, http://enricoschumann.net/NMOF
 LazyLoad: yes
 LazyData: yes
 Classification/JEL: C61, C63
-ByteCompile: no
 NeedsCompilation: no
-Packaged: 2017-10-20 03:24:13 UTC; es19
-Author: Enrico Schumann [aut, cre]
+Packaged: 2018-05-08 18:28:51 UTC; es19
+Author: Enrico Schumann [aut, cre] (<https://orcid.org/0000-0001-7601-6576>)
 Repository: CRAN
-Date/Publication: 2017-10-20 10:05:50 UTC
+Date/Publication: 2018-05-08 19:07:41 UTC
