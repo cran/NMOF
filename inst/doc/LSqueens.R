@@ -55,7 +55,7 @@ for (r in 1:N)
         mat[r,c] <- c - r
 mat
 
-mat <- array(NA, dim = c(N,N))  ## reverse diagonal
+mat <- array(NA, dim = c(N,N))  ## reverse diagonals
 for (r in 1:N)
     for (c in 1:N)
         mat[r,c] <- c + r - (N + 1)
