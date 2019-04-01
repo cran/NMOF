@@ -53,6 +53,17 @@ TAopt(OF, algo = list(), \dots)
     \item{\code{nT}}{The number of thresholds. Default is 10; ignored if
       \code{algo$vT} is specified.}
 
+    \item{\code{nI}}{
+
+      Total number of iterations, with default
+      \code{NULL}. If specified, it will override
+      \code{nS} with \code{ceiling(nI/nT)}. Using this
+      option makes it easier to compare and switch
+      between functions \code{\link{LSopt}},
+      \code{\link{TAopt}} and \code{\link{SAopt}}.
+      
+    }
+
     \item{\code{nD}}{The number of random steps to compute the threshold
       sequence. Defaults to 2000. Only used if \code{algo$vT} is \code{NULL}.}
 
@@ -104,6 +115,11 @@ TAopt(OF, algo = list(), \dots)
       as restarting from a returned solution. (In Simulated Annealing,
       this strategy goes by the name of \sQuote{reheating}.)}
 
+    \item{\code{thresholds.only}}{Defaults to
+      \code{FALSE}. If \code{TRUE}, compute only
+      threshold sequence, but do not actually run
+      \acronym{TA}.}
+ 
     \item{\code{storeF}}{if \code{TRUE} (the default), the objective
       function values for every solution in every generation are stored
       and returned as matrix \code{Fmat}.}

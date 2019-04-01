@@ -4,13 +4,15 @@ importFrom("grDevices", "dev.new", "grey")
 importFrom("graphics", "plot", "legend", "lines")
 importFrom("stats", "dnorm", "integrate", "median", "pnorm",
            "quantile", "rnorm", "runif", "sd", "uniroot")
-importFrom("utils", "flush.console", "setTxtProgressBar",
+importFrom("utils", "flush.console", "setTxtProgressBar",           
+           "download.file", "read.table", "unzip",
            "txtProgressBar")
 export(
     DEopt,
     CPPI,
     EuropeanCall,
     EuropeanCallBE,
+    French,
     GAopt,
     LS.info,
     LSopt,
@@ -22,6 +24,7 @@ export(
     PSopt,
     SA.info,
     SAopt,
+    Shiller,
     TA.info,
     TAopt,
     bracketing,
@@ -45,6 +48,8 @@ export(
     gbm,
     gridSearch,
     minvar,
+    mvFrontier,
+    mvPortfolio,
     pm,
     putCallParity,
     qTable,
@@ -71,4 +76,6 @@ export(
 )
 
 S3method(plot, TAopt)
+S3method(print, LSopt)
 S3method(print, TAopt)
+S3method(print, DEopt)
