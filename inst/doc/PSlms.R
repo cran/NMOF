@@ -9,8 +9,8 @@ options(continue = "  ", digits = 5)
 ###################################################
 ### code chunk number 2: PSlms.Rnw:45-48
 ###################################################
-require("NMOF")
-require("MASS")
+library("NMOF")
+library("MASS")
 set.seed(11223344)
 
 
@@ -20,8 +20,8 @@ set.seed(11223344)
 createData <- function(n, p, constant = TRUE,
                        sigma = 2, oFrac = 0.1) {
     X <- array(rnorm(n * p), dim = c(n, p))
-    if (constant) 
-        X[ ,1L] <- 1L
+    if (constant)
+        X[, 1L] <- 1L
     b <- rnorm(p)
     y <- X %*% b + rnorm(n)*0.5
     nO <- ceiling(oFrac*n)
@@ -49,7 +49,7 @@ Data <- list(y = as.vector(y), X = X, h = h)
 ###################################################
 par(bty = "n", las = 1, tck = 0.01, mar = c(4,4,1,1))
 plot(X[ ,2L], type = "h", ylab = "X values", xlab = "observation")
-lines(aux$outliers, X[aux$outliers ,2L], type = "p", pch = 21, 
+lines(aux$outliers, X[aux$outliers ,2L], type = "p", pch = 21,
       col = "blue", bg = "blue")
 
 
@@ -106,7 +106,7 @@ if (require("MASS", quietly = TRUE)) {
                              nsamp = 100000L, method = "lqs",
                              quantile = h))
     res1 <- sort((y - X %*% as.matrix(coef(test1)))^2)[h]
-} else 
+} else
     res1 <- NA
 res2 <- sort((y - X %*% as.matrix(solPS$xbest))^2)[h]
 res3 <- sort((y - X %*% as.matrix(solDE$xbest))^2)[h]

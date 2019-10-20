@@ -7,31 +7,31 @@ options(continue = "  ", digits = 5)
 
 
 ###################################################
-### code chunk number 2: LSselect.Rnw:43-44 (eval = FALSE)
+### code chunk number 2: LSselect.Rnw:44-45 (eval = FALSE)
 ###################################################
 ## showExample("exampleLS", chapter = "Portfolio")
 
 
 ###################################################
-### code chunk number 3: LSselect.Rnw:47-49
+### code chunk number 3: LSselect.Rnw:48-50
 ###################################################
 require("NMOF")
 set.seed(112233)
 
 
 ###################################################
-### code chunk number 4: LSselect.Rnw:71-77
+### code chunk number 4: LSselect.Rnw:76-82
 ###################################################
 na <- 500L                          ## number of assets
 C <- array(0.6, dim = c(na, na))    ## correlation matrix
 diag(C) <- 1
 minVol <- 0.20; maxVol <- 0.40      ## covariance matrix
 Vols <- (maxVol - minVol) * runif(na) + minVol
-Sigma <- outer(Vols, Vols) * C   
+Sigma <- outer(Vols, Vols) * C
 
 
 ###################################################
-### code chunk number 5: LSselect.Rnw:80-85
+### code chunk number 5: LSselect.Rnw:85-90
 ###################################################
 OF <- function(x, Data) {
     w <- x/sum(x)
@@ -41,7 +41,7 @@ OF <- function(x, Data) {
 
 
 ###################################################
-### code chunk number 6: LSselect.Rnw:88-92
+### code chunk number 6: LSselect.Rnw:93-97
 ###################################################
 OF2 <- function(x, Data) {
     w <- 1/sum(x)
@@ -50,7 +50,7 @@ OF2 <- function(x, Data) {
 
 
 ###################################################
-### code chunk number 7: LSselect.Rnw:95-106
+### code chunk number 7: LSselect.Rnw:100-111
 ###################################################
 neighbour <- function(xc, Data) {
     xn <- xc
@@ -59,14 +59,14 @@ neighbour <- function(xc, Data) {
 
     ## reject infeasible solution
     if (sum(xn) > Data$Kmax || sum(xn) < Data$Kmin)
-        xc 
-    else 
+        xc
+    else
         xn
 }
 
 
 ###################################################
-### code chunk number 8: LSselect.Rnw:115-120
+### code chunk number 8: LSselect.Rnw:122-127
 ###################################################
 Data <- list(Sigma = Sigma,
               Kmin = 30L,
@@ -76,7 +76,7 @@ Data <- list(Sigma = Sigma,
 
 
 ###################################################
-### code chunk number 9: LSselect.Rnw:126-130
+### code chunk number 9: LSselect.Rnw:133-137
 ###################################################
 card0 <- sample(Data$Kmin:Data$Kmax, 1L, replace = FALSE)
 assets <- sample.int(na, card0, replace = FALSE)
@@ -85,7 +85,7 @@ x0[assets] <- TRUE
 
 
 ###################################################
-### code chunk number 10: LSselect.Rnw:137-142
+### code chunk number 10: LSselect.Rnw:144-149
 ###################################################
 algo <- list(x0 = x0,
               neighbour = neighbour,
@@ -95,7 +95,7 @@ algo <- list(x0 = x0,
 
 
 ###################################################
-### code chunk number 11: LSselect.Rnw:145-150
+### code chunk number 11: LSselect.Rnw:152-157
 ###################################################
 system.time(sol1 <- LSopt(OF, algo, Data))
 sqrt(sol1$OFvalue)
@@ -105,7 +105,7 @@ plot(sqrt(sol1$Fmat[ ,2L]), main = "",
 
 
 ###################################################
-### code chunk number 12: LSselect.Rnw:156-164
+### code chunk number 12: LSselect.Rnw:163-171
 ###################################################
 nRuns <- 3L
 allRes <- restartOpt(LSopt, n = nRuns, OF, algo = algo, Data = Data)

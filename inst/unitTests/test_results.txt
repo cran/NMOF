@@ -1,12 +1,14 @@
-RUNIT TEST PROTOCOL -- Mon Apr  1 14:39:48 2019 
+RUNIT TEST PROTOCOL -- Sun Oct 20 10:20:37 2019 
 *********************************************** 
-Number of test functions: 25 
-Number of errors: 0 
+Number of test functions: 27 
+Number of errors: 1 
 Number of failures: 0 
 
  
 1 Test Suite : 
-NMOF - 25 test functions, 0 errors, 0 failures
+NMOF - 27 test functions, 1 error, 0 failures
+ERROR in test.French: Error in download.file(paste0(.ftp, url), f.path) : 
+  cannot open URL 'http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Portfolios_Formed_on_RESVAR.csv'
 
 
 
@@ -18,8 +20,14 @@ Test file regexp: ^unitTests.*[^~]$
 Involved directory: 
 ~/Packages/NMOF/inst/unitTests 
 --------------------------- 
+Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTests_market.R 
+test.French: ERROR !! 
+Error in download.file(paste0(.ftp, url), f.path) : 
+  cannot open URL 'http://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Portfolios_Formed_on_RESVAR.csv'
+test.Shiller: (0 checks) ... OK (0.37 seconds)
+--------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTests_mc.R 
-test.gbb: (2 checks) ... OK (0.01 seconds)
+test.gbb: (2 checks) ... OK (0 seconds)
 test.gbm: (2 checks) ... OK (0 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTests_portfolio.R 
@@ -28,7 +36,7 @@ test.minvar: (4 checks) ... OK (0 seconds)
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTests2.R 
 test.bracketing: (13 checks) ... OK (0 seconds)
 test.gridSearch: (18 checks) ... OK (0.07 seconds)
-test.xwGauss: (4 checks) ... OK (0 seconds)
+test.xwGauss: (4 checks) ... OK (0.01 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestsBonds.R 
 test.ytm: (6 checks) ... OK (0 seconds)
@@ -37,13 +45,13 @@ Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestscallCF.R
 test.callCF: (22 checks) ... OK (0.01 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestsDEopt.R 
-test.DEopt: (133 checks) ... OK (0.89 seconds)
+test.DEopt: (133 checks) ... OK (1.21 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestsGAopt.R 
 test.GAopt: (22 checks) ... OK (0.07 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestsInternals.R 
-test.checkList: (10 checks) ... OK (0 seconds)
+test.checkList: (10 checks) ... OK (0.01 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestsLSopt.R 
 test.LSopt: (7 checks) ... OK (0.07 seconds)
@@ -57,20 +65,20 @@ test.EuropeanCall: (6 checks) ... OK (0 seconds)
 test.EuropeanCallBE: (6 checks) ... OK (0 seconds)
 test.testFunctions: (6 checks) ... OK (0 seconds)
 test.vanillaOptionAmerican: (6 checks) ... OK (0 seconds)
-test.vanillaOptionEuropean: (2124 checks) ... OK (2.97 seconds)
+test.vanillaOptionEuropean: (2124 checks) ... OK (3.28 seconds)
 test.vanillaOptionImpliedVol: (12 checks) ... OK (0.04 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestsPCparity.R 
 test.putCallParity: (10 checks) ... OK (0 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestsPSopt.R 
-test.PSopt: (16 checks) ... OK (1 seconds)
+test.PSopt: (16 checks) ... OK (1.41 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestsRestartOpt.R 
-test.restartOpt: (1 checks) ... OK (0.02 seconds)
+test.restartOpt: (1 checks) ... OK (0.03 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestsSAopt.R 
-test.SAopt: (7 checks) ... OK (0.12 seconds)
+test.SAopt: (7 checks) ... OK (0.16 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestsTAopt.R 
-test.TAopt: (13 checks) ... OK (0.08 seconds)
+test.TAopt: (13 checks) ... OK (0.1 seconds)

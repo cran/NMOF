@@ -4,7 +4,7 @@ importFrom("grDevices", "dev.new", "grey")
 importFrom("graphics", "plot", "legend", "lines")
 importFrom("stats", "dnorm", "integrate", "median", "pnorm",
            "quantile", "rnorm", "runif", "sd", "uniroot")
-importFrom("utils", "flush.console", "setTxtProgressBar",           
+importFrom("utils", "flush.console", "setTxtProgressBar",
            "download.file", "read.table", "unzip",
            "txtProgressBar")
 export(
@@ -46,6 +46,7 @@ export(
     duration,
     gbb,
     gbm,
+    greedySearch,
     gridSearch,
     minvar,
     mvFrontier,
@@ -53,6 +54,7 @@ export(
     pm,
     putCallParity,
     qTable,
+    randomReturns,
     repairMatrix,
     resampleC,
     restartOpt,
@@ -76,6 +78,7 @@ export(
 )
 
 S3method(plot, TAopt)
-S3method(print, LSopt)
-S3method(print, TAopt)
 S3method(print, DEopt)
+S3method(print, LSopt)
+S3method(print, PSopt)
+S3method(print, TAopt)
