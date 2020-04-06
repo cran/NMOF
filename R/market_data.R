@@ -8,7 +8,14 @@ Shiller <- function(dest.dir,
     f.path <- file.path(normalizePath(dest.dir), f.name)
 
     if (!file.exists(f.path))
-        download.file(url, destfile = f.path)
+        dl.result <- download.file(url, destfile = f.path)
+    else
+        dl.result <- 0
+
+    if (dl.result != 0L) {
+        warning("download failed with code ", dl.result, "; see ?download.file")
+        return(invisible(NULL))
+    }
 
     if (!requireNamespace("readxl", quietly = TRUE))
         stop("file downloaded, but package ",
@@ -18,15 +25,20 @@ Shiller <- function(dest.dir,
              sQuote("datetimeutils"), " is not available")
 
     data <- suppressMessages(suppressWarnings(
-        readxl::read_xls(f.path, sheet = 3)))
+        readxl::read_xls(f.path, sheet = "Data")))
     data <- as.data.frame(data)
     data <- data[-(1:6), ]
-    data <- data[, 1:11]
-    data <- data[, -6] ## drop column 'Date Fraction'
+    data <- data[, 1:15]
+    data <- data[, -c(6, 14)] ## drop column 'Date Fraction' and empty column
 
     colnames(data) <- c("Date", "Price", "Dividend", "Earnings",
                         "CPI", "Long Rate", "Real Price",
-                        "Real Dividend", "Real Earnings", "CAPE")
+                        "Real Dividend",
+                        "Real Total Return Price",
+                        "Real Earnings",
+                        "Real TR Scaled Earnings",
+                        "CAPE",
+                        "TR CAPE")
 
     data <- data[!is.na(data[["Date"]]), ]
     tmp <- data[["Date"]]
@@ -37,7 +49,7 @@ Shiller <- function(dest.dir,
         sapply(tmp, function(x) paste(x[1], x[2], "1", sep = "-")))
     data[["Date"]] <- datetimeutils::end_of_month(tmp)
 
-    for (i in 2:10) ## there will be NAs => warnings
+    for (i in 2:ncol(data)) ## there will be NAs => warnings
         data[[i]] <- suppressWarnings(as.numeric(data[[i]]))
     data
 }
@@ -82,7 +94,7 @@ French <- function(dest.dir,
 
             "Portfolios_Formed_on_BE-ME_CSV.zip",
             "Portfolios_Formed_on_NI_CSV.zip",
-            "Portfolios_Formed_on_RESVAR.csv",
+            "Portfolios_Formed_on_RESVAR_CSV.zip",
             "Portfolios_Formed_on_VAR_CSV.zip",
 
             "Siccodes5.zip",
@@ -146,7 +158,14 @@ French <- function(dest.dir,
     f.path <- file.path(normalizePath(dest.dir), f.name)
 
     if (!file.exists(f.path))
-        download.file(paste0(.ftp, url), f.path)
+        dl.result <- download.file(paste0(.ftp, url), f.path)
+    else
+        dl.result <- 0
+
+    if (dl.result != 0L) {
+        warning("download failed with code ", dl.result, "; see ?download.file")
+        return(invisible(NULL))
+    }
 
     tmp2 <- unzip(f.path)
     txt <- readLines(tmp2)
@@ -366,7 +385,7 @@ French <- function(dest.dir,
 
         i <- grep(",Mom", txt)
         i <- i[ c("monthly" = 1, "annual" = 2)[frequency] ]
-        j <- grep("^ *$", txt)
+        j <- grep("^[, ]*$", txt)
         j <- min( j[j > i] ) - 1
         ans <- txt[i:j]
         cnames <- "Mom"
@@ -439,19 +458,72 @@ French <- function(dest.dir,
 
         ans <- txt[(i+1):(j-1)]
 
-    } else if (tolower(dataset) != "f-f_research_data_factors_csv.zip") {
+        if (tolower(dataset) == "portfolios_formed_on_ni_csv.zip") {
+            i <- grep("number of firms", txt, ignore.case = TRUE) + 1
+            j <- grep("^$", txt)
+            j <- j[min(which(j > i))] - 1
+            info1 <- read.table(text = txt[i:j], header = TRUE,
+                                stringsAsFactors = FALSE, sep = ",",
+                                check.names = FALSE,
+                                colClasses = "numeric")
+            row.names(info1) <- as.character(info1[[1L]])
+            info1 <- info1[, -1L]
+
+            i <- grep("average firm size", txt, ignore.case = TRUE) + 1
+            j <- grep("^$", txt)
+            j <- j[min(which(j > i))] - 1
+            info2 <- read.table(text = txt[i:j], header = TRUE,
+                                stringsAsFactors = FALSE, sep = ",",
+                                check.names = FALSE,
+                                colClasses = "numeric")
+            row.names(info2) <- as.character(info2[[1L]])
+            info2 <- info2[, -1L]
+
+            i <- grep("Average of NI", txt, ignore.case = TRUE) + 1
+            j <- grep("^$", txt)
+            j <- j[min(which(j > i))] - 1
+            info3 <- read.table(text = txt[i:j], header = TRUE,
+                                stringsAsFactors = FALSE, sep = ",",
+                                check.names = FALSE,
+                                colClasses = "numeric")
+            row.names(info3) <- as.character(info3[[1L]])
+            info3 <- info3[, -1L]/100
+
+            attr.list <- list(
+                number.of.firms   = info1,
+                average.firm.size = info2,
+                value.weighted.average.ni = info3)
+        }
+    } else  {
 
         ## default
+        message("dataset not supported: trying default => check data carefully")
 
         if (grepl("daily", dataset) && frequency != "daily")
             warning("daily dataset but frequency not set to daily")
 
-        i <- if (tolower(weighting) == "equal")
-                 grep("Equal Weighted Returns", txt)
-             else if (tolower(weighting) == "value")
-                 grep("Value Weighted Returns", txt)
-             else
-                 stop("weighting must be 'equal' or 'value'")
+        if (frequency == "annual") {
+            i <- if (tolower(weighting) == "equal")
+                     grep("Equal Weight(ed)? Returns.*Annual", txt, ignore.case = TRUE)
+                 else if (tolower(weighting) == "value")
+                     grep("Value Weight(ed)? Returns.*Annual", txt, ignore.case = TRUE)
+                 else
+                     stop("weighting must be 'equal' or 'value'")
+        } else if (frequency == "monthly") {
+            i <- if (tolower(weighting) == "equal")
+                     grep("Equal Weight(ed)? Returns.*Month", txt, ignore.case = TRUE)
+                 else if (tolower(weighting) == "value")
+                     grep("Value Weight(ed)? Returns.*Month", txt, ignore.case = TRUE)
+                 else
+                     stop("weighting must be 'equal' or 'value'")
+        } else if (frequency == "daily") {
+            i <- if (tolower(weighting) == "equal")
+                     grep("Equal Weight(ed)? Returns.*Daily", txt, ignore.case = TRUE)
+                 else if (tolower(weighting) == "value")
+                     grep("Value Weight(ed)? Returns.*Daily", txt, ignore.case = TRUE)
+                 else
+                     stop("weighting must be 'equal' or 'value'")
+        }
         i <- i[[1]]
         j <- grep("^$", txt)
         j <- j[min(which(j > i))]
@@ -482,11 +554,9 @@ French <- function(dest.dir,
 
         }
 
-    } else {
-        warning("dataset not supported")
-        i <- grep("Mkt-RF", txt)
-        j <- grep("^ *$", txt[-c(1:10)]) + 9
-        ans <- txt[i:j]
+        ## i <- grep("Mkt-RF", txt)
+        ## j <- grep("^ *$", txt[-c(1:10)]) + 9
+        ## ans <- txt[i:j]
     }
 
     if (!requireNamespace("datetimeutils", quietly = TRUE))
