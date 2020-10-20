@@ -138,12 +138,13 @@ French <- function(dest.dir,
     else
         url <- dataset
 
+    url <- basename(url)
     if (adjust.frequency        &&
         grepl("daily", dataset) &&
         frequency != "daily") {
-        message("frequency set to daily (use ",
+        message("Frequency set to daily.\n(Use ",
                 sQuote("adjust.frequency = FALSE"),
-                " to prevent this)")
+                " to prevent this.)")
         frequency <- "daily"
     }
 
@@ -497,7 +498,7 @@ French <- function(dest.dir,
     } else  {
 
         ## default
-        message("dataset not supported: trying default => check data carefully")
+        message("Dataset not explicitly supported: trying default => check data carefully.")
 
         if (grepl("daily", dataset) && frequency != "daily")
             warning("daily dataset but frequency not set to daily")
@@ -511,9 +512,9 @@ French <- function(dest.dir,
                      stop("weighting must be 'equal' or 'value'")
         } else if (frequency == "monthly") {
             i <- if (tolower(weighting) == "equal")
-                     grep("Equal Weight(ed)? Returns.*Month", txt, ignore.case = TRUE)
+                     grep("Equal Weight(ed)? (Average)? *Returns.*Month", txt, ignore.case = TRUE)
                  else if (tolower(weighting) == "value")
-                     grep("Value Weight(ed)? Returns.*Month", txt, ignore.case = TRUE)
+                     grep("Value Weight(ed)? (Average)? *Returns.*Month", txt, ignore.case = TRUE)
                  else
                      stop("weighting must be 'equal' or 'value'")
         } else if (frequency == "daily") {
@@ -539,6 +540,8 @@ French <- function(dest.dir,
                                 stringsAsFactors = FALSE, sep = ",",
                                 check.names = FALSE,
                                 colClasses = "numeric")
+            row.names(info1) <- as.character(info1[[1L]])
+            info1 <- info1[, -1L]
 
             i <- grep("average firm size", txt, ignore.case = TRUE) + 1
             j <- grep("^$", txt)
@@ -547,16 +550,25 @@ French <- function(dest.dir,
                                 stringsAsFactors = FALSE, sep = ",",
                                 check.names = FALSE,
                                 colClasses = "numeric")
+            row.names(info2) <- as.character(info2[[1L]])
+            info2 <- info2[, -1L]
+
+            i <- grep("Sum of BE.* Sum of ME", txt, ignore.case = TRUE) + 1
+            j <- grep("^$", txt)
+            j <- j[min(which(j > i))] - 1
+            info3 <- read.table(text = txt[i:j], header = TRUE,
+                                stringsAsFactors = FALSE, sep = ",",
+                                check.names = FALSE,
+                                colClasses = "numeric")
+            row.names(info3) <- as.character(info3[[1L]])
+            info3 <- info3[, -1L]
 
             attr.list <- list(
                 number.of.firms   = info1,
-                average.firm.size = info2)
+                average.firm.size = info2,
+                sumBE.sumME       = info3)
 
         }
-
-        ## i <- grep("Mkt-RF", txt)
-        ## j <- grep("^ *$", txt[-c(1:10)]) + 9
-        ## ans <- txt[i:j]
     }
 
     if (!requireNamespace("datetimeutils", quietly = TRUE))

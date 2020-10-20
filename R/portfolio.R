@@ -211,13 +211,13 @@ mvPortfolio <- function(m, var, min.return, wmin = 0, wmax = 1,
                    m,
                -diag(na),
                 diag(na))
-    b <- as.matrix(c(if (is.null(lambda))
+    b <- c(if (is.null(lambda))
                          min.return,
                      -wmax,
-                     wmin))
+                     wmin)
 
     A <- rbind(A, B)
-    bvec <- rbind(a, b)
+    bvec <- c(a, b)
     if (!is.null(groups)) {
         Groups <-
             group_constraints_matrices(na,
@@ -225,7 +225,7 @@ mvPortfolio <- function(m, var, min.return, wmin = 0, wmax = 1,
                                        groups.wmin,
                                        groups.wmax)
         A <- rbind(A, Groups$A.ineq)
-        bvec <- rbind(bvec, Groups$b.ineq)
+        bvec <- c(bvec, Groups$b.ineq)
     }
 
     result <- quadprog::solve.QP(Dmat = Q,
@@ -260,17 +260,149 @@ group_constraints_matrices <- function(na, groups,
     A.ineq <- NULL
     b.ineq <- NULL
     if (!is.null(groups.wmax)) {
-        G.max <- G[is.finite(groups.wmax), ]
+        G.max <- if (is.character(groups))
+                     G[names(groups.wmax), ] else G
+        G.max <- G.max[is.finite(groups.wmax), ]
         groups.wmax <- groups.wmax[is.finite(groups.wmax)]
         A.ineq <- rbind(A.ineq, -G.max)
         b.ineq <- c(b.ineq, -groups.wmax)
     }
     if (!is.null(groups.wmin)) {
-        G.min <- G[is.finite(groups.wmin), ]
+        G.min <- if (is.character(groups))
+                     G[names(groups.wmin), ] else G
+        G.min <- G.min[is.finite(groups.wmin), ]
         groups.wmin <- groups.wmin[is.finite(groups.wmin)]
         A.ineq <- rbind(A.ineq, G.min)
         b.ineq <- c(b.ineq, groups.wmin)
     }
     list(A.ineq = A.ineq,
          b.ineq = b.ineq)
+}
+
+minCVaR <- function(R,
+                    q = 0.1,
+                    wmin = 0,
+                    wmax = 1,
+                    method = "Rglpk",
+                    groups = NULL,
+                    groups.wmin = NULL,
+                    groups.wmax = NULL,
+                    Rglpk.control = list()
+                    ) {
+
+
+    if (tolower(method) == "rglpk") {
+        if (!requireNamespace("Rglpk"))
+            stop("package ", sQuote("Rglpk"))
+
+        control <- list(verbose = FALSE,
+                        presolve = FALSE)
+
+        control[names(Rglpk.control)] <- Rglpk.control
+
+        b <- 1 - q
+        ns <- nrow(R)
+        na <- ncol(R)
+
+
+        f.obj <- c(alpha = 1,
+                   x = rep(0, na),
+                   u = 1/rep(( 1 - b)*ns, ns))
+
+        C <- cbind(1, R, diag(nrow(R)))
+        C <- rbind(c(alpha = 0, x = rep(1, na), u = rep(0, nrow(R))), C)
+
+        const.dir <- c("==", rep(">=", nrow(C) - 1))
+        const.rhs <- c(1, rep(0, nrow(C) - 1))
+
+        sol.lp <- Rglpk::Rglpk_solve_LP(f.obj,
+                                        C,
+                                        const.dir,
+                                        rhs = const.rhs,
+                                        control = control)
+
+        ans <- sol.lp$solution[2:(1+na)]
+        attr(ans, "LP") <- sol.lp
+    } else if (tolower(method) == "ls") {
+
+
+    } else {
+        stop("method ", sQuote(method), " not supported")
+    }
+    ans
+}
+
+trackingPortfolio <- function(var, wmin = 0, wmax = 1,
+                              method = "qp", objective = "variance",
+                              R) {
+
+    if (method == "qp") {
+
+        na <- ncol(var) - 1L
+        if (length(wmin) == 1L)
+            wmin <- rep(wmin, na)
+        if (length(wmax) == 1L)
+            wmax <- rep(wmax, na)
+
+        A <- rbind(numeric(na) + 1,
+                   -diag(na),
+                   diag(na))
+        b <- c(1, -wmax, wmin)
+
+        if (!requireNamespace("quadprog"))
+            stop("package ", sQuote("quadprog"), " is not available")
+
+        if (objective == "variance" ) {
+            Dmat <- var[-1, -1]
+            dvec <- var[1, -1]
+        } else if (objective == "sum.of.squares") {
+            Dmat <- crossprod(R[, -1])
+            dvec <- c(crossprod(R[, 1], R[, -1]))
+        }
+        qp_res <- quadprog::solve.QP(Dmat = Dmat,
+                                     dvec = dvec,
+                                     Amat = t(A),
+                                     bvec = b,
+                                     meq  = 1L)
+
+        ans <- qp_res$solution
+    } else if (method == "ls") {
+
+        if (objective == "variance" ) {
+            te <- function(w, R)
+                var(R[, -1] %*% w - R[, 1])
+
+        } else if (objective == "sum.of.squares") {
+            te <- function(w, R)
+                crossprod(R[, -1] %*% w - R[, 1])
+        }
+
+        ## if (!requireNamespace("neighbours"))
+        ##     stop("package ", sQuote("quadprog"), " is not available")
+        ## nb <- neighbours::neighbourfun(type = "numeric",
+        ##                                max = wmax,
+        ##                                length = ncol(R) - 1,
+        ##                                stepsize = 0.01)
+        stepsize <- 0.01
+        nb <- function (x, ...)  {
+            decrease <- which(x > wmin)
+            increase <- which(x < wmax)
+            i <- decrease[sample.int(length(decrease), size = 1L)]
+            j <- increase[sample.int(length(increase), size = 1L)]
+            stepsize <- stepsize * runif(1L)
+            stepsize <- min(x[i] - wmin, wmax - x[j], stepsize)
+            x[i] <- x[i] - stepsize
+            x[j] <- x[j] + stepsize
+            x
+        }
+
+        sol.ls <- LSopt(te, list(neighbour = nb, nI = 2000,
+                                 printBar = FALSE,
+                                 printDetail = FALSE,
+                                 x0 = rep(1/(ncol(R) - 1), ncol(R) - 1)),
+                        R = R)
+        ans <- sol.ls$xbest
+
+    }
+    ans
 }

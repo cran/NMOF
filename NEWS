@@ -1,3 +1,33 @@
+v2.2-0  (2020-10-20)
+
+  o New function 'minCVaR' for computing minimum CVaR
+    portfolios. For details, see
+    http://enricoschumann.net/notes/minimising-conditional-var.html
+
+  o New function 'trackingPortfolio'. For details, see
+    http://enricoschumann.net/notes/return-based-tracking-portfolios.html
+
+  o New vignette 'Functions for portfolio selection'.
+
+  o 'TAopt' gains a new option 'drop0' (to be passed
+    via 'algo): if TRUE, zero values are dropped from
+    the sample of objective-function values during the
+    computation of the threshold sequence. See
+    https://stackoverflow.com/questions/63377180/finding-ideal-filter-setting-to-maximize-target-function
+
+  o 'French' supports more datasets. For industry
+    portfolios, the function now also provides "Sum of
+    BE/Sum of ME". The data are attached as an
+    attribute "sumBE.sumME". All data-frames attached
+    as attributes now have the timestamps as rownames.
+
+  o The setting-up of constraints matrices in
+    portfolio-selection functions such as 'minvar' is
+    now fixed; thanks to 'clcsar' for reporting on
+    GitHub. Also, the functions now allow group labels
+    for specifying constraints.
+    See https://github.com/enricoschumann/NMOF/issues/2 .
+
 v2.1-0  (2020-04-01)
 
   o 'Shiller': adapt function to new file format
