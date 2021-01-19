@@ -1,4 +1,4 @@
-RUNIT TEST PROTOCOL -- Tue Oct 20 10:41:47 2020 
+RUNIT TEST PROTOCOL -- Tue Jan 19 04:38:46 2021 
 *********************************************** 
 Number of test functions: 26 
 Number of errors: 0 
@@ -19,8 +19,8 @@ Involved directory:
 ~/Packages/NMOF/inst/unitTests 
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTests_market.R 
-test.French: (28 checks) ... OK (6.89 seconds)
-test.Shiller: (0 checks) ... OK (0.24 seconds)
+test.French: (28 checks) ... OK (6.6 seconds)
+test.Shiller: (0 checks) ... OK (0.28 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTests_mc.R 
 test.gbb: (2 checks) ... OK (0 seconds)
@@ -28,7 +28,7 @@ test.gbm: (2 checks) ... OK (0 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTests2.R 
 test.bracketing: (13 checks) ... OK (0 seconds)
-test.gridSearch: (18 checks) ... OK (0.09 seconds)
+test.gridSearch: (18 checks) ... OK (0.1 seconds)
 test.xwGauss: (4 checks) ... OK (0 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestsBonds.R 
@@ -38,16 +38,16 @@ Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestscallCF.R
 test.callCF: (22 checks) ... OK (0.01 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestsDEopt.R 
-test.DEopt: (133 checks) ... OK (1.33 seconds)
+test.DEopt: (133 checks) ... OK (1.49 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestsGAopt.R 
-test.GAopt: (22 checks) ... OK (0.09 seconds)
+test.GAopt: (22 checks) ... OK (0.1 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestsInternals.R 
-test.checkList: (10 checks) ... OK (0.01 seconds)
+test.checkList: (10 checks) ... OK (0.02 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestsLSopt.R 
-test.LSopt: (7 checks) ... OK (0.09 seconds)
+test.LSopt: (7 checks) ... OK (0.1 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestsMA.R 
 test.MA: (3 checks) ... OK (0 seconds)
@@ -58,14 +58,14 @@ test.EuropeanCall: (6 checks) ... OK (0 seconds)
 test.EuropeanCallBE: (6 checks) ... OK (0 seconds)
 test.testFunctions: (6 checks) ... OK (0 seconds)
 test.vanillaOptionAmerican: (6 checks) ... OK (0 seconds)
-test.vanillaOptionEuropean: (2124 checks) ... OK (3.14 seconds)
-test.vanillaOptionImpliedVol: (12 checks) ... OK (0.04 seconds)
+test.vanillaOptionEuropean: (2124 checks) ... OK (3.56 seconds)
+test.vanillaOptionImpliedVol: (12 checks) ... OK (0.03 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestsPCparity.R 
 test.putCallParity: (10 checks) ... OK (0 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestsPSopt.R 
-test.PSopt: (16 checks) ... OK (1.33 seconds)
+test.PSopt: (16 checks) ... OK (1.26 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestsRestartOpt.R 
 test.restartOpt: (1 checks) ... OK (0.03 seconds)
@@ -74,4 +74,4 @@ Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestsSAopt.R
 test.SAopt: (7 checks) ... OK (0.15 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestsTAopt.R 
-test.TAopt: (13 checks) ... OK (0.1 seconds)
+test.TAopt: (13 checks) ... OK (0.09 seconds)
