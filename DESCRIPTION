@@ -1,8 +1,8 @@
 Package: NMOF
 Type: Package
 Title: Numerical Methods and Optimization in Finance
-Version: 2.3-1
-Date: 2021-01-19
+Version: 2.4-0
+Date: 2021-04-01
 Maintainer: Enrico Schumann <es@enricoschumann.net>
 Authors@R: person("Enrico", "Schumann",
                   role  = c("aut", "cre"),
@@ -32,7 +32,7 @@ LazyData: yes
 ByteCompile: yes
 Classification/JEL: C61, C63
 NeedsCompilation: no
-Packaged: 2021-01-19 12:26:37 UTC; es19
+Packaged: 2021-04-01 07:03:43 UTC; es19
 Author: Enrico Schumann [aut, cre] (<https://orcid.org/0000-0001-7601-6576>)
 Repository: CRAN
-Date/Publication: 2021-01-19 13:10:06 UTC
+Date/Publication: 2021-04-01 07:30:05 UTC
