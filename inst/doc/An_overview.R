@@ -3,7 +3,7 @@
 ###################################################
 ### code chunk number 1: An_overview.Rnw:23-25
 ###################################################
-require("NMOF")
+library("NMOF")
 options(continue = "  ", digits = 5, max.print = 20, width = 85)
 
 
@@ -35,15 +35,15 @@ cat(paste(strwrap(x$results[,"Title"], exdent = 2), collapse = "\n"))
 
 
 ###################################################
-### code chunk number 6: An_overview.Rnw:179-186
+### code chunk number 6: An_overview.Rnw:179-186 (eval = FALSE)
 ###################################################
-test.rep <- readLines(system.file("unitTests/test_results.txt",
-                                  package = "NMOF"))
-nt <- gsub(".*\\(([0-9]+) checks?\\).*", "\\1",
-           test.rep[grep("\\(\\d+ checks?\\)", test.rep)])
-cat("Package version  ", gsub("(.*)[.]([0-9]+)$", "\\1-\\2",
-                            packageVersion("NMOF")), "\n",
-    "Number of tests: ", sum(as.numeric(nt)), sep = "")
+## test.rep <- readLines(system.file("unitTests/test_results.txt",
+##                                   package = "NMOF"))
+## nt <- gsub(".*\\(([0-9]+) checks?\\).*", "\\1",
+##            test.rep[grep("\\(\\d+ checks?\\)", test.rep)])
+## cat("Package version  ", gsub("(.*)[.]([0-9]+)$", "\\1-\\2",
+##                             packageVersion("NMOF")), "\n",
+##     "Number of tests: ", sum(as.numeric(nt)), sep = "")
 
 
 ###################################################
