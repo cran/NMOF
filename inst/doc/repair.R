@@ -25,7 +25,7 @@ x
 ###################################################
 ### code chunk number 4: repair.Rnw:65-69
 ###################################################
-repair1a <- function(x,up,lo) 
+repair1a <- function(x,up,lo)
     pmin(up,pmax(lo,x))
 x
 repair1a(x, up, lo)
@@ -75,9 +75,9 @@ repair1c(X, up = 0.5, lo = -0.5)
 ###################################################
 ### code chunk number 8: repair.Rnw:120-124
 ###################################################
-pmax2 <- function(x1, x2) 
+pmax2 <- function(x1, x2)
     ((x1 + x2) + abs(x1 - x2)) / 2
-pmin2 <- function(x1, x2) 
+pmin2 <- function(x1, x2)
     ((x1 + x2) - abs(x1 - x2)) / 2
 
 
@@ -104,7 +104,7 @@ all.equal(z1, z2)
 repair2 <- function(x, up, lo) {
     done <- TRUE
     e <- sum(x - up  + abs(x - up) + lo - x  + abs(lo - x))
-    if (e > 1e-12) 
+    if (e > 1e-12)
         done <- FALSE
     r <- up - lo
     while (!done) {
@@ -118,7 +118,7 @@ repair2 <- function(x, up, lo) {
 
         x <- x - (adjU - adjL)/2
         e <- sum(x - up  + abs(x - up) + lo - x  + abs(lo - x))
-        if (e < 1e-12) 
+        if (e < 1e-12)
             done <- TRUE
     }
     x

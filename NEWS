@@ -1,3 +1,13 @@
+v2.5-0  (2021-10-20)
+
+  o new function 'Ritter', which downloads IPO data
+    provided by Jay Ritter
+
+  o 'gridSearch' now can handle arbitrary lists (before,
+    only lists of numeric vectors were supported)
+
+  o 'French': improve formatting of (some) datasets
+
 v2.4-1  (2021-04-09)
 
   o the default value for option 'printBar' in all

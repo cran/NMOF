@@ -24,7 +24,7 @@ data.frame(row = 1:N, column = p)
 ###################################################
 ### code chunk number 4: LSqueens.Rnw:82-84
 ###################################################
-p <- rep(1, N) 
+p <- rep(1, N)
 data.frame(row = 1:N, column = p)
 
 
@@ -37,7 +37,7 @@ print_board <- function(p, q.char = "Q", sep = " ") {
     for (i in seq_len(n)) {
         row_i <- row
         row_i[p[i]] <- q.char
-       
+
         cat(paste(row_i, collapse = sep))
         cat("\n")
     }
@@ -68,9 +68,9 @@ mat
 n_attacks <- function(p) {
     ## more than one Q on a column?
     sum(duplicated(p)) +
-        
+
     ## more than one Q on a diagonal?
-    sum(duplicated(p - seq_along(p))) +   
+    sum(duplicated(p - seq_along(p))) +
 
     ## more than one Q on a reverse diagonal?
     sum(duplicated(p + seq_along(p)))
@@ -86,7 +86,7 @@ neighbour <- function(p) {
     step <- 3
     i <- sample.int(N, 1)
     p[i] <- p[i] + sample(c(1:step, -(1:step)), 1)
-    
+
     if (p[i] > N)
         p[i] <- 1
     else if (p[i] < 1)
