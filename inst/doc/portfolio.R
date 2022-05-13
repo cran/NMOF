@@ -1,22 +1,28 @@
 ### R code from vignette source 'portfolio.Rnw'
 
 ###################################################
-### code chunk number 1: portfolio.Rnw:21-25
+### code chunk number 1: portfolio.Rnw:21-31
 ###################################################
 options(continue = "  ", digits = 3, width = 60, useFancyQuotes = FALSE,
         max.print = 1000, width = 65)
 pv <- packageVersion("NMOF")
 pv <- gsub("(.*)[.](.*)", "\\1-\\2", pv)
+if (!requireNamespace("quadprog", quietly = TRUE))
+    trackingPortfolio <- mvFrontier <-
+    mvPortfolio <- minvar <- function(...) {
+        cat("package", sQuote("quadprog"), " is required")
+        invisible(NULL)
+    }
 
 
 ###################################################
-### code chunk number 2: portfolio.Rnw:46-47
+### code chunk number 2: portfolio.Rnw:52-53
 ###################################################
 library("NMOF")
 
 
 ###################################################
-### code chunk number 3: portfolio.Rnw:52-66
+### code chunk number 3: portfolio.Rnw:58-72
 ###################################################
 var <- structure(
     c(0.000988087100677907, -0.0000179669410403153, 0.000368923882626859,
@@ -47,7 +53,7 @@ minvar(var, wmin = 0, wmax = 0.5)
 
 
 ###################################################
-### code chunk number 6: portfolio.Rnw:94-97
+### code chunk number 6: portfolio.Rnw:100-103
 ###################################################
 minvar(var,
        wmin = c(0.1, 0, 0, 0, 0), ## enforce at least 10% weight in CBK.DE
@@ -55,7 +61,7 @@ minvar(var,
 
 
 ###################################################
-### code chunk number 7: portfolio.Rnw:100-103
+### code chunk number 7: portfolio.Rnw:106-109
 ###################################################
 minvar(var, wmin = -Inf, wmax = Inf)   ## no bounds
 minvar(var, wmin = -Inf, wmax = 0.45)  ## no lower bounds
@@ -74,7 +80,7 @@ minvar(var, wmin = 0, wmax = 0.40,
 
 
 ###################################################
-### code chunk number 9: portfolio.Rnw:117-123
+### code chunk number 9: portfolio.Rnw:123-129
 ###################################################
 ## group A consists of asset 1 only,   and must have weight [0.25,0.30]
 ## group B consists of assets 4 and 5, and must have weight [0.10,0.20]
@@ -108,24 +114,27 @@ mvPortfolio(m, var, min.return = 0.12, wmax = 1)
 ###################################################
 ### code chunk number 12: frontier-plot
 ###################################################
-wmin <- 0
-wmax <- 1
-p1 <- mvFrontier(m, var, wmin = wmin, wmax = wmax, n = 50)
+if (requireNamespace("quadprog")) {
+    wmin <- 0
+    wmax <- 1
+    p1 <- mvFrontier(m, var, wmin = wmin, wmax = wmax, n = 50)
 
-## with a 'risk-free' asset rf
-rf <- 0.02
-p2 <- mvFrontier(m, var, wmin = wmin, wmax = wmax, n = 50, rf = rf)
+    ## with a 'risk-free' asset rf
+    rf <- 0.02
+    p2 <- mvFrontier(m, var, wmin = wmin, wmax = wmax, n = 50, rf = rf)
 
-par(las = 1, bty = "n", tck = 0.001, ps = 8)
-plot(p1$volatility, p1$return, pch = 19, cex = 0.5, type = "o",
-     xlab = "Expected volatility",
-     ylab = "Expected return")
-lines(p2$volatility, p2$return, col = grey(0.5))
-abline(v = 0, h = rf)
+    par(las = 1, bty = "n", tck = 0.001, ps = 8)
+    plot(p1$volatility, p1$return, pch = 19, cex = 0.5, type = "o",
+         xlab = "Expected volatility",
+         ylab = "Expected return")
+    lines(p2$volatility, p2$return, col = grey(0.5))
+    abline(v = 0, h = rf)
+} else
+    plot(1)
 
 
 ###################################################
-### code chunk number 13: portfolio.Rnw:202-211
+### code chunk number 13: portfolio.Rnw:211-220
 ###################################################
 ns <- 120
 R <- randomReturns(na = 1 + 10,  ## first asset is the benchmark
@@ -139,12 +148,15 @@ trackingPortfolio(var, wmax = 0.4)
 
 
 ###################################################
-### code chunk number 14: portfolio.Rnw:223-228
+### code chunk number 14: portfolio.Rnw:232-240
 ###################################################
 ns <- 5000  ## number of scenarios
 na <- 20    ## nunber of assets
 R <- randomReturns(na, ns, sd = 0.01, rho = 0.5)
 
-sol <- minCVaR(R, q = 0.1)
+if (requireNamespace("Rglpk")) { ## example requires "Rglpk" package
+    sol <- minCVaR(R, q = 0.1)
+} else
+    message("Package ", sQuote("Rglpk"), " not available")
 
 
