@@ -61,7 +61,6 @@ if (requireNamespace("quadprog") &&
 
     if (Sys.getenv("ES_PACKAGE_TESTING_73179826243954") == "true") {
 
-
         ## mvPortfolio
         na <- 4
         vols <- c(0.10, 0.15, 0.20, 0.22)

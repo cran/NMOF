@@ -78,8 +78,9 @@ French(dest.dir,
 }
 \value{
 
-  a \code{\link{data.frame}}, with contents
-  depending on the particular dataset
+  A \code{\link{data.frame}}, with contents depending on the
+  particular dataset.  If the download failes, the function
+  evaluates to \code{\link{NULL}}.
 
 }
 \references{
@@ -99,6 +100,16 @@ French(dest.dir,
 \examples{
 ## list all supported files
 French()
+
+\donttest{
+  ## fetch names of files from Kenneth French's website
+  try({
+      txt <- readLines(paste0("https://mba.tuck.dartmouth.edu/pages/",
+                              "faculty/ken.french/data_library.html"))
+      csv <- txt[grep("ftp/.*CSV.zip", txt, ignore.case = TRUE)]
+      gsub(".*ftp/(.*?CSV.zip).*", "\\1", csv, ignore.case = TRUE)
+    })
+}
 
 \dontrun{
 archive.dir <- "~/Downloads/French"

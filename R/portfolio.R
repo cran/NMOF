@@ -237,9 +237,8 @@ mvPortfolio <- function(m, var, min.return, wmin = 0, wmax = 1,
     result
 }
 
-group_constraints_matrices <- function(na, groups,
-                              groups.wmin,
-                              groups.wmax) {
+group_constraints_matrices <-
+function(na, groups, groups.wmin, groups.wmax) {
 
     if (is.factor(groups))
         groups <- as.character(groups)
@@ -261,16 +260,16 @@ group_constraints_matrices <- function(na, groups,
     b.ineq <- NULL
     if (!is.null(groups.wmax)) {
         G.max <- if (is.character(groups))
-                     G[names(groups.wmax), ] else G
-        G.max <- G.max[is.finite(groups.wmax), ]
+                     G[names(groups.wmax),, drop = FALSE] else G
+        G.max <- G.max[is.finite(groups.wmax),, drop = FALSE]
         groups.wmax <- groups.wmax[is.finite(groups.wmax)]
         A.ineq <- rbind(A.ineq, -G.max)
         b.ineq <- c(b.ineq, -groups.wmax)
     }
     if (!is.null(groups.wmin)) {
         G.min <- if (is.character(groups))
-                     G[names(groups.wmin), ] else G
-        G.min <- G.min[is.finite(groups.wmin), ]
+                     G[names(groups.wmin),, drop = FALSE] else G
+        G.min <- G.min[is.finite(groups.wmin),, drop = FALSE]
         groups.wmin <- groups.wmin[is.finite(groups.wmin)]
         A.ineq <- rbind(A.ineq, G.min)
         b.ineq <- c(b.ineq, groups.wmin)
@@ -446,4 +445,63 @@ trackingPortfolio <- function(var, wmin = 0, wmax = 1,
 
     }
     ans
+}
+
+maxSharpe <- function(m, var, min.return,
+                      wmin = -Inf,
+                      wmax = Inf,
+                      method = "qp",
+                      groups = NULL,
+                      groups.wmin = NULL,
+                      groups.wmax = NULL) {
+
+    if (is.infinite(wmin) && is.infinite(wmax) && is.null(groups)) {
+        x <- solve(var, m)
+        x/sum(x)
+    }
+
+    if (method == "qp" && !requireNamespace("quadprog"))
+        stop("package ", sQuote("quadprog"), " is not available")
+    na <- dim(var)[1L]
+    finite.min <- is.finite(wmin[1])
+    finite.max <- is.finite(wmax[1])
+
+    if (missing(min.return)) {
+        if (!finite.max)
+            min.return <- 1
+        else
+            min.return <- max(c(wmin %*% m), 1e-6)
+    }
+
+    if (length(wmin) == 1L && finite.min)
+        wmin <- rep(wmin, na)
+    if (length(wmax) == 1L && finite.max)
+        wmax <- rep(wmax, na)
+    Q <- var
+    A <- rbind(m,
+               if (!finite.max) NULL else -diag(na) + wmax,
+               if (!finite.min) NULL else  diag(na) - wmin)
+    bvec <- c(min.return,
+              if (!finite.max) NULL else rep(0, na),
+              if (!finite.min) NULL else rep(0, na))
+
+    if (!is.null(groups)) {
+        stop("groups are not yet supported")
+        Groups <-
+            group_constraints_matrices(na,
+                                       groups,
+                                       groups.wmin,
+                                       groups.wmax)
+        A <- rbind(A, Groups$A.ineq)
+        bvec <- c(bvec, Groups$b.ineq)
+    }
+
+    qp_res <- quadprog::solve.QP(Dmat = Q,
+                                 dvec = rep.int(0, na),
+                                 Amat = t(A),
+                                 bvec = bvec,
+                                 meq  = 1L)
+    ans <- qp_res$solution/sum(qp_res$solution)
+    ans
+
 }

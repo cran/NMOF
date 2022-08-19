@@ -2,11 +2,15 @@
 \alias{vanillaOptionEuropean}
 \alias{vanillaOptionAmerican}
 \alias{vanillaOptionImpliedVol}
+\alias{barrierOptionEuropean}
 \title{
-  Pricing Plain-Vanilla Options (European and American)
+  Pricing Plain-Vanilla (European and American) and Barrier Options (European)
 }
 \description{
-  Functions to calculate the theoretical prices and (some) Greeks for plain vanilla options.
+
+  Functions to calculate the theoretical prices and (some) Greeks for
+  plain-vanilla and barrier options.
+
 }
 \usage{
 vanillaOptionEuropean(S, X, tau, r, q, v, tauD = 0, D = 0,
@@ -19,14 +23,24 @@ vanillaOptionImpliedVol(exercise = "european", price, S, X, tau, r,
                         q = 0, tauD = 0, D = 0, type = "call",
                         M = 101,
                         uniroot.control = list(), uniroot.info = FALSE)
+
+barrierOptionEuropean(S, X, H, tau, r, q = 0, v, tauD = 0, D = 0,
+                      type = "call",
+                      barrier.type = "downin",
+                      rebate = 0,
+                      greeks = FALSE,
+                      model = NULL, ...)
 }
 \arguments{
   \item{S}{
     spot
-}
+  }
   \item{X}{
     strike
-}
+  }
+  \item{H}{
+    barrier
+  }
   \item{tau}{
     time-to-maturity in years
 }
@@ -49,7 +63,15 @@ vanillaOptionImpliedVol(exercise = "european", price, S, X, tau, r,
   \item{type}{
     call or put; default is call.
 }
-  \item{greeks}{
+
+\item{barrier.type}{string: combination of \code{up}/\code{down} and
+  \code{in}/\code{out}, such as \code{downin}
+}
+\item{rebate}{%
+    currently not implemented
+}
+
+\item{greeks}{
     compute Greeks? Defaults to \code{TRUE}. But see Details for
     American options.
   }

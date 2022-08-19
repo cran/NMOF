@@ -148,12 +148,11 @@ trackingPortfolio(var, wmax = 0.4)
 
 
 ###################################################
-### code chunk number 14: portfolio.Rnw:232-240
+### code chunk number 14: portfolio.Rnw:232-239
 ###################################################
 ns <- 5000  ## number of scenarios
 na <- 20    ## nunber of assets
 R <- randomReturns(na, ns, sd = 0.01, rho = 0.5)
-
 if (requireNamespace("Rglpk")) { ## example requires "Rglpk" package
     sol <- minCVaR(R, q = 0.1)
 } else
