@@ -134,7 +134,7 @@ if (requireNamespace("quadprog")) {
 
 
 ###################################################
-### code chunk number 13: portfolio.Rnw:211-220
+### code chunk number 13: portfolio.Rnw:213-222
 ###################################################
 ns <- 120
 R <- randomReturns(na = 1 + 10,  ## first asset is the benchmark
@@ -148,7 +148,7 @@ trackingPortfolio(var, wmax = 0.4)
 
 
 ###################################################
-### code chunk number 14: portfolio.Rnw:232-239
+### code chunk number 14: minCVaR
 ###################################################
 ns <- 5000  ## number of scenarios
 na <- 20    ## nunber of assets
@@ -157,5 +157,14 @@ if (requireNamespace("Rglpk")) { ## example requires "Rglpk" package
     sol <- minCVaR(R, q = 0.1)
 } else
     message("Package ", sQuote("Rglpk"), " not available")
+
+
+###################################################
+### code chunk number 15: minMAD
+###################################################
+ns <- 5000  ## number of scenarios
+na <- 5    ## nunber of assets
+R <- randomReturns(na, ns, sd = 0.01, rho = 0.5)
+minMAD(R = R)
 
 
