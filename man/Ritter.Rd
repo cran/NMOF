@@ -24,7 +24,7 @@ Ritter(dest.dir,
 \details{
 
   The function downloads \acronym{IPO} data provided by Jay
-  R. Ritter \url{https://site.warrington.ufl.edu/ritter}.
+  R. Ritter \url{https://site.warrington.ufl.edu/ritter/}.
   Since the data are provided in Excel format, package
   \pkg{openxlsx} is required.
 
@@ -59,7 +59,7 @@ a \code{\link{data.frame}}:
   2nd edition. Elsevier. \doi{10.1016/C2017-0-01621-X}
 
   Schumann, E. (2023) Financial Optimisation with R (\pkg{NMOF} Manual).
-  \url{http://enricoschumann.net/NMOF.htm#NMOFmanual}
+  \url{https://enricoschumann.net/NMOF.htm#NMOFmanual}
 
 }
 \author{

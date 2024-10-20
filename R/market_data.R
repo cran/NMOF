@@ -25,51 +25,60 @@ Ritter <- function(dest.dir,
     data <- data[, 1:11]
     data <- data[!apply(data, 1, function(x) all(is.na(x))), ]
     colnames(data) <- gsub("[.]", " ", colnames(data))
+    cn0 <- colnames(data)
+    colnames(data) <- tolower(colnames(data))
 
-    data[["Offer date"]] <- as.Date(as.character(data[["Offer date"]]),
+    data[["offer date"]] <- as.Date(as.character(data[["offer date"]]),
                                     format = "%Y%m%d")
 
-    data[["Rollup"]][data[["Rollup"]] %in% c(".")] <- NA
-    data[["Rollup"]] <- as.logical(as.numeric(data[["Rollup"]]))
+    data[["rollup"]][data[["rollup"]] %in% c(".")] <- NA
+    data[["rollup"]] <- as.logical(as.numeric(data[["rollup"]]))
 
-    data[["Internet"]][data[["Internet"]] %in% c(".")] <- NA
-    data[["Internet"]] <- as.logical(as.numeric(data[["Internet"]]))
+    data[["internet"]][data[["internet"]] %in% c(".")] <- NA
+    data[["internet"]] <- as.logical(as.numeric(data[["internet"]]))
 
-    data[["Dual"]][data[["Dual"]] %in% c(".")] <- NA
-    data[["Dual"]] <- as.numeric(data[["Dual"]])
+    data[["dual"]][data[["dual"]] %in% c(".")] <- NA
+    data[["dual"]] <- as.numeric(data[["dual"]])
 
-    if ("VC dummy" %in% colnames(data)) {
-        data[["VC dummy"]][data[["VC dummy"]] %in% c(".")] <- NA
-        data[["VC dummy"]] <- as.numeric(data[["VC dummy"]])
+    if ("vc dummy" %in% colnames(data)) {
+        data[["vc dummy"]][data[["vc dummy"]] %in% c(".")] <- NA
+        data[["vc dummy"]] <- as.numeric(data[["vc dummy"]])
     }
 
-    if ("VC" %in% colnames(data)) {
-        data[["VC"]][data[["VC"]] %in% c(".")] <- NA
-        data[["VC"]] <- as.numeric(data[["VC"]])
+    if ("vc" %in% colnames(data)) {
+        data[["vc"]][data[["vc"]] %in% c(".")] <- NA
+        data[["vc"]] <- as.numeric(data[["vc"]])
     }
 
-    if ("Post-issue shares" %in% colnames(data)) {
-        data[["Post-issue shares"]][data[["Post-issue shares"]] %in% c(".", "-9")] <- NA
-        data[["Post-issue shares"]] <- as.numeric(data[["Post-issue shares"]])
+    if ("post-issue shares" %in% colnames(data)) {
+        data[["post-issue shares"]][data[["post-issue shares"]] %in% c(".", "-9")] <- NA
+        data[["post-issue shares"]] <- as.numeric(data[["post-issue shares"]])
     }
 
-    if ("PostIssueShares" %in% colnames(data)) {
-        data[["PostIssueShares"]][data[["PostIssueShares"]] %in% c(".", "-9")] <- NA
-        data[["PostIssueShares"]] <- as.numeric(data[["PostIssueShares"]])
+    if ("postissueshares" %in% colnames(data)) {
+        data[["postissueshares"]][data[["postissueshares"]] %in% c(".", "-9")] <- NA
+        data[["postissueshares"]] <- as.numeric(data[["postissueshares"]])
     }
 
-    data[["Founding"]][data[["Founding"]] %in% c(".", "-99", "-9")] <- NA
-    data[["Founding"]] <- as.numeric(data[["Founding"]])
+    data[["founding"]][data[["founding"]] %in% c(".", "-99", "-9")] <- NA
+    data[["founding"]] <- as.numeric(data[["founding"]])
+    colnames(data) <- cn0
 
     data
 }
 
-Shiller <- function(dest.dir,
-                    url = "http://www.econ.yale.edu/~shiller/data/ie_data.xls") {
 
-    f.name <- paste0(format(Sys.Date(), "%Y%m%d_"),
-                     "ie_data.xls")
+Shiller <- function(dest.dir, url = NULL) {
+
+    f.name <- paste0(format(Sys.Date(), "%Y%m%d_"), "ie_data.xls")
     f.path <- file.path(normalizePath(dest.dir), f.name)
+
+    if (is.null(url)) {
+        txt <- readLines("https://shillerdata.com/", warn = FALSE)
+        txt <- paste(txt, collapse = "")
+        url <- sub(".*href=.*?(img1.wsimg.com/blobby/go/.*?/downloads/.*?ie_data.xls).*",
+                   "\\1", txt, perl = TRUE)
+    }
 
     if (!file.exists(f.path))
         dl.result <- download.file(url, destfile = f.path)
@@ -126,13 +135,15 @@ Shiller <- function(dest.dir,
     data
 }
 
+
 French <- function(dest.dir,
                    dataset = "F-F_Research_Data_Factors_CSV.zip",
                    weighting = "value",
                    frequency = "monthly",
                    price.series = FALSE,
                    na.rm = FALSE,
-                   adjust.frequency = TRUE) {
+                   adjust.frequency = TRUE,
+                   return.class = "data.frame") {
 
     .prepare_timestamp <- function(x, freq) {
         if (freq == "monthly")
@@ -206,10 +217,10 @@ French <- function(dest.dir,
     else if (dataset == "me_breakpoints") {
         url <- "ME_Breakpoints_CSV.zip"
         dataset <- "me_breakpoints_csv.zip"
-    } else if (dataset %in% c("market", "rf") &&
+    } else if (tolower(dataset) %in% c("market", "rf") &&
              frequency == "daily")
         url <- "F-F_Research_Data_Factors_daily_CSV.zip"
-    else if (dataset %in% c("market", "rf"))
+    else if (tolower(dataset) %in% c("market", "rf"))
         url <- "F-F_Research_Data_Factors_CSV.zip"
     else
         url <- dataset
@@ -533,11 +544,15 @@ French <- function(dest.dir,
         else
             stop("frequency not supported")
 
-    } else if (tolower(dataset) == "f-f_research_data_factors_daily_csv.zip") {
+    } else if (tolower(dataset) %in%
+               c("f-f_research_data_factors_daily_csv.zip",
+                 "f-f_research_data_5_factors_2x3_daily_csv.zip")) {
 
         frequency <- "daily"
         i <- grep("Mkt-RF", txt)
         j <- grep("^ *$", txt[-c(1:10)]) + 9
+        if (!length(j))
+            j <- length(txt)
         ans <- txt[i:j]
 
     ## } else if (tolower(dataset) == "portfolios_formed_on_be-me_csv.zip") {
@@ -740,9 +755,9 @@ French <- function(dest.dir,
         for (cc in seq_len(ncol(ans))) {
             if (na.rm && any(is.na(ans[[cc]]))) {
                 na <- is.na(ans[[cc]])
-                first_num <- min(which(!na))
-                if (!is.finite(first_num))  ## only NA values
+                if (all(na))  ## only NA values
                     next
+                first_num <- min(which(!na))
                 ans[[cc]][ na ] <- 0
                 ans[[cc]] <- cumprod(1 + ans[[cc]])
                 if (first_num > 1)
@@ -762,5 +777,14 @@ French <- function(dest.dir,
         for (i in seq_along(attr.list))
             attr(ans, names(attr.list)[i]) <- attr.list[[i]]
 
+    if (return.class == "zoo") {
+        if (requireNamespace("zoo")) {
+            ans <- zoo::zoo(ans, as.Date(row.names(ans)))
+        } else {
+            warning("return class ",
+                    sQuote("zoo"),
+                    " specified but package not available")
+        }
+    }
     ans
 }

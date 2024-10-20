@@ -1,20 +1,22 @@
 ### R code from vignette source 'LSqueens.Rnw'
 
 ###################################################
-### code chunk number 1: LSqueens.Rnw:25-26
+### code chunk number 1: LSqueens.Rnw:26-29
 ###################################################
 options(continue = "  ", digits = 5, max.print = 1000)
+pv <- packageVersion("NMOF")
+pv <- gsub("(.*)[.](.*)", "\\1-\\2", pv)
 
 
 ###################################################
-### code chunk number 2: LSqueens.Rnw:63-65
+### code chunk number 2: LSqueens.Rnw:68-70
 ###################################################
 library("NMOF")
 set.seed(134577)
 
 
 ###################################################
-### code chunk number 3: LSqueens.Rnw:75-78
+### code chunk number 3: LSqueens.Rnw:80-83
 ###################################################
 N <- 8              ## board size
 p <- sample.int(N)  ## a random solution
@@ -22,14 +24,14 @@ data.frame(row = 1:N, column = p)
 
 
 ###################################################
-### code chunk number 4: LSqueens.Rnw:82-84
+### code chunk number 4: LSqueens.Rnw:87-89
 ###################################################
 p <- rep(1, N)
 data.frame(row = 1:N, column = p)
 
 
 ###################################################
-### code chunk number 5: LSqueens.Rnw:90-103
+### code chunk number 5: LSqueens.Rnw:95-108
 ###################################################
 print_board <- function(p, q.char = "Q", sep = " ") {
     n <- length(p)
@@ -47,7 +49,7 @@ print_board(p)
 
 
 ###################################################
-### code chunk number 6: LSqueens.Rnw:113-124
+### code chunk number 6: LSqueens.Rnw:118-129
 ###################################################
 mat <- array(NA, dim = c(N,N))  ## diagonals
 for (r in 1:N)
@@ -63,7 +65,7 @@ mat
 
 
 ###################################################
-### code chunk number 7: LSqueens.Rnw:137-149
+### code chunk number 7: LSqueens.Rnw:142-154
 ###################################################
 n_attacks <- function(p) {
     ## more than one Q on a column?
@@ -80,7 +82,7 @@ n_attacks(p)
 
 
 ###################################################
-### code chunk number 8: LSqueens.Rnw:160-171
+### code chunk number 8: LSqueens.Rnw:165-176
 ###################################################
 neighbour <- function(p) {
     step <- 3
@@ -96,7 +98,7 @@ neighbour <- function(p) {
 
 
 ###################################################
-### code chunk number 9: LSqueens.Rnw:174-177
+### code chunk number 9: LSqueens.Rnw:179-182
 ###################################################
 print_board(p)
 print_board(p <- neighbour(p))
@@ -104,7 +106,7 @@ print_board(p <- neighbour(p))
 
 
 ###################################################
-### code chunk number 10: LSqueens.Rnw:187-207
+### code chunk number 10: LSqueens.Rnw:192-212
 ###################################################
 p0 <- rep(1, N)  ## or a random initial solution: p0 <- sample.int(N)
 print_board(p0)
