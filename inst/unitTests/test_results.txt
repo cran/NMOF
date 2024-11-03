@@ -1,4 +1,4 @@
-RUNIT TEST PROTOCOL -- Sun Oct 20 08:21:49 2024 
+RUNIT TEST PROTOCOL -- Sat Nov  2 07:56:49 2024 
 *********************************************** 
 Number of test functions: 23 
 Number of errors: 2 
@@ -9,8 +9,8 @@ Number of failures: 0
 NMOF - 23 test functions, 2 errors, 0 failures
 ERROR in test.French: Error in French(archive.dir, "market", frequency = "daily", price.series = TRUE) : 
   lazy-load database '/home/es19/R/x86_64-pc-linux-gnu-library/4.4/datetimeutils/R/datetimeutils.rdb' is corrupt
-ERROR in test.Shiller: Error in download.file(url, destfile = f.path) : 
-  cannot open URL '<!DOCTYPE html><html lang="en-US"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Shiller</title><meta name="author" content="Shiller"/><meta name="generator" content="Starfield Technologies; Go Daddy Website Builder 8.0.0000"/><link rel="manifest" href="/manifest.webmanifest"/><link rel="apple-touch-icon" sizes="57x57" href="//img1.wsimg.com/isteam/ip/static/pwa-app/logo-default.png/:/rs=w:57,h:57,m"/><link rel="apple-touch-icon" sizes="60x60" href="//img1.wsimg.com/isteam/ip/static/pwa-app/logo-default.png/:/rs=w:60,h:60,m"/><link rel="apple-touch-icon" sizes="72x72" href="//img1.wsimg.com/isteam/ip/static/pwa-app/logo-default.png/:/rs=w:72,h:72,m"/><link rel="apple-touch-icon" sizes="114x114" href="//img1.wsimg.com/isteam/ip/static/pwa-app/logo-default.png/:/rs=w:114,h:114,m"/><link rel="apple-touch-icon" sizes="120x120" href="//img1.wsimg.com/isteam/ip/st
+ERROR in test.Shiller: Error in Shiller(archive.dir) : 
+  lazy-load database '/home/es19/R/x86_64-pc-linux-gnu-library/4.4/datetimeutils/R/datetimeutils.rdb' is corrupt
 
 
 
@@ -27,8 +27,8 @@ test.French: ERROR !!
 Error in French(archive.dir, "market", frequency = "daily", price.series = TRUE) : 
   lazy-load database '/home/es19/R/x86_64-pc-linux-gnu-library/4.4/datetimeutils/R/datetimeutils.rdb' is corrupt
 test.Shiller: ERROR !! 
-Error in download.file(url, destfile = f.path) : 
-  cannot open URL '<!DOCTYPE html><html lang="en-US"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta name="viewport" content="width=device-width, initial-scale=1"/><title>Shiller</title><meta name="author" content="Shiller"/><meta name="generator" content="Starfield Technologies; Go Daddy Website Builder 8.0.0000"/><link rel="manifest" href="/manifest.webmanifest"/><link rel="apple-touch-icon" sizes="57x57" href="//img1.wsimg.com/isteam/ip/static/pwa-app/logo-default.png/:/rs=w:57,h:57,m"/><link rel="apple-touch-icon" sizes="60x60" href="//img1.wsimg.com/isteam/ip/static/pwa-app/logo-default.png/:/rs=w:60,h:60,m"/><link rel="apple-touch-icon" sizes="72x72" href="//img1.wsimg.com/isteam/ip/static/pwa-app/logo-default.png/:/rs=w:72,h:72,m"/><link rel="apple-touch-icon" sizes="114x114" href="//img1.wsimg.com/isteam/ip/static/pwa-app/logo-default.png/:/rs=w:114,h:114,m"/><link rel="apple-touch-icon" sizes="120x120" href="//img1.wsimg.com/isteam/ip/st
+Error in Shiller(archive.dir) : 
+  lazy-load database '/home/es19/R/x86_64-pc-linux-gnu-library/4.4/datetimeutils/R/datetimeutils.rdb' is corrupt
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTests_mc.R 
 test.gbb: (2 checks) ... OK (0 seconds)
@@ -41,16 +41,16 @@ Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestscallCF.R
 test.callCF: (22 checks) ... OK (0.01 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestsDEopt.R 
-test.DEopt: (133 checks) ... OK (1.38 seconds)
+test.DEopt: (133 checks) ... OK (1.62 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestsGAopt.R 
-test.GAopt: (22 checks) ... OK (0.07 seconds)
+test.GAopt: (22 checks) ... OK (0.09 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestsInternals.R 
-test.checkList: (10 checks) ... OK (0 seconds)
+test.checkList: (10 checks) ... OK (0.01 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestsLSopt.R 
-test.LSopt: (7 checks) ... OK (0.08 seconds)
+test.LSopt: (7 checks) ... OK (0.09 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestsMA.R 
 test.MA: (3 checks) ... OK (0 seconds)
@@ -61,20 +61,20 @@ test.EuropeanCall: (6 checks) ... OK (0 seconds)
 test.EuropeanCallBE: (6 checks) ... OK (0 seconds)
 test.testFunctions: (6 checks) ... OK (0 seconds)
 test.vanillaOptionAmerican: (6 checks) ... OK (0 seconds)
-test.vanillaOptionEuropean: (2124 checks) ... OK (3.09 seconds)
-test.vanillaOptionImpliedVol: (12 checks) ... OK (0.03 seconds)
+test.vanillaOptionEuropean: (2124 checks) ... OK (3.25 seconds)
+test.vanillaOptionImpliedVol: (12 checks) ... OK (0.04 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestsPCparity.R 
 test.putCallParity: (10 checks) ... OK (0 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestsPSopt.R 
-test.PSopt: (16 checks) ... OK (1.35 seconds)
+test.PSopt: (16 checks) ... OK (1.38 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestsRestartOpt.R 
 test.restartOpt: (1 checks) ... OK (0.03 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestsSAopt.R 
-test.SAopt: (7 checks) ... OK (0.14 seconds)
+test.SAopt: (7 checks) ... OK (0.16 seconds)
 --------------------------- 
 Test file: /home/es19/Packages/NMOF/inst/unitTests/unitTestsTAopt.R 
-test.TAopt: (13 checks) ... OK (0.1 seconds)
+test.TAopt: (13 checks) ... OK (0.11 seconds)
